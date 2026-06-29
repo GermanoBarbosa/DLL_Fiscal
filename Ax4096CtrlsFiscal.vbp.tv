@@ -5,7 +5,7 @@ F|AxPraFiscal\Class Modules
 F|AxPraFiscal\User Controls
 A|AxPraFiscal\Class Modules\fFuncsBase16 (fFuncsBase16.cls)
 A|AxPraFiscal\Class Modules\hNFe_Signature (hNFe_Signature.cls)
-A|AxPraFiscal\Class Modules\hNFe4 (hNFe4.cls)
+A|AxPraFiscal\Class Modules\hNFe4 (hNFe4.cls) [mudou]
 A|AxPraFiscal\Class Modules\hNFe4_CartaCorrecao (hNFe4_CartaCorrecao.cls)
 A|AxPraFiscal\Class Modules\hNFe4_ConsReciNFe (hNFe4_ConsReciNFe.cls)
 A|AxPraFiscal\Class Modules\hNFe4_DistDFe (hNFe4_DistDFe.cls)
