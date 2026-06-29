@@ -7,6 +7,7 @@ Class=fFuncsBase16; _files\fFuncsBase16.cls
 Class=hNFe_Signature; _files\hNFe_Signature.cls
 Class=hNFe4; _files\hNFe4.cls
 Class=hNFe4_CartaCorrecao; _files\hNFe4_CartaCorrecao.cls
+Class=hNFe4_DistDFe; _files\hNFe4_DistDFe.cls
 Class=hNFe4_Doc; _files\hNFe4_Doc.cls
 Class=hNFe4_Doc_dest; _files\hNFe4_Doc_dest.cls
 Class=hNFe4_Doc_dest_enderDest; _files\hNFe4_Doc_dest_enderDest.cls

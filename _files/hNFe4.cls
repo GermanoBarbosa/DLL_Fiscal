@@ -19,6 +19,7 @@ Public retNFe_EnviaLote2    As New hNFe4_EnviaLote2
 Public retNfeInutilizacao   As New hNFe4_Inutilizacao
 Public retNfeCartaCorrecao  As New hNFe4_CartaCorrecao
 Public retNFe_ConsSitNFe    As New hNFe4_ConsSitNFe
+Public retNFe_DistDFe       As New hNFe4_DistDFe
 
 
 Dim WithEvents e_xmldom As WinHttp.WinHttpRequest
@@ -34,6 +35,7 @@ Dim pURL_NFeInutilizacao_xsd As String
 Dim pURL_NFeRecepcaoEvento4 As String
 Dim pURL_NFeConsultaProtocolo As String
 Dim pURL_NFeConsultaProtocolo_xsd As String
+Dim pURL_NFeDistribuicaoDFe As String
 
 
 Private mcert As String
@@ -380,6 +382,13 @@ Function Inicia(Optional ByVal n_ambiente As String) As Boolean
 
                 End Select
         End Select
+    End If
+
+    ' NFeDistribuicaoDFe - serviço nacional (sempre no ambiente nacional, independente da UF)
+    If m_Ambiente = 1 Then
+        pURL_NFeDistribuicaoDFe = "https://www.nfe.fazenda.gov.br/NFeDistribuicaoDFe/NFeDistribuicaoDFe.asmx"
+    Else
+        pURL_NFeDistribuicaoDFe = "https://hom1.nfe.fazenda.gov.br/NFeDistribuicaoDFe/NFeDistribuicaoDFe.asmx"
     End If
 
 End Function
@@ -793,9 +802,11 @@ Function GetCert(ByVal mCertificadoSerial As String) As Certificate
             Debug.Print Certs.Item(i).HasPrivateKey
              
         Next
-        
     End If
+
 End Function
+
+
 
 Function NfeCancela(mCertificadoSel, ByVal n_cOrgao As String, ByVal n_chNFe As String, ByVal m_CNPJ As String, ByVal m_xJust As String, ByVal nProt As String, m_xml_send As String, m_xml_resp As String) As Boolean
     Dim xmldoc As New WinHttpRequest
@@ -1318,4 +1329,85 @@ Function NfeConsultaProtocolo(ByVal chNFe As String, m_xml_send As String, m_xml
     Exit Function
 End Function
 
+Function NfeDistDFe(ByVal CNPJ As String, ByVal NSU As String, ByVal chNFe As String, m_xml_send As String, m_xml_resp As String) As Boolean
+    Dim xmldoc As New WinHttpRequest
+    Dim xmlnf As New MSXML2.DOMDocument50
+    Dim xmldom_resp As New MSXML2.DOMDocument50
+    Dim txt_xml As String
+
+    txt_xml = ""
+    txt_xml = txt_xml & "<?xml version=""1.0"" encoding=""utf-8""?>"
+    txt_xml = txt_xml & "<soap12:Envelope xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:soap12=""http://www.w3.org/2003/05/soap-envelope"">"
+    txt_xml = txt_xml & "  <soap12:Body>"
+    txt_xml = txt_xml & "    <nfeDadosMsg xmlns=""http://www.portalfiscal.inf.br/nfe/wsdl/NFeDistribuicaoDFe"">"
+    txt_xml = txt_xml & "      <distDFeInt versao=""1.01"" xmlns=""http://www.portalfiscal.inf.br/nfe"">"
+    txt_xml = txt_xml & "        <tpAmb>" & m_Ambiente & "</tpAmb>"
+    txt_xml = txt_xml & "        <cUFAutor>" & m_UF_Cod & "</cUFAutor>"
+    txt_xml = txt_xml & "        <CNPJ>" & OnlyNumbers(CNPJ) & "</CNPJ>"
+
+    If Len(chNFe) > 0 Then
+        txt_xml = txt_xml & "        <consChNFe>"
+        txt_xml = txt_xml & "          <chNFe>" & chNFe & "</chNFe>"
+        txt_xml = txt_xml & "        </consChNFe>"
+    Else
+        txt_xml = txt_xml & "        <consNSU>"
+        txt_xml = txt_xml & "          <NSU>" & NSU & "</NSU>"
+        txt_xml = txt_xml & "        </consNSU>"
+    End If
+
+    txt_xml = txt_xml & "      </distDFeInt>"
+    txt_xml = txt_xml & "    </nfeDadosMsg>"
+    txt_xml = txt_xml & "  </soap12:Body>"
+    txt_xml = txt_xml & "</soap12:Envelope>"
+
+    If xmlnf.LoadXml(txt_xml) Then
+        Call xmldoc.Open("POST", pURL_NFeDistribuicaoDFe & "?wsdl", False)
+        Call xmldoc.SetRequestHeader("content-type", "application/soap+xml; charset=utf-8")
+        Call xmldoc.SetRequestHeader("SOAPAction", "http://www.portalfiscal.inf.br/nfe/wsdl/NFeDistribuicaoDFe/nfeDistDFeInteresse")
+        xmldoc.SetClientCertificate (mcert)
+        xmldoc.Option(WinHttpRequestOption_SelectCertificate) = (mcert)
+        xmldoc.Send (xmlnf.xml & "")
+        m_xml_send = xmlnf.xml
+
+        If xmldom_resp.LoadXml(xmldoc.ResponseText) Then
+            m_xml_resp = xmldoc.ResponseText
+
+            Dim ooo As IXMLDOMNode
+            Dim ooo2 As IXMLDOMNode
+            If ExistSelect(xmldom_resp.documentElement.childNodes, ooo, "Body") Then
+                If ExistSelect(ooo.childNodes, ooo, "nfeResultMsg") Then
+                    If ExistSelect(ooo.childNodes, ooo, "retDistDFeInt") Then
+                        If ExistSelect(ooo.childNodes, ooo2, "cStat") Then
+                            retNFe_DistDFe.cStat = ooo2.Text
+                        End If
+                        If ExistSelect(ooo.childNodes, ooo2, "tpAmb") Then
+                            retNFe_DistDFe.tpAmb = ooo2.Text
+                        End If
+                        If ExistSelect(ooo.childNodes, ooo2, "xMotivo") Then
+                            retNFe_DistDFe.xMotivo = ooo2.Text
+                        End If
+                        If ExistSelect(ooo.childNodes, ooo2, "cUFAutor") Then
+                            retNFe_DistDFe.cUFAutor = ooo2.Text
+                        End If
+                        If ExistSelect(ooo.childNodes, ooo2, "dhRecbto") Then
+                            retNFe_DistDFe.dhRecbto = ooo2.Text
+                        End If
+                        If ExistSelect(ooo.childNodes, ooo2, "ultNSU") Then
+                            retNFe_DistDFe.ultNSU = ooo2.Text
+                        End If
+                    End If
+                End If
+            End If
+        Else
+            MsgBox xmldom_resp.parseError.srcText, , "parseError - NfeDistDFe"
+        End If
+        NfeDistDFe = retNFe_DistDFe.cStat = 138 Or retNFe_DistDFe.cStat = 137
+    Else
+        MsgBox xmlnf.parseError.srcText, , "parseError"
+        SetFileBytes App.Path & "\error_1.txt", txt_xml
+    End If
+    Set xmldoc = Nothing
+    On Error GoTo 0
+    Exit Function
+End Function
 

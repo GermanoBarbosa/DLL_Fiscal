@@ -15,6 +15,7 @@ ActiveX OCX (DLL) para emissão e gerenciamento de NF-e/NFC-e 4.00 em VB6.
 - **Assinatura digital XML** com certificado A1/A3 via CAPICOM
 - **Validação** automática por XSD antes do envio
 - **Consulta Situação NF-e** (consSitNFe) completa pela chave de acesso
+- **Distribuição de DF-e** (nfeDistDFe) — consulta e download de documentos fiscais pela SEFAZ nacional
 
 ## Dependências
 
@@ -41,6 +42,24 @@ Execute `instala.bat` como administrador para instalar as dependências.
 1. Abra `com_teste.vbg` (VB Group) no VB6
 2. Compile a DLL `Ax4096CtrlsFiscal.vbp` (ActiveX DLL → `build\AxFiscal-048.dll`)
 3. O projeto de teste `teste\Project1.vbp` já referência a OCX
+
+### 0. Distribuição de DF-e (nfeDistDFe)
+
+```vb
+Dim xml_send As String, xml_resp As String
+
+' Consulta por NSU
+If nfe.NfeDistDFe("11222333000181", "000000000000001", "", xml_send, xml_resp) Then
+    ' retNFe_DistDFe contém: cStat, xMotivo, cUFAutor, dhRecbto, ultNSU
+    ' Os docZip estão no XML de resposta (base64 gzipados)
+    MsgBox nfe.retNFe_DistDFe.cStat & " - " & nfe.retNFe_DistDFe.xMotivo
+End If
+
+' Consulta por chave de NF-e
+If nfe.NfeDistDFe("11222333000181", "", "43120922591766000167550010000000081832293328", xml_send, xml_resp) Then
+    MsgBox nfe.retNFe_DistDFe.cStat & " - " & nfe.retNFe_DistDFe.xMotivo
+End If
+```
 
 ### 0. Consultar Situação da NF-e (consSitNFe)
 
@@ -226,6 +245,7 @@ _files\
   hNFe4_EnviaLote2.cls     → Retorno de envio
   hNFe4_CartaCorrecao.cls  → Retorno de CC-e
   hNFe4_ConsSitNFe.cls     → Retorno de consulta situação
+  hNFe4_DistDFe.cls        → Retorno de distribuição de DF-e
   hNFe4_Inutilizacao.cls   → Retorno de inutilização
   hNFe_Signature.cls       → Assinatura digital XML
   hSHA1.cls                → Cálculo SHA-1
@@ -241,7 +261,7 @@ dependencias\              → Instaladores CAPICOM, MSXML5, SOAP SDK
 | Funcionalidade | Descrição | Prioridade |
 |---|---|---|
 | **consReciNFe** | Consulta de recibo do lote (necessário para envio assíncrono) | Alta |
-| **nfeDistDFe** | Distribuição de DF-e (consulta e download de NF-e autorizadas) | Alta |
+| ~~**nfeDistDFe**~~ | ~~Distribuição de DF-e (consulta e download)~~ | ~~Alta~~ |
 | **downloadNFe** | Download do XML da NF-e | Alta |
 
 ### Cancelamento e Eventos
