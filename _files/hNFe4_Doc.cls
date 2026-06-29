@@ -35,6 +35,9 @@ Dim m_Itens() As hNFe4_Doc_det, m_cItens As Long
 Dim m_Reboques() As hNFe4_Doc_veicTransp, m_cReboques As Long
 Dim m_Volumes() As hNFe4_Doc_vol, m_cVolumes As Long
 Dim m_Pagamentos() As hNFe4_Doc_detPag, m_cPagamentos As Long
+Dim m_Dup() As hNFe4_Doc_cobr_dup, m_cDup As Long
+
+Public CobrFat As New hNFe4_Doc_cobr_fat
 
 Public Property Get ItemCount() As Long
     ItemCount = m_cItens + 1
@@ -48,10 +51,28 @@ Public Property Get PagCount() As Long
     PagCount = m_cPagamentos + 1
 End Property
 
-Public Property Get Pag(Index As Long) As hNFe4_Doc_detPag
-    Set Pag = m_Pagamentos(Index)
+Public Property Get pag(Index As Long) As hNFe4_Doc_detPag
+    Set pag = m_Pagamentos(Index)
 End Property
 
+Public Property Get DupCount() As Long
+    DupCount = m_cDup + 1
+End Property
+
+Public Property Get Dup(Index As Long) As hNFe4_Doc_cobr_dup
+    Set Dup = m_Dup(Index)
+End Property
+
+Sub Clear_dup()
+    m_cDup = -1
+    Erase m_Dup
+End Sub
+
+Sub Add_dup(m_Item As hNFe4_Doc_cobr_dup)
+    m_cDup = m_cDup + 1
+    ReDim Preserve m_Dup(m_cDup)
+    Set m_Dup(m_cDup) = m_Item
+End Sub
 
 Sub Clear_det()
     m_cItens = -1
@@ -971,14 +992,40 @@ Function GetNota(m_Chave_2 As String, m_NF_NUM_NOTA As Long) As String
     txt_xml.Append Trim("           </transp>")
 
     If m_ide.m_mod = "55" Then
-        'txt_xml.Append Trim("           <cobr>")
-        'txt_xml.Append Trim("               <dup>")
-        'txt_xml.Append Trim("                   <nDup>1  000008760</nDup>")
-        'txt_xml.Append Trim("                   <dVenc>2016-12-27</dVenc>")
-        'txt_xml.Append Trim("                   <vDup>686.10</vDup>")
-        'txt_xml.Append Trim("               </dup>")
-        'txt_xml.Append Trim("           </cobr>")
-        'MsgBox "ajustar"
+        If m_cDup >= 0 Or Len(CobrFat.nFat) > 0 Then
+            txt_xml.Append Trim("           <cobr>")
+            If Len(CobrFat.nFat) > 0 Then
+                txt_xml.Append Trim("               <fat>")
+                txt_xml.Append Trim("                   <nFat>" & CobrFat.nFat & "</nFat>")
+                If CobrFat.vOrig > 0 Then
+                    txt_xml.Append Trim("                   <vOrig>" & cFormatMoeda_NF_1(CobrFat.vOrig) & "</vOrig>")
+                End If
+                If CobrFat.vDesc > 0 Then
+                    txt_xml.Append Trim("                   <vDesc>" & cFormatMoeda_NF_1(CobrFat.vDesc) & "</vDesc>")
+                End If
+                If CobrFat.vLiq > 0 Then
+                    txt_xml.Append Trim("                   <vLiq>" & cFormatMoeda_NF_1(CobrFat.vLiq) & "</vLiq>")
+                End If
+                txt_xml.Append Trim("               </fat>")
+            End If
+            Dim cc_dup As Long
+            For cc_dup = 0 To m_cDup
+                With m_Dup(cc_dup)
+                    txt_xml.Append Trim("               <dup>")
+                    If Len(.nDup) > 0 Then
+                        txt_xml.Append Trim("                   <nDup>" & .nDup & "</nDup>")
+                    End If
+                    If Len(.dVenc) > 0 Then
+                        txt_xml.Append Trim("                   <dVenc>" & .dVenc & "</dVenc>")
+                    End If
+                    If .vDup > 0 Then
+                        txt_xml.Append Trim("                   <vDup>" & cFormatMoeda_NF_1(.vDup) & "</vDup>")
+                    End If
+                    txt_xml.Append Trim("               </dup>")
+                End With
+            Next
+            txt_xml.Append Trim("           </cobr>")
+        End If
     End If
     txt_xml.Append Trim("            <pag>")
     If m_cPagamentos = -1 Then
@@ -1012,8 +1059,8 @@ Function GetNota(m_Chave_2 As String, m_NF_NUM_NOTA As Long) As String
             If Len(.card.tpIntegra) > 0 Then
                 txt_xml.Append Trim("                <card>")
                 txt_xml.Append Trim("                    <tpIntegra>" & .card.tpIntegra & "</tpIntegra>")
-                If Len(.card.CNPJ) > 0 Then
-                    txt_xml.Append Trim("                    <CNPJ>" & .card.CNPJ & "</CNPJ>")
+                If Len(.card.cnpj) > 0 Then
+                    txt_xml.Append Trim("                    <CNPJ>" & .card.cnpj & "</CNPJ>")
                 End If
                 If Len(.card.tBand) > 0 Then
                     txt_xml.Append Trim("                    <tBand>" & .card.tBand & "</tBand>")
@@ -1249,6 +1296,7 @@ Private Sub Class_Initialize()
     m_cReboques = -1
     m_cVolumes = -1
     m_cPagamentos = -1
+    m_cDup = -1
     m_modFrete = "9"
 End Sub
 
