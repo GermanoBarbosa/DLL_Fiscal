@@ -1882,6 +1882,89 @@ NfeManifestDestinatario_Error:
     End If
 End Function
 
+Function NfeEPEC(mCertificadoSel, ByVal n_cOrgao As String, ByVal n_chNFe As String, _
+    ByVal m_CNPJ As String, ByVal verAplic As String, _
+    m_xml_send As String, m_xml_resp As String) As Boolean
+
+    Dim xmldoc As New WinHttpRequest
+    Dim txt As String
+    Dim xmlnf As New MSXML2.DOMDocument50
+    Dim xmldom_resp As New MSXML2.DOMDocument50
+    Dim txt_xml As String
+
+    txt_xml = ""
+    txt_xml = txt_xml & "<?xml version=""1.0"" encoding=""utf-8""?>"
+    txt_xml = txt_xml & "<soap12:Envelope xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:soap12=""http://www.w3.org/2003/05/soap-envelope"">"
+    txt_xml = txt_xml & "  <soap12:Body>"
+    txt_xml = txt_xml & "    <nfeDadosMsg xmlns=""http://www.portalfiscal.inf.br/nfe/wsdl/NFeRecepcaoEvento4"">"
+    txt_xml = txt_xml & get_msg_epec(mCertificadoSel, n_cOrgao, n_chNFe, m_CNPJ, verAplic)
+    txt_xml = txt_xml & "</nfeDadosMsg>"
+    txt_xml = txt_xml & "  </soap12:Body>"
+    txt_xml = txt_xml & "</soap12:Envelope>"
+
+    If xmlnf.LoadXml(txt_xml) Then
+        pURL_NFeRecepcaoEvento4_xsd = m_path & "envEvento_v1.00.xsd"
+        txt = ValidaSchema(xmlnf, "http://www.portalfiscal.inf.br/nfe", pURL_NFeRecepcaoEvento4_xsd, False)
+        If txt = "Validado" Then
+            Call xmldoc.Open("POST", pURL_NFeRecepcaoEvento4 & "?wsdl", False)
+            Call xmldoc.SetRequestHeader("content-type", "application/soap+xml")
+            xmldoc.SetClientCertificate (mcert)
+            xmldoc.Option(WinHttpRequestOption_SelectCertificate) = (mcert)
+            xmldoc.Send (xmlnf.xml & "")
+            m_xml_send = xmlnf.xml
+
+            If xmldom_resp.LoadXml(xmldoc.ResponseText) Then
+                m_xml_resp = xmldoc.ResponseText
+
+                Dim ooo As IXMLDOMNode
+                Dim ooo2 As IXMLDOMNode
+                If ExistSelect(xmldom_resp.documentElement.childNodes, ooo, "Body") Then
+                    If ExistSelect(ooo.childNodes, ooo, "nfeResultMsg") Then
+                        If ExistSelect(ooo.childNodes, ooo, "retEnvEvento") Then
+                            If ExistSelect(ooo.childNodes, ooo2, "cStat") Then
+                                retNfeStatusServico.cStat = ooo2.Text
+                            End If
+                            If ExistSelect(ooo.childNodes, ooo2, "tpAmb") Then
+                                retNfeStatusServico.tpAmb = ooo2.Text
+                            End If
+                            If ExistSelect(ooo.childNodes, ooo2, "xMotivo") Then
+                                retNfeStatusServico.xMotivo = ooo2.Text
+                            End If
+                        End If
+                    End If
+                End If
+            Else
+                GetLogger.LogError "parseError: " & xmldom_resp.parseError.srcText
+            End If
+            NfeEPEC = retNfeStatusServico.cStat = 107
+        Else
+            m_LastError = txt
+            GetLogger.LogDebug txt
+        End If
+    Else
+        GetLogger.LogError "parseError: " & xmlnf.parseError.srcText
+        SetFileBytes App.Path & "\error_1.txt", txt_xml
+        SetFileBytes App.Path & "\error_2.txt", xmlnf.Text
+    End If
+    GetLogger.LogInfo retNfeStatusServico.xMotivo
+    Set xmldoc = Nothing
+    On Error GoTo 0
+    Exit Function
+    Resume Next
+NfeEPEC_Error:
+    GetLogger.LogError "Err# " & Err.Number & ": " & Err.Description
+    If Err.Number = -2147012711 Then
+        GetLogger.LogError "Erro de certificado"
+    ElseIf Err.Number = -2147012852 Then
+        GetLogger.LogError "É necessário um certificado para concluir a autenticação do cliente"
+    ElseIf Err.Number = -2147012851 Then
+        GetLogger.LogError "A autoridade de certificação não é válida ou está incorreta"
+    Else
+        GetLogger.LogError "Error linha: " & Erl & "," & Err.Number & " (" & Err.Description & ") in procedure NfeEPEC"
+        GetLogger.LogError "Err# " & Err.Number
+    End If
+End Function
+
 Private Function get_msg_manifest(mCertificadoSel, ByVal n_cOrgao As String, ByVal n_chNFe As String, ByVal m_CNPJ As String, ByVal tpEvento As String, ByVal xJust As String) As String
 Dim m_txt As New hStringBuilder
 Dim descEvento As String
@@ -1951,6 +2034,95 @@ Dim descEvento As String
     xmlnf.LoadXml xml_ass
 
     get_msg_manifest = xml_ass
+End Function
+
+Private Function get_msg_epec(mCertificadoSel, ByVal n_cOrgao As String, _
+    ByVal n_chNFe As String, ByVal m_CNPJ As String, _
+    ByVal verAplic As String) As String
+
+    Dim m_txt As New hStringBuilder
+    m_txt.Clear
+    m_txt.Append Trim("      <envEvento xmlns=""http://www.portalfiscal.inf.br/nfe"" versao=""1.00"">")
+    m_txt.Append Trim("        <idLote>" & Format(Date + Time, "YYYYMMDDHHMMSS") & "</idLote>")
+
+    Dim m_ID As String
+    m_ID = "ID" & "110140" & n_chNFe & "01"
+
+    m_txt.Append Trim("        <evento versao=""1.00"">")
+    m_txt.Append Trim("          <infEvento Id=""" & m_ID & """>")
+    m_txt.Append Trim("            <cOrgao>" & n_cOrgao & "</cOrgao>")
+    m_txt.Append Trim("            <tpAmb>" & m_Ambiente & "</tpAmb>")
+    m_txt.Append Trim("            <CNPJ>" & m_CNPJ & "</CNPJ>")
+    m_txt.Append Trim("            <chNFe>" & n_chNFe & "</chNFe>")
+    m_txt.Append Trim("            <dhEvento>" & cFormatDate_NF_1(Date + Time) & "</dhEvento>")
+    m_txt.Append Trim("            <tpEvento>110140</tpEvento>")
+    m_txt.Append Trim("            <nSeqEvento>1</nSeqEvento>")
+    m_txt.Append Trim("            <verEvento>1.00</verEvento>")
+    m_txt.Append Trim("            <detEvento versao=""1.00"">")
+    m_txt.Append Trim("              <descEvento>EPEC</descEvento>")
+    m_txt.Append Trim("              <cOrgaoAutor>" & n_cOrgao & "</cOrgaoAutor>")
+    m_txt.Append Trim("              <tpAutor>1</tpAutor>")
+    m_txt.Append Trim("              <verAplic>" & verAplic & "</verAplic>")
+    m_txt.Append Trim("              <dhEmi>" & cFormatDate_NF_1(NFe.m_ide.m_dhEmi) & "</dhEmi>")
+    m_txt.Append Trim("              <tpNF>1</tpNF>")
+    m_txt.Append Trim("              <IE>" & NFe.m_emit.m_IE & "</IE>")
+    m_txt.Append Trim("              <dest>")
+    If Len(NFe.m_dest.m_CNPJ) > 0 Then
+        m_txt.Append Trim("                <CNPJ>" & NFe.m_dest.m_CNPJ & "</CNPJ>")
+    ElseIf Len(NFe.m_dest.m_CPF) > 0 Then
+        m_txt.Append Trim("                <CPF>" & NFe.m_dest.m_CPF & "</CPF>")
+    End If
+    If Len(NFe.m_dest.m_xNome) > 0 Then
+        m_txt.Append Trim("                <xNome>" & NFe.m_dest.m_xNome & "</xNome>")
+    End If
+    m_txt.Append Trim("              </dest>")
+    m_txt.Append Trim("              <vNF>" & Replace(Format$(NFe.m_total.m_vNF, "0.00"), ",", ".") & "</vNF>")
+    m_txt.Append Trim("              <vICMS>" & Replace(Format$(NFe.m_total.m_vICMS, "0.00"), ",", ".") & "</vICMS>")
+    m_txt.Append Trim("              <vST>" & Replace(Format$(NFe.m_total.m_vST, "0.00"), ",", ".") & "</vST>")
+    m_txt.Append Trim("              <vProd>" & Replace(Format$(NFe.m_total.m_vProd, "0.00"), ",", ".") & "</vProd>")
+    m_txt.Append Trim("              <vFrete>" & Replace(Format$(NFe.m_total.m_vFrete, "0.00"), ",", ".") & "</vFrete>")
+    m_txt.Append Trim("              <vSeg>" & Replace(Format$(NFe.m_total.m_vSeg, "0.00"), ",", ".") & "</vSeg>")
+    m_txt.Append Trim("              <vDesc>" & Replace(Format$(NFe.m_total.m_vDesc, "0.00"), ",", ".") & "</vDesc>")
+    m_txt.Append Trim("              <vII>" & Replace(Format$(NFe.m_total.m_vII, "0.00"), ",", ".") & "</vII>")
+    m_txt.Append Trim("              <vIPI>" & Replace(Format$(NFe.m_total.m_vIPI, "0.00"), ",", ".") & "</vIPI>")
+    m_txt.Append Trim("              <vPIS>" & Replace(Format$(NFe.m_total.m_vPIS, "0.00"), ",", ".") & "</vPIS>")
+    m_txt.Append Trim("              <vCOFINS>" & Replace(Format$(NFe.m_total.m_vCOFINS, "0.00"), ",", ".") & "</vCOFINS>")
+    m_txt.Append Trim("              <vOutro>" & Replace(Format$(NFe.m_total.m_vOutro, "0.00"), ",", ".") & "</vOutro>")
+    m_txt.Append Trim("            </detEvento>")
+    m_txt.Append Trim("          </infEvento>")
+
+    m_txt.Append Trim("       <Signature xmlns=""http://www.w3.org/2000/09/xmldsig#"">")
+    m_txt.Append Trim("           <SignedInfo xmlns=""http://www.w3.org/2000/09/xmldsig#"">")
+    m_txt.Append Trim("               <CanonicalizationMethod Algorithm=""http://www.w3.org/TR/2001/REC-xml-c14n-20010315""/>")
+    m_txt.Append Trim("               <SignatureMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#rsa-sha1""/>")
+    m_txt.Append Trim("               <Reference URI=""#" & m_ID & """>")
+    m_txt.Append Trim("                   <Transforms>")
+    m_txt.Append Trim("                       <Transform Algorithm=""http://www.w3.org/2000/09/xmldsig#enveloped-signature""/>")
+    m_txt.Append Trim("                       <Transform Algorithm=""http://www.w3.org/TR/2001/REC-xml-c14n-20010315""/>")
+    m_txt.Append Trim("                   </Transforms>")
+    m_txt.Append Trim("                   <DigestMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#sha1""/>")
+    m_txt.Append Trim("                   <DigestValue>yzGYhUx1/XYYzksWB+fPR3Qc50c=</DigestValue>")
+    m_txt.Append Trim("               </Reference>")
+    m_txt.Append Trim("           </SignedInfo>")
+    m_txt.Append Trim("           <SignatureValue></SignatureValue>")
+    m_txt.Append Trim("           <KeyInfo>")
+    m_txt.Append Trim("               <X509Data>")
+    m_txt.Append Trim("                   <X509Certificate></X509Certificate>")
+    m_txt.Append Trim("               </X509Data>")
+    m_txt.Append Trim("           </KeyInfo>")
+    m_txt.Append Trim("       </Signature>")
+    m_txt.Append Trim("        </evento>")
+    m_txt.Append "      </envEvento>"
+
+    Dim xmlnf As New MSXML2.DOMDocument50
+    Dim xml_ass As String
+    xmlnf.LoadXml m_txt.toString
+    Dim NFe_Signature As New hNFe_Signature
+
+    xml_ass = NFe_Signature.Assina(xmlnf.xml, mCertificadoSel)
+    xmlnf.LoadXml xml_ass
+
+    get_msg_epec = xml_ass
 End Function
 
 Function GerarProcNFe(ByVal xmlNFe As String, ByVal xmlProtNFe As String) As String

@@ -20,6 +20,7 @@ ActiveX OCX (DLL) para emissão e gerenciamento de NF-e/NFC-e 4.00 em VB6.
 - **Distribuição de DF-e** (nfeDistDFe) — consulta de documentos fiscais pela SEFAZ nacional
 - **Download de NF-e** (downloadNFe) — download do XML da NF-e pelo mesmo webservice nacional
 - **Grupo Combustível (comb)** — cProdANP, descANP, CIDE, encerrante para postos
+- **EPEC** (Evento Prévio de Emissão em Contingência, código 110140) — registro de contingência antes da autorização
 - **Consulta de Recibo de Lote** (consReciNFe) — consulta do resultado de envio assíncrono
 
 ## Dependências
@@ -354,7 +355,22 @@ nfe.NfeManifestacaoDestinatario serialCert, nfe.m_UF_Cod, chaveNF, cnpjEmitente,
 nfe.NfeManifestacaoDestinatario serialCert, nfe.m_UF_Cod, chaveNF, cnpjEmitente, "210240", justificativa, xml_send, xml_resp
 ```
 
-### 9. Sistema de Logging
+### 9. EPEC — Evento Prévio de Emissão em Contingência
+
+Registra a emissão de uma NF-e em contingência EPEC antes da autorização normal.
+
+```vb
+Dim xml_send As String, xml_resp As String
+
+' NFe.GetNota(...) deve ser chamado primeiro para gerar os totais no objeto NFe
+If nfe.NfeEPEC(serialCert, nfe.m_UF_Cod, nfe.NFe.m_Chave_NF, cnpjEmitente, "6.0", xml_send, xml_resp) Then
+    MsgBox "EPEC registrado. cStat: " & nfe.retNfeStatusServico.cStat & " - " & nfe.retNfeStatusServico.xMotivo
+Else
+    MsgBox "Falha EPEC: " & nfe.m_LastError
+End If
+```
+
+### 10. Sistema de Logging
 
 O projeto possui um sistema centralizado de logging baseado em listeners. Todos os `Debug.Print` e `MsgBox` nos módulos da DLL foram substituídos pelo logger.
 
@@ -470,7 +486,7 @@ dependencias\              → Instaladores CAPICOM, MSXML5, SOAP SDK
 |---|---|---|
 | ~~Cancelamento por substituição (evento 110112)~~ | ~~Substituir NF-e por outra com correções~~ | ~~Média~~ |
 | ~~Manifestação do destinatário~~ | ~~Confirmação, ciência, desconhecimento, não realizar~~ | ~~Média~~ |
-| EPEC | Evento Prévio de Emissão em Contingência | Média |
+| ~~EPEC~~ | ~~Evento Prévio de Emissão em Contingência~~ | ~~Média~~ |
 
 ### Melhorias na Geração de XML
 | Funcionalidade | Descrição | Prioridade |
