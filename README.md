@@ -15,7 +15,8 @@ ActiveX OCX (DLL) para emissão e gerenciamento de NF-e/NFC-e 4.00 em VB6.
 - **Assinatura digital XML** com certificado A1/A3 via CAPICOM
 - **Validação** automática por XSD antes do envio
 - **Consulta Situação NF-e** (consSitNFe) completa pela chave de acesso
-- **Distribuição de DF-e** (nfeDistDFe) — consulta e download de documentos fiscais pela SEFAZ nacional
+- **Distribuição de DF-e** (nfeDistDFe) — consulta de documentos fiscais pela SEFAZ nacional
+- **Download de NF-e** (downloadNFe) — download do XML da NF-e pelo mesmo webservice nacional
 
 ## Dependências
 
@@ -58,6 +59,19 @@ End If
 ' Consulta por chave de NF-e
 If nfe.NfeDistDFe("11222333000181", "", "43120922591766000167550010000000081832293328", xml_send, xml_resp) Then
     MsgBox nfe.retNFe_DistDFe.cStat & " - " & nfe.retNFe_DistDFe.xMotivo
+End If
+```
+
+### 0. Download de NF-e (downloadNFe)
+
+```vb
+Dim xml_send As String, xml_resp As String
+
+' Download pelo webservice nacional (chave da NF-e)
+If nfe.NfeDownloadNF("11222333000181", "35", "43120922591766000167550010000000081832293328", xml_send, xml_resp) Then
+    ' retNFe_DownloadNFe.docZip cont�m o XML da NF-e em base64 + gzip
+    ' retNFe_DownloadNFe.chNFe cont�m a chave de acesso
+    MsgBox nfe.retNFe_DownloadNFe.cStat & " - " & nfe.retNFe_DownloadNFe.xMotivo
 End If
 ```
 
@@ -246,6 +260,7 @@ _files\
   hNFe4_CartaCorrecao.cls  → Retorno de CC-e
   hNFe4_ConsSitNFe.cls     → Retorno de consulta situação
   hNFe4_DistDFe.cls        → Retorno de distribuição de DF-e
+  hNFe4_DownloadNFe.cls    → Retorno de download de NF-e
   hNFe4_Inutilizacao.cls   → Retorno de inutilização
   hNFe_Signature.cls       → Assinatura digital XML
   hSHA1.cls                → Cálculo SHA-1
@@ -262,7 +277,7 @@ dependencias\              → Instaladores CAPICOM, MSXML5, SOAP SDK
 |---|---|---|
 | **consReciNFe** | Consulta de recibo do lote (necessário para envio assíncrono) | Alta |
 | ~~**nfeDistDFe**~~ | ~~Distribuição de DF-e (consulta e download)~~ | ~~Alta~~ |
-| **downloadNFe** | Download do XML da NF-e | Alta |
+| ~~**downloadNFe**~~ | ~~Download do XML da NF-e~~ | ~~Alta~~ |
 
 ### Cancelamento e Eventos
 | Funcionalidade | Descrição | Prioridade |
