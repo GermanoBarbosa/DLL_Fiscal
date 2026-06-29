@@ -271,6 +271,7 @@ _files\
   hNFe4_Doc_infAdic.cls    → Informações adicionais
   hNFe4_StatusServico.cls  → Retorno de status
   hNFe4_EnviaLote2.cls     → Retorno de envio
+  hNFe4_EnviaLote2_protNFe.cls → Protocolo de autorização
   hNFe4_CartaCorrecao.cls  → Retorno de CC-e
   hNFe4_ConsReciNFe.cls    → Retorno de consulta de recibo
   hNFe4_ConsSitNFe.cls     → Retorno de consulta situação
