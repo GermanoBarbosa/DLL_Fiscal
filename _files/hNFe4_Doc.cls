@@ -1126,7 +1126,7 @@ Dim Pos As Long
                     'Debug.Print Left(txt_xml, pos + 8)
                     'Debug.Print mid(txt_xml, pos + 9)
                     'Debug.Print txt
-                    'Debug.Print txt_xml
+                    'GetLogger.LogDebug txt_xml
                     'Debug.Print txt_out
                     'ooon.Load txt
                     'MsgBox ooon.documentElement.childNodes(1).text
@@ -1192,7 +1192,7 @@ Dim m_HashQRCode  As String
     
     txt_xml = txt_xml & "]]>"
     txt_xml = txt_xml & "</qrCode>"
-    Debug.Print txt_xml
+    GetLogger.LogDebug txt_xml
     
 '    If False Then
 '

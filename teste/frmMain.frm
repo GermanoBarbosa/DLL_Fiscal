@@ -5,18 +5,46 @@ Begin VB.Form frmMain
    ClientLeft      =   60
    ClientTop       =   345
    ClientWidth     =   10800
+   BeginProperty Font 
+      Name            =   "Verdana"
+      Size            =   8.25
+      Charset         =   0
+      Weight          =   400
+      Underline       =   0   'False
+      Italic          =   0   'False
+      Strikethrough   =   0   'False
+   EndProperty
    LinkTopic       =   "Form1"
    ScaleHeight     =   12480
    ScaleWidth      =   10800
    StartUpPosition =   2  'CenterScreen
    Begin VB.Frame fraResultado 
       Caption         =   "Resultado"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   4815
       Left            =   0
       TabIndex        =   54
       Top             =   7400
       Width           =   10750
       Begin VB.TextBox txtResult 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   4455
          Left            =   80
          MultiLine       =   -1  'True
@@ -28,6 +56,15 @@ Begin VB.Form frmMain
    End
    Begin VB.Frame fraAcoes 
       Caption         =   "Acoes"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   550
       Left            =   0
       TabIndex        =   44
@@ -35,6 +72,15 @@ Begin VB.Form frmMain
       Width           =   10750
       Begin VB.CommandButton cmdLimparResult 
          Caption         =   "Limpar"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   315
          Left            =   9600
          TabIndex        =   53
@@ -43,6 +89,15 @@ Begin VB.Form frmMain
       End
       Begin VB.CommandButton cmdConsultar 
          Caption         =   "Consultar NF-e"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   315
          Left            =   8280
          TabIndex        =   52
@@ -51,6 +106,15 @@ Begin VB.Form frmMain
       End
       Begin VB.CommandButton cmdInutilizar 
          Caption         =   "Inutilizar"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   315
          Left            =   7120
          TabIndex        =   51
@@ -59,6 +123,15 @@ Begin VB.Form frmMain
       End
       Begin VB.CommandButton cmdCCe 
          Caption         =   "CC-e"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   315
          Left            =   6400
          TabIndex        =   50
@@ -67,6 +140,15 @@ Begin VB.Form frmMain
       End
       Begin VB.CommandButton cmdCancelar 
          Caption         =   "Cancelar"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   315
          Left            =   5480
          TabIndex        =   49
@@ -75,6 +157,15 @@ Begin VB.Form frmMain
       End
       Begin VB.CommandButton cmdEnviar 
          Caption         =   "Enviar Lote"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   315
          Left            =   4280
          TabIndex        =   48
@@ -83,6 +174,15 @@ Begin VB.Form frmMain
       End
       Begin VB.CommandButton cmdGerarXML 
          Caption         =   "Gerar XML"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   315
          Left            =   3120
          TabIndex        =   47
@@ -91,6 +191,15 @@ Begin VB.Form frmMain
       End
       Begin VB.CommandButton cmdStatus 
          Caption         =   "Status Servico"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   315
          Left            =   1560
          TabIndex        =   46
@@ -99,6 +208,15 @@ Begin VB.Form frmMain
       End
       Begin VB.CommandButton cmdPreencher 
          Caption         =   "Dados Teste"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   315
          Left            =   240
          TabIndex        =   45
@@ -108,12 +226,31 @@ Begin VB.Form frmMain
    End
    Begin VB.Frame fraInfAdic 
       Caption         =   "Informacoes Adicionais"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   1100
       Left            =   5400
       TabIndex        =   40
       Top             =   5650
       Width           =   5350
       Begin VB.TextBox txtInfAdFisco 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   675
          Left            =   800
          MultiLine       =   -1  'True
@@ -122,6 +259,15 @@ Begin VB.Form frmMain
          Width           =   4470
       End
       Begin VB.TextBox txtInfCpl 
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   675
          Left            =   800
          MultiLine       =   -1  'True
@@ -131,6 +277,15 @@ Begin VB.Form frmMain
       End
       Begin VB.Label lblInfAdFisco 
          Caption         =   "Fisco:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
          Left            =   120
          TabIndex        =   11
@@ -139,6 +294,15 @@ Begin VB.Form frmMain
       End
       Begin VB.Label lblInfCpl 
          Caption         =   "Cpl:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
          Left            =   120
          TabIndex        =   12
@@ -148,12 +312,31 @@ Begin VB.Form frmMain
    End
    Begin VB.Frame fraFrete 
       Caption         =   "Frete / Transportadora"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   1100
       Left            =   0
       TabIndex        =   34
       Top             =   5650
       Width           =   5350
       Begin VB.TextBox txtFreteNome 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   285
          Left            =   3200
          TabIndex        =   39
@@ -161,6 +344,16 @@ Begin VB.Form frmMain
          Width           =   2050
       End
       Begin VB.TextBox txtFreteCNPJ 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   285
          Left            =   800
          TabIndex        =   38
@@ -168,6 +361,16 @@ Begin VB.Form frmMain
          Width           =   2200
       End
       Begin VB.ComboBox cboModFrete 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   315
          Left            =   800
          Style           =   2  'Dropdown List
@@ -177,6 +380,15 @@ Begin VB.Form frmMain
       End
       Begin VB.Label lblFreteNome 
          Caption         =   "xNome:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
          Left            =   2600
          TabIndex        =   36
@@ -185,6 +397,15 @@ Begin VB.Form frmMain
       End
       Begin VB.Label lblFreteCNPJ 
          Caption         =   "CNPJ:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
          Left            =   120
          TabIndex        =   35
@@ -194,13 +415,32 @@ Begin VB.Form frmMain
    End
    Begin VB.Frame fraProdutos 
       Caption         =   "Produtos"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   2200
       Left            =   0
       TabIndex        =   18
       Top             =   3400
       Width           =   10750
       Begin VB.ListBox lstProdutos 
-         Height          =   840
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   810
          Left            =   80
          TabIndex        =   29
          Top             =   1200
@@ -208,6 +448,15 @@ Begin VB.Form frmMain
       End
       Begin VB.CommandButton cmdLimparProd 
          Caption         =   "Limpar"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   315
          Left            =   2000
          TabIndex        =   28
@@ -216,6 +465,15 @@ Begin VB.Form frmMain
       End
       Begin VB.CommandButton cmdRemoveProd 
          Caption         =   "Remover"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   315
          Left            =   1080
          TabIndex        =   27
@@ -224,6 +482,15 @@ Begin VB.Form frmMain
       End
       Begin VB.CommandButton cmdAddProd 
          Caption         =   "Adicionar"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   315
          Left            =   120
          TabIndex        =   26
@@ -231,6 +498,16 @@ Begin VB.Form frmMain
          Width           =   900
       End
       Begin VB.TextBox txtProdVProd 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   285
          Left            =   9650
          TabIndex        =   25
@@ -238,41 +515,100 @@ Begin VB.Form frmMain
          Width           =   1000
       End
       Begin VB.TextBox txtProdVUnCom 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   285
-         Left            =   7900
+         Left            =   8085
          TabIndex        =   24
          Top             =   480
-         Width           =   1000
+         Width           =   945
       End
       Begin VB.TextBox txtProdQCom 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   285
-         Left            =   6650
+         Left            =   6585
          TabIndex        =   23
          Top             =   480
-         Width           =   900
+         Width           =   780
       End
       Begin VB.TextBox txtProdCFOP 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   285
          Left            =   5100
          TabIndex        =   22
          Top             =   480
-         Width           =   1000
+         Width           =   885
       End
       Begin VB.TextBox txtProdNCM 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   285
-         Left            =   3500
+         Left            =   3255
          TabIndex        =   21
          Top             =   480
          Width           =   1200
       End
       Begin VB.TextBox txtProdXProd 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   285
-         Left            =   1200
+         Left            =   600
          TabIndex        =   20
          Top             =   480
          Width           =   2100
       End
       Begin VB.TextBox txtProdCProd 
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   285
          Left            =   1200
          TabIndex        =   19
@@ -281,30 +617,66 @@ Begin VB.Form frmMain
       End
       Begin VB.Label lblProdVProd 
          Caption         =   "vProd:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
-         Left            =   9000
+         Left            =   9120
          TabIndex        =   33
          Top             =   480
          Width           =   600
       End
       Begin VB.Label lblProdVUnCom 
          Caption         =   "vUnCom:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
-         Left            =   7200
+         Left            =   7380
          TabIndex        =   32
          Top             =   480
-         Width           =   700
+         Width           =   705
       End
       Begin VB.Label lblProdQCom 
          Caption         =   "qCom:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
-         Left            =   6050
+         Left            =   6045
          TabIndex        =   31
          Top             =   480
          Width           =   600
       End
       Begin VB.Label lblProdCFOP 
          Caption         =   "CFOP:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
          Left            =   4500
          TabIndex        =   30
@@ -313,22 +685,49 @@ Begin VB.Form frmMain
       End
       Begin VB.Label lblProdNCM 
          Caption         =   "NCM:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
-         Left            =   2900
+         Left            =   2775
          TabIndex        =   9
          Top             =   480
          Width           =   600
       End
       Begin VB.Label lblProdXProd 
          Caption         =   "xProd:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
-         Left            =   600
+         Left            =   60
          TabIndex        =   8
          Top             =   480
          Width           =   600
       End
       Begin VB.Label lblProdCProd 
          Caption         =   "cProd:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
          Left            =   600
          TabIndex        =   7
@@ -337,21 +736,49 @@ Begin VB.Form frmMain
       End
       Begin VB.Label lblProd 
          Caption         =   "Adicione produtos usando os campos abaixo e o botao Adicionar."
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
-         Left            =   80
+         Left            =   75
          TabIndex        =   1
          Top             =   240
-         Width           =   10800
+         Width           =   10440
       End
    End
    Begin VB.Frame fraDestinatario 
       Caption         =   "Destinatario"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   1900
       Left            =   5400
       TabIndex        =   10
       Top             =   1460
       Width           =   5350
       Begin VB.TextBox txtDestCMun 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   285
          Left            =   4200
          TabIndex        =   13
@@ -359,6 +786,16 @@ Begin VB.Form frmMain
          Width           =   1000
       End
       Begin VB.TextBox txtDestBairro 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   285
          Left            =   2000
          TabIndex        =   14
@@ -366,13 +803,33 @@ Begin VB.Form frmMain
          Width           =   1400
       End
       Begin VB.TextBox txtDestNro 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   285
-         Left            =   3400
+         Left            =   4245
          TabIndex        =   15
          Top             =   960
          Width           =   500
       End
       Begin VB.TextBox txtDestXLgr 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   285
          Left            =   800
          TabIndex        =   16
@@ -380,6 +837,15 @@ Begin VB.Form frmMain
          Width           =   2400
       End
       Begin VB.ComboBox cboIndIEDest 
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   315
          Left            =   2800
          Style           =   2  'Dropdown List
@@ -388,6 +854,16 @@ Begin VB.Form frmMain
          Width           =   2400
       End
       Begin VB.TextBox txtDestIE 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   285
          Left            =   800
          TabIndex        =   41
@@ -395,6 +871,16 @@ Begin VB.Form frmMain
          Width           =   1200
       End
       Begin VB.TextBox txtDestNome 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   285
          Left            =   3600
          TabIndex        =   56
@@ -402,6 +888,16 @@ Begin VB.Form frmMain
          Width           =   1600
       End
       Begin VB.TextBox txtDestCNPJ 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   285
          Left            =   800
          TabIndex        =   92
@@ -410,6 +906,15 @@ Begin VB.Form frmMain
       End
       Begin VB.Label lblDestCMun 
          Caption         =   "cMun:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
          Left            =   3600
          TabIndex        =   57
@@ -418,6 +923,15 @@ Begin VB.Form frmMain
       End
       Begin VB.Label lblDestBairro 
          Caption         =   "xBairro:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
          Left            =   1200
          TabIndex        =   58
@@ -426,14 +940,32 @@ Begin VB.Form frmMain
       End
       Begin VB.Label lblDestNro 
          Caption         =   "nro:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
-         Left            =   3000
+         Left            =   3840
          TabIndex        =   59
          Top             =   960
-         Width           =   400
+         Width           =   405
       End
       Begin VB.Label lblDestXLgr 
          Caption         =   "xLgr:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
          Left            =   120
          TabIndex        =   60
@@ -442,6 +974,15 @@ Begin VB.Form frmMain
       End
       Begin VB.Label lblIndIEDest 
          Caption         =   "indIEDest:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
          Left            =   2200
          TabIndex        =   61
@@ -450,6 +991,15 @@ Begin VB.Form frmMain
       End
       Begin VB.Label lblDestIE 
          Caption         =   "IE:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
          Left            =   120
          TabIndex        =   62
@@ -458,6 +1008,15 @@ Begin VB.Form frmMain
       End
       Begin VB.Label lblDestNome 
          Caption         =   "xNome:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
          Left            =   3000
          TabIndex        =   93
@@ -466,6 +1025,15 @@ Begin VB.Form frmMain
       End
       Begin VB.Label lblDestCNPJ 
          Caption         =   "CNPJ:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
          Left            =   120
          TabIndex        =   91
@@ -475,12 +1043,30 @@ Begin VB.Form frmMain
    End
    Begin VB.Frame fraEmitente 
       Caption         =   "Emitente"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   1900
       Left            =   0
       TabIndex        =   2
       Top             =   1460
       Width           =   5350
       Begin VB.ComboBox cboEmitCRT 
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   315
          Left            =   800
          Style           =   2  'Dropdown List
@@ -489,6 +1075,16 @@ Begin VB.Form frmMain
          Width           =   1400
       End
       Begin VB.TextBox txtEmitCMun 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   285
          Left            =   4200
          TabIndex        =   89
@@ -496,6 +1092,16 @@ Begin VB.Form frmMain
          Width           =   1000
       End
       Begin VB.TextBox txtEmitBairro 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   285
          Left            =   2000
          TabIndex        =   87
@@ -503,20 +1109,50 @@ Begin VB.Form frmMain
          Width           =   1400
       End
       Begin VB.TextBox txtEmitNro 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   285
-         Left            =   3400
+         Left            =   4725
          TabIndex        =   85
          Top             =   960
          Width           =   500
       End
       Begin VB.TextBox txtEmitXLgr 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   285
-         Left            =   3200
+         Left            =   2655
          TabIndex        =   83
          Top             =   960
-         Width           =   2000
+         Width           =   1695
       End
       Begin VB.TextBox txtEmitIE 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   285
          Left            =   3600
          TabIndex        =   81
@@ -524,6 +1160,15 @@ Begin VB.Form frmMain
          Width           =   1600
       End
       Begin VB.TextBox txtEmitFant 
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   285
          Left            =   3600
          TabIndex        =   79
@@ -531,6 +1176,16 @@ Begin VB.Form frmMain
          Width           =   1600
       End
       Begin VB.TextBox txtEmitNome 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   285
          Left            =   800
          TabIndex        =   6
@@ -538,6 +1193,16 @@ Begin VB.Form frmMain
          Width           =   2000
       End
       Begin VB.TextBox txtEmitCNPJ 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   285
          Left            =   800
          TabIndex        =   3
@@ -546,6 +1211,15 @@ Begin VB.Form frmMain
       End
       Begin VB.Label lblEmitCMun 
          Caption         =   "cMun:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
          Left            =   3600
          TabIndex        =   88
@@ -554,6 +1228,15 @@ Begin VB.Form frmMain
       End
       Begin VB.Label lblEmitBairro 
          Caption         =   "xBairro:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
          Left            =   1200
          TabIndex        =   86
@@ -562,22 +1245,49 @@ Begin VB.Form frmMain
       End
       Begin VB.Label lblEmitNro 
          Caption         =   "nro:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
-         Left            =   3050
+         Left            =   4365
          TabIndex        =   84
          Top             =   960
-         Width           =   400
+         Width           =   405
       End
       Begin VB.Label lblEmitXLgr 
          Caption         =   "xLgr:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
-         Left            =   2800
+         Left            =   2265
          TabIndex        =   82
          Top             =   960
-         Width           =   400
+         Width           =   405
       End
       Begin VB.Label lblEmitIE 
          Caption         =   "IE:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
          Left            =   3200
          TabIndex        =   80
@@ -586,6 +1296,15 @@ Begin VB.Form frmMain
       End
       Begin VB.Label lblEmitFant 
          Caption         =   "xFant:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
          Left            =   3000
          TabIndex        =   78
@@ -594,6 +1313,15 @@ Begin VB.Form frmMain
       End
       Begin VB.Label lblEmitCRT 
          Caption         =   "CRT:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
          Left            =   120
          TabIndex        =   77
@@ -602,6 +1330,15 @@ Begin VB.Form frmMain
       End
       Begin VB.Label lblEmitNome 
          Caption         =   "xNome:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
          Left            =   120
          TabIndex        =   5
@@ -610,6 +1347,15 @@ Begin VB.Form frmMain
       End
       Begin VB.Label lblEmitCNPJ 
          Caption         =   "CNPJ:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
          Left            =   120
          TabIndex        =   4
@@ -619,12 +1365,31 @@ Begin VB.Form frmMain
    End
    Begin VB.Frame fraConfig 
       Caption         =   "Configuracao"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   1400
       Left            =   0
       TabIndex        =   0
       Top             =   0
       Width           =   10750
       Begin VB.TextBox txtNumNF 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   285
          Left            =   8775
          TabIndex        =   76
@@ -632,6 +1397,16 @@ Begin VB.Form frmMain
          Width           =   900
       End
       Begin VB.TextBox txtSerie 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   285
          Left            =   7320
          TabIndex        =   74
@@ -639,6 +1414,16 @@ Begin VB.Form frmMain
          Width           =   500
       End
       Begin VB.TextBox txtSchema 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   285
          Left            =   900
          TabIndex        =   73
@@ -647,6 +1432,15 @@ Begin VB.Form frmMain
       End
       Begin VB.CommandButton cmdSelCert 
          Caption         =   "Certificado..."
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   315
          Left            =   6000
          TabIndex        =   72
@@ -654,6 +1448,16 @@ Begin VB.Form frmMain
          Width           =   1400
       End
       Begin VB.ComboBox cboModelo 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   315
          Left            =   5505
          Style           =   2  'Dropdown List
@@ -662,6 +1466,16 @@ Begin VB.Form frmMain
          Width           =   700
       End
       Begin VB.ComboBox cboUF 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   315
          Left            =   3435
          Style           =   2  'Dropdown List
@@ -670,6 +1484,16 @@ Begin VB.Form frmMain
          Width           =   800
       End
       Begin VB.ComboBox cboAmbiente 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   315
          Left            =   900
          Style           =   2  'Dropdown List
@@ -678,6 +1502,16 @@ Begin VB.Form frmMain
          Width           =   1500
       End
       Begin VB.TextBox txtCert 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   285
          Left            =   900
          Locked          =   -1  'True
@@ -687,6 +1521,15 @@ Begin VB.Form frmMain
       End
       Begin VB.Label lblNumNF 
          Caption         =   "nNF:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
          Left            =   8220
          TabIndex        =   75
@@ -695,6 +1538,15 @@ Begin VB.Form frmMain
       End
       Begin VB.Label lblSerie 
          Caption         =   "Serie:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
          Left            =   6765
          TabIndex        =   67
@@ -703,6 +1555,15 @@ Begin VB.Form frmMain
       End
       Begin VB.Label lblModelo 
          Caption         =   "Modelo:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
          Left            =   4680
          TabIndex        =   66
@@ -711,6 +1572,15 @@ Begin VB.Form frmMain
       End
       Begin VB.Label lblUF 
          Caption         =   "UF:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
          Left            =   2790
          TabIndex        =   65
@@ -719,6 +1589,15 @@ Begin VB.Form frmMain
       End
       Begin VB.Label lblAmbiente 
          Caption         =   "Ambiente:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
          Left            =   120
          TabIndex        =   64
@@ -727,6 +1606,15 @@ Begin VB.Form frmMain
       End
       Begin VB.Label lblCert 
          Caption         =   "Certificado:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
          Left            =   120
          TabIndex        =   63
@@ -741,6 +1629,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
+Implements ILogListener
 
 Private ccEx As hNFe4
 Private mCertSerial As String
@@ -761,6 +1650,7 @@ Private mProdCount As Long
 
 Private Sub Form_Load()
     Set ccEx = New hNFe4
+    GetLogger.AddListener Me
     
     cboAmbiente.AddItem "1 - Producao"
     cboAmbiente.AddItem "2 - Homologacao"
@@ -803,6 +1693,7 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
+    GetLogger.RemoveListener Me
     Set ccEx = Nothing
 End Sub
 
@@ -1182,6 +2073,18 @@ Private Function ConfigOK() As Boolean
     ConfigOK = True
 End Function
 
-Private Sub Log(msg As String)
-    txtResult = txtResult & vbCrLf & "[" & Now & "] " & msg
+Private Sub Log(Msg As String)
+    txtResult = txtResult & vbCrLf & "[" & Now & "] " & Msg
+End Sub
+
+Private Sub ILogListener_LogReceived(ByVal Level As Long, ByVal Msg As String)
+    Dim prefix As String
+    Select Case Level
+        Case 0: prefix = "[DEBUG]"
+        Case 1: prefix = "[INFO]"
+        Case 2: prefix = "[WARN]"
+        Case 3: prefix = "[ERROR]"
+        Case 4: prefix = "[FATAL]"
+    End Select
+    txtResult = txtResult & vbCrLf & prefix & " " & Msg
 End Sub

@@ -76,7 +76,7 @@ Dim m_pos As Long
         StoreDst.Remove StoreDst.Certificates(i)
     Next
     If StoreDst.Certificates.Count > 0 Then
-        MsgBox "erro"
+        GetLogger.LogError "erro"
     End If
     
     'Set StoreDst = New Store
@@ -120,10 +120,10 @@ Dim m_pos As Long
                 End If
             
             End If
-            'Debug.Print Certs.Item(i).PrivateKey
+            'GetLogger.LogDebug Certs.Item(i).PrivateKey
             'Debug.Print Certs.Item(i).PublicKey.
-            'Debug.Print Certs.Item(i).SubjectName
-            'Debug.Print Certs.Item(i).HasPrivateKey
+            'GetLogger.LogDebug Certs.Item(i).SubjectName
+            'GetLogger.LogDebug Certs.Item(i).HasPrivateKey
 
         Next
         
@@ -476,7 +476,7 @@ Dim m_Caminho As String
     pURL_NFeConsultaProtocolo_xsd = m_Caminho & "consSitNFe_v4.00.xsd"
     
     If Not FileExists(pURL_NFeAutorizacao_xsd) Then
-        MsgBox "Schema 4.00 NÃO encontrado em: " & m_Caminho
+        GetLogger.LogError "Schema 4.00 NÃO encontrado em: " & m_Caminho
     End If
 
 End Sub
@@ -506,14 +506,14 @@ Function NfeStatusServico() As Boolean
 340       txt_xml = txt_xml & "</soap12:Body>"
 350       txt_xml = txt_xml & "</soap12:Envelope>"
 '360       End If
-         ' Debug.Print txt_xml
+         ' GetLogger.LogDebug txt_xml
 370       If xmlnf.LoadXml(txt_xml) Then
 380           txt = ValidaSchema(xmlnf, "http://www.portalfiscal.inf.br/nfe", pURL_NfeStatusServico_xsd, False)
 390           If txt = "Validado" Then
                   'Call xmldoc.Open("POST", "https://www.example.com/", False)
                   'xmldoc.Send ("TESTE")
                   'If LenB(xmldoc.ResponseText) Then
-                  '  Debug.Print xmldoc.ResponseText
+                  '  GetLogger.LogDebug xmldoc.ResponseText
                   'End If
 400               Call xmldoc.Open("POST", pURL_NfeStatusServico & "?wsdl", False)
 410               'Call xmldoc.SetRequestHeader("content-type", "text/xml")
@@ -544,7 +544,7 @@ Function NfeStatusServico() As Boolean
 460               If xmldom_resp.LoadXml(xmldoc.ResponseText) Then
                       'Debug.Print "---------------------"
                       'Debug.Print pURL_NfeStatusServico
-                      'Debug.Print xmldom_resp.xml
+                      'GetLogger.LogDebug xmldom_resp.xml
                       'Debug.Print "---------------------"
 
                       Dim ooo As IXMLDOMNode
@@ -565,7 +565,7 @@ Function NfeStatusServico() As Boolean
 600                       End If
 610                   End If
                   Else
-                    MsgBox xmldom_resp.parseError.srcText, , "parseError - 2"
+                    GetLogger.LogError "parseError: " & xmldom_resp.parseError.srcText
                     
 620               End If
 630               NfeStatusServico = retNfeStatusServico.cStat = 107
@@ -573,7 +573,7 @@ Function NfeStatusServico() As Boolean
 650               m_LastError = txt
 660           End If
 670       Else
-680           MsgBox xmlnf.parseError.srcText, , "parseError"
+680           GetLogger.LogError "parseError: " & xmlnf.parseError.srcText
 690           SetFileBytes App.Path & "\error_1.txt", txt_xml
 700           SetFileBytes App.Path & "\error_2.txt", xmlnf.Text
 710       End If
@@ -582,17 +582,17 @@ Function NfeStatusServico() As Boolean
 740       Exit Function
 750       Resume Next
 NfeStatusServico_Error:
-760       Debug.Print Err.Number, Err.Description
+760       GetLogger.LogError "Err# " & Err.Number & ": " & Err.Description
 770       If Err.Number = -2147012711 Then
-780           MsgBox "Erro de certificado"
+780           GetLogger.LogError "Erro de certificado"
 790       ElseIf Err.Number = -2147012852 Then
-800           MsgBox "É necessário um certificado para concluir a autenticação do cliente"
+800           GetLogger.LogError "É necessário um certificado para concluir a autenticação do cliente"
 810       ElseIf Err.Number = -2147012851 Then
-820           MsgBox "A autoridade de certificação não é válida ou está incorreta"
+820           GetLogger.LogError "A autoridade de certificação não é válida ou está incorreta"
               'https://www.projetoacbr.com.br/forum/topic/27273-a-autoridade-de-certifica%C3%A7%C3%A3o-n%C3%A3o-%C3%A9-valida-ou-esta-incorreta/
 830       Else
-840           MsgBox "Error linha: " & Erl & "," & Err.Number & " (" & Err.Description & ") in procedure NfeStatusServico of Módulo mMainTeste"
-850           Debug.Print Err.Number,
+840           GetLogger.LogError "Error linha: " & Erl & "," & Err.Number & " (" & Err.Description & ") in procedure NfeStatusServico"
+850           GetLogger.LogError "Err# " & Err.Number
 860       End If
 End Function
 
@@ -639,7 +639,7 @@ Function EnviaLote2(ByVal xml As String, xml_aut As String, ByVal mCertificadoSe
           'txt = ValidaSchema(xmlnf, "http://www.portalfiscal.inf.br/nfe", App.Path & "\NFe\Schema-4.00\leiauteNFe_v4.00.xsd", False)
           'If txt = "Validado" Then
           'Else
-          '    Debug.Print txt
+          '    GetLogger.LogDebug txt
           'End If
           
 230       If xmlnf.LoadXml(txt_xml) Then
@@ -660,7 +660,7 @@ Function EnviaLote2(ByVal xml As String, xml_aut As String, ByVal mCertificadoSe
           End If
   
                   
-310               Debug.Print pURL_NFeAutorizacao_nfce
+310               GetLogger.LogDebug pURL_NFeAutorizacao_nfce
                   
                   
 320               Call xmldoc.SetRequestHeader("content-type", "application/soap+xml; charset=utf-8")
@@ -674,8 +674,8 @@ Function EnviaLote2(ByVal xml As String, xml_aut As String, ByVal mCertificadoSe
 370               xmldoc.Send (xmlnf.xml)
 380               If xmldom_resp.LoadXml(xmldoc.ResponseText) Then
                     
-390                   Debug.Print xmldom_resp.Text
-400                   Debug.Print xmldom_resp.xml
+390                   GetLogger.LogDebug xmldom_resp.Text
+400                   GetLogger.LogDebug xmldom_resp.xml
             
                       Dim ooo As IXMLDOMNode
                       Dim ooo2 As IXMLDOMNode
@@ -690,12 +690,12 @@ Function EnviaLote2(ByVal xml As String, xml_aut As String, ByVal mCertificadoSe
 490                               If ExistSelect(ooo.childNodes, ooo, "retEnviNFe") Then
 500                                   If ExistSelect(ooo.childNodes, ooo2, "xMotivo") Then
 510                                       retNFe_EnviaLote2.xMotivo = ooo2.Text
-520                                       Debug.Print ooo.Text
+520                                       GetLogger.LogDebug ooo.Text
                                           
 530                                   End If
 540                                   If ExistSelect(ooo.childNodes, ooo2, "cStat") Then
 550                                       retNFe_EnviaLote2.cMotivo = ooo2.Text
-560                                       Debug.Print ooo2.Text
+560                                       GetLogger.LogDebug ooo2.Text
 570                                   End If
 580                                   If ExistSelect(ooo.childNodes, ooo2, "protNFe") Then
 590                                       xml_aut = ooo2.xml
@@ -723,15 +723,15 @@ Function EnviaLote2(ByVal xml As String, xml_aut As String, ByVal mCertificadoSe
 750                       End If
 760                   End If
                 Else
-                    Debug.Print xmldoc.ResponseText
+                    GetLogger.LogDebug xmldoc.ResponseText
 770               End If
 780               EnviaLote2 = True
 790           Else
-800               Debug.Print txt
+800               GetLogger.LogDebug txt
 810               m_LastError = txt
 820           End If
 830       Else
-840           MsgBox "Não carregou o xml"
+840           GetLogger.LogError "Não carregou o xml"
 850       End If
           'Set xmldom = Nothing
 860       Set xmldoc = Nothing
@@ -742,7 +742,7 @@ Function EnviaLote2(ByVal xml As String, xml_aut As String, ByVal mCertificadoSe
 
 EnviaLote2_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure EnviaLote2 of Módulo de classe hNFe4 " & Erl
+    GetLogger.LogError "Error " & Err.Number & " (" & Err.Description & ") in procedure EnviaLote2"
 
 End Function
 
@@ -840,7 +840,7 @@ Function GetCert(ByVal mCertificadoSerial As String) As Certificate
         StoreDst.Remove StoreDst.Certificates(i)
     Next
     If StoreDst.Certificates.Count > 0 Then
-        MsgBox "erro"
+        GetLogger.LogError "erro"
     End If
     
     'Set StoreDst = New Store
@@ -872,10 +872,10 @@ Function GetCert(ByVal mCertificadoSerial As String) As Certificate
                 StoreDst.Add Cert 'Certs.item(1)
                 mcert = "CURRENT_USER\\TMP2\\" & Certs.Item(i).SubjectName
             End If
-            Debug.Print Certs.Item(i).PrivateKey
+            GetLogger.LogDebug Certs.Item(i).PrivateKey
             'Debug.Print Certs.Item(i).PublicKey.
-            Debug.Print Certs.Item(i).SubjectName
-            Debug.Print Certs.Item(i).HasPrivateKey
+            GetLogger.LogDebug Certs.Item(i).SubjectName
+            GetLogger.LogDebug Certs.Item(i).HasPrivateKey
              
         Next
     End If
@@ -909,7 +909,7 @@ Function NfeCancela(mCertificadoSel, ByVal n_cOrgao As String, ByVal n_chNFe As 
 
  
 '360       End If
-   ' Debug.Print txt_xml
+   ' GetLogger.LogDebug txt_xml
     If xmlnf.LoadXml(txt_xml) Then
         pURL_NFeRecepcaoEvento4_xsd = m_path & "envEvento_v1.00.xsd"
         txt = ValidaSchema(xmlnf, "http://www.portalfiscal.inf.br/nfe", pURL_NFeRecepcaoEvento4_xsd, False)
@@ -946,7 +946,7 @@ Function NfeCancela(mCertificadoSel, ByVal n_cOrgao As String, ByVal n_chNFe As 
             If xmldom_resp.LoadXml(xmldoc.ResponseText) Then
                 'Debug.Print "---------------------"
                 'Debug.Print pURL_NfeStatusServico
-                'Debug.Print xmldom_resp.xml
+                'GetLogger.LogDebug xmldom_resp.xml
                 'Debug.Print "---------------------"
                 m_xml_resp = xmldoc.ResponseText
                 
@@ -968,36 +968,36 @@ Function NfeCancela(mCertificadoSel, ByVal n_cOrgao As String, ByVal n_chNFe As 
                     End If
                 End If
             Else
-              MsgBox xmldom_resp.parseError.srcText, , "parseError - 2"
+              GetLogger.LogError "parseError: " & xmldom_resp.parseError.srcText
               
             End If
             NfeCancela = retNfeStatusServico.cStat = 107
         Else
             m_LastError = txt
-            Debug.Print txt
+            GetLogger.LogDebug txt
         End If
     Else
-        MsgBox xmlnf.parseError.srcText, , "parseError"
+        GetLogger.LogError "parseError: " & xmlnf.parseError.srcText
         SetFileBytes App.Path & "\error_1.txt", txt_xml
         SetFileBytes App.Path & "\error_2.txt", xmlnf.Text
     End If
-    MsgBox retNfeStatusServico.xMotivo
+    GetLogger.LogInfo retNfeStatusServico.xMotivo
     Set xmldoc = Nothing
     On Error GoTo 0
     Exit Function
     Resume Next
 NfeStatusServico_Error:
-    Debug.Print Err.Number, Err.Description
+    GetLogger.LogError "Err# " & Err.Number & ": " & Err.Description
     If Err.Number = -2147012711 Then
-        MsgBox "Erro de certificado"
+        GetLogger.LogError "Erro de certificado"
     ElseIf Err.Number = -2147012852 Then
-        MsgBox "É necessário um certificado para concluir a autenticação do cliente"
+        GetLogger.LogError "É necessário um certificado para concluir a autenticação do cliente"
     ElseIf Err.Number = -2147012851 Then
-        MsgBox "A autoridade de certificação não é válida ou está incorreta"
+        GetLogger.LogError "A autoridade de certificação não é válida ou está incorreta"
         'https://www.projetoacbr.com.br/forum/topic/27273-a-autoridade-de-certifica%C3%A7%C3%A3o-n%C3%A3o-%C3%A9-valida-ou-esta-incorreta/
     Else
-        MsgBox "Error linha: " & Erl & "," & Err.Number & " (" & Err.Description & ") in procedure NfeStatusServico of Módulo mMainTeste"
-        Debug.Print Err.Number,
+        GetLogger.LogError "Error linha: " & Erl & "," & Err.Number & " (" & Err.Description & ") in procedure NfeStatusServico"
+        GetLogger.LogError "Err# " & Err.Number
     End If
 End Function
 
@@ -1130,15 +1130,15 @@ Function NfeInutilizacao(mCertificadoSel As String, ByVal n_cOrgao As String, _
                     End If
                 End If
             Else
-                MsgBox xmldom_resp.parseError.srcText, , "parseError - 2"
+                GetLogger.LogError "parseError: " & xmldom_resp.parseError.srcText
             End If
             NfeInutilizacao = retNfeInutilizacao.cStat = 102
         Else
             m_LastError = txt
-            Debug.Print txt
+            GetLogger.LogDebug txt
         End If
     Else
-        MsgBox xmlnf.parseError.srcText, , "parseError"
+        GetLogger.LogError "parseError: " & xmlnf.parseError.srcText
         SetFileBytes App.Path & "\error_1.txt", txt_xml
         SetFileBytes App.Path & "\error_2.txt", xmlnf.Text
     End If
@@ -1256,15 +1256,15 @@ Function NfeCartaCorrecao(mCertificadoSel, ByVal n_cOrgao As String, ByVal n_chN
                     End If
                 End If
             Else
-                MsgBox xmldom_resp.parseError.srcText, , "parseError - 2"
+                GetLogger.LogError "parseError: " & xmldom_resp.parseError.srcText
             End If
             NfeCartaCorrecao = retNfeCartaCorrecao.cStat = 135
         Else
             m_LastError = txt
-            Debug.Print txt
+            GetLogger.LogDebug txt
         End If
     Else
-        MsgBox xmlnf.parseError.srcText, , "parseError"
+        GetLogger.LogError "parseError: " & xmlnf.parseError.srcText
         SetFileBytes App.Path & "\error_1.txt", txt_xml
         SetFileBytes App.Path & "\error_2.txt", xmlnf.Text
     End If
@@ -1388,15 +1388,15 @@ Function NfeConsultaProtocolo(ByVal chNFe As String, m_xml_send As String, m_xml
                     End If
                 End If
             Else
-                MsgBox xmldom_resp.parseError.srcText, , "parseError - 2"
+                GetLogger.LogError "parseError: " & xmldom_resp.parseError.srcText
             End If
             NfeConsultaProtocolo = retNFe_ConsSitNFe.cStat = 100 Or retNFe_ConsSitNFe.cStat = 101
         Else
             m_LastError = txt
-            Debug.Print txt
+            GetLogger.LogDebug txt
         End If
     Else
-        MsgBox xmlnf.parseError.srcText, , "parseError"
+        GetLogger.LogError "parseError: " & xmlnf.parseError.srcText
         SetFileBytes App.Path & "\error_1.txt", txt_xml
         SetFileBytes App.Path & "\error_2.txt", xmlnf.Text
     End If
@@ -1475,11 +1475,11 @@ Function NfeDistDFe(ByVal cnpj As String, ByVal NSU As String, ByVal chNFe As St
                 End If
             End If
         Else
-            MsgBox xmldom_resp.parseError.srcText, , "parseError - NfeDistDFe"
+            GetLogger.LogError "parseError: " & xmldom_resp.parseError.srcText
         End If
         NfeDistDFe = retNFe_DistDFe.cStat = 138 Or retNFe_DistDFe.cStat = 137
     Else
-        MsgBox xmlnf.parseError.srcText, , "parseError"
+        GetLogger.LogError "parseError: " & xmlnf.parseError.srcText
         SetFileBytes App.Path & "\error_1.txt", txt_xml
     End If
     Set xmldoc = Nothing
@@ -1549,11 +1549,11 @@ Function NfeDownloadNF(ByVal cnpj As String, ByVal cUF As String, ByVal chNFe As
                 End If
             End If
         Else
-            MsgBox xmldom_resp.parseError.srcText, , "parseError - NfeDownloadNF"
+            GetLogger.LogError "parseError: " & xmldom_resp.parseError.srcText
         End If
         NfeDownloadNF = retNFe_DownloadNFe.cStat = 138 Or retNFe_DownloadNFe.cStat = 137
     Else
-        MsgBox xmlnf.parseError.srcText, , "parseError"
+        GetLogger.LogError "parseError: " & xmlnf.parseError.srcText
         SetFileBytes App.Path & "\error_1.txt", txt_xml
     End If
     Set xmldoc = Nothing
@@ -1634,11 +1634,11 @@ Function NfeConsReciNFe(ByVal nRec As String, m_xml_send As String, m_xml_resp A
                 End If
             End If
         Else
-            MsgBox xmldom_resp.parseError.srcText, , "parseError - NfeConsReciNFe"
+            GetLogger.LogError "parseError: " & xmldom_resp.parseError.srcText
         End If
         NfeConsReciNFe = retNFe_ConsReciNFe.cStat = 104
     Else
-        MsgBox xmlnf.parseError.srcText, , "parseError"
+        GetLogger.LogError "parseError: " & xmlnf.parseError.srcText
         SetFileBytes App.Path & "\error_1.txt", txt_xml
     End If
     Set xmldoc = Nothing

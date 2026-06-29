@@ -32,11 +32,11 @@ Dim FileName As String
             Assina = doc.xml
         End If
     Else
-        MsgBox "XML não carregado, " & doc.parseError
+        GetLogger.LogError "XML não carregado, " & doc.parseError
     End If
     Exit Function
 fim:
-    MsgBox Err.Description
+    GetLogger.LogError Err.Description
 End Function
 
 '//*****************************************************
@@ -106,7 +106,7 @@ Dim s1 As String, s2 As String
         StoreDst.Remove StoreDst.Certificates(i)
     Next
     If StoreDst.Certificates.Count > 0 Then
-        MsgBox "erro"
+        GetLogger.LogError "erro"
     End If
 
     'Set StoreDst = New Store
@@ -125,16 +125,16 @@ Dim s1 As String, s2 As String
 
 
     If Certs.Count = 0 Then
-        MsgBox "Sem certificados"
+        GetLogger.LogError "Sem certificados"
     Else
         Set Cert = Certs.Item(1)
         For i = Certs.Count To 1 Step -1
             If Certs.Item(i).SerialNumber = mSerial Then
                 Set Cert = Certs.Item(i)
-                Debug.Print Certs.Item(i).PrivateKey
+                GetLogger.LogDebug Certs.Item(i).PrivateKey
                 'Debug.Print Certs.Item(i).PublicKey
-                Debug.Print Certs.Item(i).SubjectName
-                Debug.Print Certs.Item(i).HasPrivateKey
+                GetLogger.LogDebug Certs.Item(i).SubjectName
+                GetLogger.LogDebug Certs.Item(i).HasPrivateKey
                 Exit For
             End If
 
