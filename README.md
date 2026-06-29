@@ -1,0 +1,227 @@
+# AxFiscal
+
+ActiveX OCX (DLL) para emissão e gerenciamento de NF-e/NFC-e 4.00 em VB6.
+
+## Funcionalidades
+
+- **Geração de XML** de NF-e/NFC-e (modelo 55/65) conforme leiaute 4.00
+- **Envio de lote** (síncrono) para SEFAZ
+- **Consulta de Status** do serviço SEFAZ
+- **Cancelamento** de NF-e
+- **Carta de Correção** (CC-e)
+- **Inutilização** de numeração
+- **Roteamento automático** por UF (AM, BA, CE, GO, MG, MS, MT, PE, PR, RJ, SP, SVRS) com suporte aos ambientes de Produção e Homologação
+- **Contingências** SVAN, SVC-RS, SVC-AN
+- **Assinatura digital XML** com certificado A1/A3 via CAPICOM
+- **Validação** automática por XSD antes do envio
+
+## Dependências
+
+A pasta `dependencias\` contém os instaladores necessários:
+
+| Arquivo | Descrição |
+|---------|-----------|
+| `capicom.dll` | Microsoft CAPICOM 2.1 — acesso ao repositório de certificados |
+| `msxml5.dll` | Microsoft XML Core Services 5.0 — parsing e validação XSD |
+| `msxml5r.dll` | Recursos de idioma do MSXML5 |
+| `soapsdk.msi` | Microsoft SOAP SDK — suporte a webservices SOAP |
+| `instala.bat` | Script que copia e registra as DLLs no sistema |
+
+Execute `instala.bat` como administrador para instalar as dependências.
+
+## Requisitos
+
+- Windows XP/Vista/7/8/10/11
+- Visual Basic 6.0 (para compilar)
+- Certificado digital A1 ou A3 (eToken) instalado no repositório do Windows
+
+## Compilação
+
+1. Abra `com_teste.vbg` (VB Group) no VB6
+2. Compile a DLL `Ax4096CtrlsFiscal.vbp` (ActiveX DLL → `build\AxFiscal-048.dll`)
+3. O projeto de teste `teste\Project1.vbp` já referência a OCX
+
+## Utilização Básica
+
+### 1. Inicialização
+
+```vb
+Dim nfe As New hNFe4
+
+nfe.m_Ambiente = 2          ' 1 = Produção, 2 = Homologação
+nfe.m_UF = "SP"
+nfe.m_UF_Cod = "35"
+nfe.Initialize "Caminho\para\Schema-4.00\", "Caminho\do\app\"
+
+nfe.SetCert "SERIAL_DO_CERTIFICADO"
+nfe.Inicia ""
+```
+
+### 2. Consultar Status do Serviço
+
+```vb
+If nfe.NfeStatusServico Then
+    MsgBox nfe.retNfeStatusServico.cStat & " - " & nfe.retNfeStatusServico.xMotivo
+Else
+    MsgBox "Falha: " & nfe.m_LastError
+End If
+```
+
+### 3. Gerar XML da NF-e
+
+```vb
+With nfe.NFe
+    .m_Ambiente = nfe.m_Ambiente
+    .Clear_det
+
+    ' --- IDE ---
+    .m_ide.m_cUF = nfe.m_UF_Cod
+    .m_ide.m_mod = "55"
+    .m_ide.m_serie = "1"
+    .m_ide.m_nNF = "1"
+    .m_ide.m_dhEmi = Now
+    .m_ide.m_cMunFG = "3550308"     ' código IBGE São Paulo
+    .m_ide.m_tpEmis = "1"
+    .m_ide.m_idDest = 1
+
+    ' --- EMITENTE ---
+    .m_emit.m_CNPJ = "11222333000181"
+    .m_emit.m_xNome = "EMPRESA TESTE LTDA"
+    .m_emit.m_xFant = "TESTE"
+    .m_emit.m_IE = "111111111111"
+    .m_emit.m_CRT = "3"             ' 1=Simples, 2=Presumido, 3=Real
+    With .m_emit.m_enderEmit
+        .m_xLgr = "Rua Teste"
+        .m_nro = "100"
+        .m_xBairro = "Centro"
+        .m_cMun = "3550308"
+        .m_xMun = "SAO PAULO"
+        .m_UF = "SP"
+        .m_CEP = "01001000"
+    End With
+
+    ' --- DESTINATÁRIO ---
+    .m_dest.m_CNPJ = "11222333000181"
+    .m_dest.m_xNome = "CLIENTE TESTE LTDA"
+    .m_dest.m_indIEDest = "9"       ' 9=Não contribuinte
+    .m_dest.m_IE = ""
+    With .m_dest.m_enderDest
+        .m_xLgr = "Av Teste"
+        .m_nro = "200"
+        .m_xBairro = "Centro"
+        .m_cMun = "3550308"
+        .m_xMun = "SAO PAULO"
+        .m_UF = "SP"
+        .m_CEP = "01001000"
+    End With
+
+    ' --- PRODUTOS ---
+    Dim det As New hNFe4_Doc_det
+    det.prod.m_cProd = "001"
+    det.prod.m_xProd = "PRODUTO TESTE"
+    det.prod.m_NCM = "84713019"
+    det.prod.m_CFOP = "5102"
+    det.prod.m_uCom = "UN"
+    det.prod.m_qCom = 1
+    det.prod.m_vUnCom = 100
+    det.prod.m_vProd = 100
+    det.prod.m_uTrib = "UN"
+    det.prod.m_qTrib = 1
+    det.prod.m_vUnTrib = 100
+    det.prod.m_indTot = 1
+    .Add_det det
+
+    ' --- FRETE ---
+    .m_modFrete = "9"               ' 9=Sem ocorrência
+
+    ' --- INFORMAÇÕES ADICIONAIS ---
+    .m_infAdic.infCpl = "NF-E EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL"
+
+    ' --- GERA XML ---
+    Dim chave As String, numNota As Long
+    Dim xml As String
+    xml = .GetNota(chave, numNota)
+End With
+```
+
+### 4. Enviar Lote
+
+```vb
+Dim xml_aut As String
+xml_aut = ""
+
+If nfe.EnviaLote2(xmlGerado, xml_aut, serialCertificado) Then
+    MsgBox "cStat: " & nfe.retNFe_EnviaLote2.protNFe.cStat
+    MsgBox "xMotivo: " & nfe.retNFe_EnviaLote2.protNFe.xMotivo
+Else
+    MsgBox "Falha: " & nfe.m_LastError
+End If
+```
+
+### 5. Cancelar NF-e
+
+```vb
+Dim xml_send As String, xml_resp As String
+If nfe.NfeCancela(serialCert, nfe.m_UF_Cod, chaveNF, cnpjEmitente, justificativa, "0", xml_send, xml_resp) Then
+    MsgBox "Cancelado. cStat: " & nfe.retNfeStatusServico.cStat
+End If
+```
+
+### 6. Carta de Correção
+
+```vb
+Dim xml_send As String, xml_resp As String
+If nfe.NfeCartaCorrecao(serialCert, nfe.m_UF_Cod, chaveNF, cnpjEmitente, textoCorrecao, xml_send, xml_resp) Then
+    MsgBox "CC-e enviada. cStat: " & nfe.retNfeCartaCorrecao.cStat
+End If
+```
+
+### 7. Inutilizar Numeração
+
+```vb
+Dim xml_send As String, xml_resp As String
+If nfe.NfeInutilizacao(serialCert, nfe.m_UF_Cod, cnpjEmitente, "55", "1", 1, 1, justificativa, xml_send, xml_resp) Then
+    MsgBox "Inutilizado. cStat: " & nfe.retNfeInutilizacao.cStat
+End If
+```
+
+## Estrutura do Projeto
+
+```
+Ax4096CtrlsFiscal.vbp     → ActiveX DLL (OCX)
+teste\Project1.vbp         → Aplicação de teste (executável)
+teste\frmMain.frm          → Formulário principal de teste
+teste\frmCert.frm          → Seleção de certificado digital
+teste\modHelpers.bas       → Funções auxiliares (códigos UF, municípios)
+teste\Schema-4.00\         → Schemas XSD da NF-e 4.00
+_files\
+  hNFe4.cls                → Classe principal (webservices + roteamento)
+  hNFe4_Doc.cls            → Documento NF-e/NFC-e
+  hNFe4_Doc_ide.cls        → Identificação da NF-e
+  hNFe4_Doc_emit.cls       → Emitente
+  hNFe4_Doc_emit_enderEmit.cls → Endereço do emitente
+  hNFe4_Doc_dest.cls       → Destinatário
+  hNFe4_Doc_dest_enderDest.cls  → Endereço do destinatário
+  hNFe4_Doc_det.cls        → Detalhe (produtos)
+  hNFe4_Doc_det_prod.cls   → Produto
+  hNFe4_Doc_det_imposto.cls → Impostos
+  hNFe4_Doc_total.cls      → Totais
+  hNFe4_Doc_transp3.cls    → Transportadora
+  hNFe4_Doc_veicTransp.cls → Veículo de transporte
+  hNFe4_Doc_vol.cls        → Volumes
+  hNFe4_Doc_infAdic.cls    → Informações adicionais
+  hNFe4_StatusServico.cls  → Retorno de status
+  hNFe4_EnviaLote2.cls     → Retorno de envio
+  hNFe4_CartaCorrecao.cls  → Retorno de CC-e
+  hNFe4_Inutilizacao.cls   → Retorno de inutilização
+  hNFe_Signature.cls       → Assinatura digital XML
+  hSHA1.cls                → Cálculo SHA-1
+  fFuncsBase16.cls         → Base16
+  hStringBuilder_private.cls → String builder
+  mFuncs.bas               → Funções utilitárias
+dependencias\              → Instaladores CAPICOM, MSXML5, SOAP SDK
+```
+
+## Licença
+
+Este é um software open source. Consulte o arquivo `LICENSE` para mais informações (se aplicável).
