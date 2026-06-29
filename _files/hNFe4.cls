@@ -613,7 +613,7 @@ Public Function ValidaRegrasNegocio() As Boolean
     End If
 End Function
 
-Function EnviaLote2(ByVal xml As String, xml_aut As String, ByVal mCertificadoSel As String) As Boolean
+Function EnviaLote2(ByVal xml As String, xml_aut As String, ByVal mCertificadoSel As String, Optional ByVal indSinc As Long = 1) As Boolean
    On Error GoTo EnviaLote2_Error
 
 10
@@ -640,7 +640,7 @@ Function EnviaLote2(ByVal xml As String, xml_aut As String, ByVal mCertificadoSe
 70        txt_xml.Append "<enviNFe xmlns=""http://www.portalfiscal.inf.br/nfe"" versao=""4.00"">"
           
 80        txt_xml.Append "<idLote>1</idLote>"
-90        txt_xml.Append "<indSinc>1</indSinc>"
+90        txt_xml.Append "<indSinc>" & indSinc & "</indSinc>"
 100       txt_xml.Append Mid(xml, 1, Len(xml) - 2)
 110       txt_xml.Append "</enviNFe>"
           
@@ -709,7 +709,11 @@ Function EnviaLote2(ByVal xml As String, xml_aut As String, ByVal mCertificadoSe
 550                                       retNFe_EnviaLote2.cMotivo = ooo2.Text
 560                                       GetLogger.LogDebug ooo2.Text
 570                                   End If
-580                                   If ExistSelect(ooo.childNodes, ooo2, "protNFe") Then
+580                                   If ExistSelect(ooo.childNodes, ooo2, "nRec") Then
+581                                       retNFe_EnviaLote2.nRec = ooo2.Text
+582                                       GetLogger.LogDebug "nRec: " & ooo2.Text
+583                                   End If
+584                                   If ExistSelect(ooo.childNodes, ooo2, "protNFe") Then
 590                                       xml_aut = ooo2.xml
 600                                       If xmldom_resp2.LoadXml(ooo2.xml) Then
 610                                           If ExistSelect(xmldom_resp2.childNodes, ooo2, "protNFe") Then

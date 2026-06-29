@@ -5,7 +5,7 @@ ActiveX OCX (DLL) para emissão e gerenciamento de NF-e/NFC-e 4.00 em VB6.
 ## Funcionalidades
 
 - **Geração de XML** de NF-e/NFC-e (modelo 55/65) conforme leiaute 4.00
-- **Envio de lote** (síncrono) para SEFAZ
+- **Envio de lote** síncrono (indSinc=1) e assíncrono (indSinc=0) para SEFAZ
 - **Consulta de Status** do serviço SEFAZ
 - **Cancelamento** de NF-e e **Cancelamento por Substituição** (evento 110112)
 - **Manifestação do Destinatário** (ciência, confirmação, desconhecimento, não realizada)
@@ -225,6 +225,8 @@ nfe.NFe.Add_pag pag2
 
 ### 4. Enviar Lote
 
+**Síncrono** (indSinc=1, padrão, para uma única NF-e no lote):
+
 ```vb
 Dim xml_aut As String
 xml_aut = ""
@@ -239,6 +241,27 @@ If nfe.EnviaLote2(xmlGerado, xml_aut, serialCertificado) Then
     If Len(xmlProcNFe) > 0 Then
         ' Salvar o nfeProc em disco
         SetFileBytes m_path & "\NFe\Proc\" & nfe.NFe.m_Chave_NF & "-proc.xml", xmlProcNFe
+    End If
+Else
+    MsgBox "Falha: " & nfe.m_LastError
+End If
+```
+
+**Assíncrono** (indSinc=0, para lotes com múltiplas NF-e):
+
+```vb
+Dim xml_aut As String
+xml_aut = ""
+
+' Enviar com indSinc=0
+If nfe.EnviaLote2(xmlGerado, xml_aut, serialCertificado, 0) Then
+    If Len(nfe.retNFe_EnviaLote2.nRec) > 0 Then
+        ' Aguardar processamento e consultar o recibo
+        ' (recomendado: aguardar 5-15 segundos)
+        Dim xml_send2 As String, xml_resp2 As String
+        If nfe.NfeConsReciNFe(nfe.retNFe_EnviaLote2.nRec, xml_send2, xml_resp2) Then
+            MsgBox "cStat: " & nfe.retNFe_ConsReciNFe.cStat & " - " & nfe.retNFe_ConsReciNFe.xMotivo
+        End If
     End If
 Else
     MsgBox "Falha: " & nfe.m_LastError
@@ -441,7 +464,7 @@ dependencias\              → Instaladores CAPICOM, MSXML5, SOAP SDK
 ### Infraestrutura & Melhorias Gerais
 | Funcionalidade | Descrição | Prioridade |
 |---|---|---|
-| **Envio assíncrono** | Suporte a `indSinc=0` para lotes com múltiplas NF-e | Alta |
+| ~~**Envio ass�ncrono**~~ | ~~Suporte a indSinc=0 para lotes com m�ltiplas NF-e~~ | ~~Alta~~ |
 | ~~**Validação de regras de negócio**~~ | ~~Além da validação XSD, validar tamanhos, obrigatoriedade e domínios~~ | ~~Média~~ |
 | ~~**QR Code NFC-e**~~ | ~~Mapeamento completo das URLs de consulta por UF + CSC dinâmico~~ | ~~Média~~ |
 | Envio de lote com múltiplas NF-e | Suporte a mais de 1 NF-e por lote | Média |

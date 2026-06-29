@@ -15,6 +15,7 @@ Option Explicit
 
 Public xMotivo As String
 Public cMotivo As Long
+Public nRec As String
 Public protNFe As New hNFe4_EnviaLote2_protNFe
 
 Private Sub Class_Initialize()
