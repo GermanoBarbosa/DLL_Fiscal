@@ -596,6 +596,23 @@ NfeStatusServico_Error:
 860       End If
 End Function
 
+Public Function ValidaRegrasNegocio() As Boolean
+    Dim v As New cNFeValidator
+    If Not v.Validate(NFe, m_Ambiente) Then
+        m_LastError = v.GetAllErrors
+        GetLogger.LogError "Validacao de regras de negocio: " & m_LastError
+        If Len(v.GetAllWarnings) > 0 Then
+            GetLogger.LogWarn "Avisos: " & v.GetAllWarnings
+        End If
+        ValidaRegrasNegocio = False
+    Else
+        If Len(v.GetAllWarnings) > 0 Then
+            GetLogger.LogDebug "Validacao com avisos: " & v.GetAllWarnings
+        End If
+        ValidaRegrasNegocio = True
+    End If
+End Function
+
 Function EnviaLote2(ByVal xml As String, xml_aut As String, ByVal mCertificadoSel As String) As Boolean
    On Error GoTo EnviaLote2_Error
 
@@ -607,6 +624,11 @@ Function EnviaLote2(ByVal xml As String, xml_aut As String, ByVal mCertificadoSe
           Dim txt As String
           Dim xmldom_resp As New MSXML2.DOMDocument50
           Dim txt_out As String
+
+          If Not ValidaRegrasNegocio() Then
+            EnviaLote2 = False
+            Exit Function
+          End If
                    
 20        txt_xml.Clear
           
@@ -631,16 +653,6 @@ Function EnviaLote2(ByVal xml As String, xml_aut As String, ByVal mCertificadoSe
           Dim m_File As String
 200           m_File = m_path & "\NFe\temp\" & Format(Time, "hh-mm-ss") & ".xml"
 220       Call SetFileBytes(m_File, txt_xml.toString)
-          
-          
-          
-          'leiauteNFe_v3 0.1
-          'xmlnf.loadXML (xml)
-          'txt = ValidaSchema(xmlnf, "http://www.portalfiscal.inf.br/nfe", App.Path & "\NFe\Schema-4.00\leiauteNFe_v4.00.xsd", False)
-          'If txt = "Validado" Then
-          'Else
-          '    GetLogger.LogDebug txt
-          'End If
           
 230       If xmlnf.LoadXml(txt_xml) Then
 

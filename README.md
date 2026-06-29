@@ -14,6 +14,7 @@ ActiveX OCX (DLL) para emissão e gerenciamento de NF-e/NFC-e 4.00 em VB6.
 - **Contingências** SVAN, SVC-RS, SVC-AN
 - **Assinatura digital XML** com certificado A1/A3 via CAPICOM
 - **Validação** automática por XSD antes do envio
+- **Validação de regras de negócio** NF-e 4.00 (obrigatoriedade, tamanhos, domínios) integrada ao fluxo de envio
 - **Consulta Situação NF-e** (consSitNFe) completa pela chave de acesso
 - **Distribuição de DF-e** (nfeDistDFe) — consulta de documentos fiscais pela SEFAZ nacional
 - **Download de NF-e** (downloadNFe) — download do XML da NF-e pelo mesmo webservice nacional
@@ -235,7 +236,16 @@ Else
 End If
 ```
 
-> **NFC-e (modelo 65):** o QR Code com `infNFeSupl` � inserido automaticamente no momento do envio. Basta configurar o CSC antes de chamar `EnviaLote2`:
+> **Validacao de regras de negocio:** antes do envio, `EnviaLote2` executa automaticamente `ValidaRegrasNegocio()`, que verifica obrigatoriedade, tamanhos e dominios dos campos. Em caso de erro, `m_LastError` contera as descricoes e o envio e cancelado. Para validacao manual:
+> ```vb
+> Dim v As New cNFeValidator
+> If Not v.Validate(nfe.NFe, nfe.m_Ambiente) Then
+>     MsgBox "Erros de validacao: " & v.GetAllErrors
+>     MsgBox "Avisos: " & v.GetAllWarnings
+> End If
+> ```
+>
+> **NFC-e (modelo 65):** o QR Code com `infNFeSupl` e inserido automaticamente no momento do envio. Basta configurar o CSC antes de chamar `EnviaLote2`:
 > ```vb
 > nfe.m_CSC = "SEU_CSC_AQUI"       ' C�digo de Seguran�a do Contribuinte
 > nfe.NFe.m_Ambiente = 1           ' 1=Produ��o, 2=Homologa��o
@@ -348,6 +358,7 @@ _files\
   hNFe4_DistDFe.cls        → Retorno de distribuição de DF-e
   hNFe4_DownloadNFe.cls    → Retorno de download de NF-e
   hNFe4_Inutilizacao.cls   → Retorno de inutilização
+  cNFeValidator.cls        → Validador de regras de negócio NF-e 4.00 (obrigatoriedade, tamanhos, domínios)
   hNFe_Signature.cls       → Assinatura digital XML
   hSHA1.cls                → Cálculo SHA-1
   fFuncsBase16.cls         → Base16
@@ -392,7 +403,7 @@ dependencias\              → Instaladores CAPICOM, MSXML5, SOAP SDK
 | Funcionalidade | Descrição | Prioridade |
 |---|---|---|
 | **Envio assíncrono** | Suporte a `indSinc=0` para lotes com múltiplas NF-e | Alta |
-| **Validação de regras de negócio** | Além da validação XSD, validar tamanhos, obrigatoriedade e domínios | Média |
+| ~~**Validação de regras de negócio**~~ | ~~Além da validação XSD, validar tamanhos, obrigatoriedade e domínios~~ | ~~Média~~ |
 | ~~**QR Code NFC-e**~~ | ~~Mapeamento completo das URLs de consulta por UF + CSC dinâmico~~ | ~~Média~~ |
 | Envio de lote com múltiplas NF-e | Suporte a mais de 1 NF-e por lote | Média |
 | ~~**Logger configurável**~~ | ~~Substituir `Debug.Print` e `MsgBox` por sistema de log com `ILogListener`~~ | ~~Média~~ |

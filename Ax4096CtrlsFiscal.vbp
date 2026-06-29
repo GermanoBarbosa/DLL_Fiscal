@@ -35,6 +35,7 @@ Class=hStringBuilder; _files\hStringBuilder_private.cls
 Module=mFuncs; _files\mFuncs.bas
 Class=hNFe4_ConsSitNFe; _files\hNFe4_ConsSitNFe.cls
 Class=ILogListener; _files\ILogListener.cls
+Class=cNFeValidator; _files\cNFeValidator.cls
 Class=cLogger; _files\cLogger.cls
 Module=mLogger; _files\mLogger.bas
 Class=objGlobal; _files\objGlobal.cls

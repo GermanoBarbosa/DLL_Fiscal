@@ -36,6 +36,22 @@ Dim m_Reboques() As hNFe4_Doc_veicTransp, m_cReboques As Long
 Dim m_Volumes() As hNFe4_Doc_vol, m_cVolumes As Long
 Dim m_Pagamentos() As hNFe4_Doc_detPag, m_cPagamentos As Long
 
+Public Property Get ItemCount() As Long
+    ItemCount = m_cItens + 1
+End Property
+
+Public Property Get Item(Index As Long) As hNFe4_Doc_det
+    Set Item = m_Itens(Index)
+End Property
+
+Public Property Get PagCount() As Long
+    PagCount = m_cPagamentos + 1
+End Property
+
+Public Property Get Pag(Index As Long) As hNFe4_Doc_detPag
+    Set Pag = m_Pagamentos(Index)
+End Property
+
 
 Sub Clear_det()
     m_cItens = -1
