@@ -261,6 +261,48 @@ If nfe.NfeCartaCorrecao(serialCert, nfe.m_UF_Cod, chaveNF, cnpjEmitente, textoCo
 End If
 ```
 
+### 8. Sistema de Logging
+
+O projeto possui um sistema centralizado de logging baseado em listeners. Todos os `Debug.Print` e `MsgBox` nos módulos da DLL foram substituídos pelo logger.
+
+```vb
+' Grava log informativo
+GetLogger.LogInfo "Minha mensagem"
+
+' Grava log de aviso (ex: erro não fatal)
+GetLogger.LogWarning "Aviso: algo inesperado"
+
+' Grava log de debug (detalhamento técnico)
+GetLogger.Debug "Var1=" & var1 & " Var2=" & var2
+
+' Grava log como erro
+GetLogger.LogError "Falha na operação"
+```
+
+**Listeners disponíveis:**
+| Listener | Descrição |
+|----------|-----------|
+| `Debug.Print` (built-in) | Sempre ativo, envia para a janela Immediato do VB6 |
+| `frmMain` | Exibe logs no formulário principal de teste |
+| `FileLogger` (futuro) | Planejado para gravação em arquivo |
+
+Para implementar um listener customizado, implemente a interface `ILogListener`:
+
+```vb
+Implements ILogListener
+
+Private Sub ILogListener_LogReceived(ByVal level As String, ByVal msg As String)
+    ' level: "INFO", "WARN", "DEBUG", "ERROR"
+    ' msg: mensagem de log
+    ' Exemplo: gravar em arquivo, enviar para servidor, etc.
+End Sub
+```
+
+Adicione o listener no `Form_Load`:
+```vb
+GetLogger.AddListener Me
+```
+
 ### 7. Inutilizar Numeração
 
 ```vb
@@ -310,6 +352,9 @@ _files\
   hSHA1.cls                → Cálculo SHA-1
   fFuncsBase16.cls         → Base16
   hStringBuilder_private.cls → String builder
+  ILogListener.cls         → Interface para listeners de log
+  cLogger.cls              → Gerenciador central de logging com suporte a múltiplos listeners
+  mLogger.bas              → Módulo público de logging (função `Log` e `GetLogger`)
   mFuncs.bas               → Funções utilitárias
 dependencias\              → Instaladores CAPICOM, MSXML5, SOAP SDK
 ```
@@ -350,7 +395,7 @@ dependencias\              → Instaladores CAPICOM, MSXML5, SOAP SDK
 | **Validação de regras de negócio** | Além da validação XSD, validar tamanhos, obrigatoriedade e domínios | Média |
 | ~~**QR Code NFC-e**~~ | ~~Mapeamento completo das URLs de consulta por UF + CSC dinâmico~~ | ~~Média~~ |
 | Envio de lote com múltiplas NF-e | Suporte a mais de 1 NF-e por lote | Média |
-| Logger configurável | Substituir `Debug.Print` e `MsgBox` por sistema de log | Média |
+| ~~**Logger configurável**~~ | ~~Substituir `Debug.Print` e `MsgBox` por sistema de log com `ILogListener`~~ | ~~Média~~ |
 
 ## Licença
 
