@@ -1013,6 +1013,86 @@ NfeStatusServico_Error:
     End If
 End Function
 
+Function NfeCancelaPorSubstituicao(mCertificadoSel, ByVal n_cOrgao As String, ByVal n_chNFe As String, ByVal m_CNPJ As String, ByVal m_xJust As String, ByVal n_chNFeRef As String, m_xml_send As String, m_xml_resp As String) As Boolean
+    Dim xmldoc As New WinHttpRequest
+    Dim txt As String
+    Dim xmlnf As New MSXML2.DOMDocument50
+    Dim xmldom_resp As New MSXML2.DOMDocument50
+    Dim txt_xml As String
+
+    txt_xml = ""
+    txt_xml = txt_xml & "<?xml version=""1.0"" encoding=""utf-8""?>"
+    txt_xml = txt_xml & "<soap12:Envelope xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:soap12=""http://www.w3.org/2003/05/soap-envelope"">"
+    txt_xml = txt_xml & "  <soap12:Body>"
+    txt_xml = txt_xml & "    <nfeDadosMsg xmlns=""http://www.portalfiscal.inf.br/nfe/wsdl/NFeRecepcaoEvento4"">"
+    txt_xml = txt_xml & get_msg_subst(mCertificadoSel, n_cOrgao, n_chNFe, m_CNPJ, m_xJust, n_chNFeRef)
+    txt_xml = txt_xml & "</nfeDadosMsg>"
+    txt_xml = txt_xml & "  </soap12:Body>"
+    txt_xml = txt_xml & "</soap12:Envelope>"
+
+    If xmlnf.LoadXml(txt_xml) Then
+        pURL_NFeRecepcaoEvento4_xsd = m_path & "envEvento_v1.00.xsd"
+        txt = ValidaSchema(xmlnf, "http://www.portalfiscal.inf.br/nfe", pURL_NFeRecepcaoEvento4_xsd, False)
+        If txt = "Validado" Then
+            Call xmldoc.Open("POST", pURL_NFeRecepcaoEvento4 & "?wsdl", False)
+            Call xmldoc.SetRequestHeader("content-type", "application/soap+xml")
+            xmldoc.SetClientCertificate (mcert)
+            xmldoc.Option(WinHttpRequestOption_SelectCertificate) = (mcert)
+            xmldoc.Send (xmlnf.xml & "")
+            m_xml_send = xmlnf.xml
+
+            If xmldom_resp.LoadXml(xmldoc.ResponseText) Then
+                m_xml_resp = xmldoc.ResponseText
+
+                Dim ooo As IXMLDOMNode
+                Dim ooo2 As IXMLDOMNode
+                If ExistSelect(xmldom_resp.documentElement.childNodes, ooo, "Body") Then
+                    If ExistSelect(ooo.childNodes, ooo, "nfeResultMsg") Then
+                        If ExistSelect(ooo.childNodes, ooo, "retEnvEvento") Then
+                            If ExistSelect(ooo.childNodes, ooo2, "cStat") Then
+                                retNfeStatusServico.cStat = ooo2.Text
+                            End If
+                            If ExistSelect(ooo.childNodes, ooo2, "tpAmb") Then
+                                retNfeStatusServico.tpAmb = ooo2.Text
+                            End If
+                            If ExistSelect(ooo.childNodes, ooo2, "xMotivo") Then
+                                retNfeStatusServico.xMotivo = ooo2.Text
+                            End If
+                        End If
+                    End If
+                End If
+            Else
+                GetLogger.LogError "parseError: " & xmldom_resp.parseError.srcText
+            End If
+            NfeCancelaPorSubstituicao = retNfeStatusServico.cStat = 107
+        Else
+            m_LastError = txt
+            GetLogger.LogDebug txt
+        End If
+    Else
+        GetLogger.LogError "parseError: " & xmlnf.parseError.srcText
+        SetFileBytes App.Path & "\error_1.txt", txt_xml
+        SetFileBytes App.Path & "\error_2.txt", xmlnf.Text
+    End If
+    GetLogger.LogInfo retNfeStatusServico.xMotivo
+    Set xmldoc = Nothing
+    On Error GoTo 0
+    Exit Function
+    Resume Next
+NfeStatusServico_Error:
+    GetLogger.LogError "Err# " & Err.Number & ": " & Err.Description
+    If Err.Number = -2147012711 Then
+        GetLogger.LogError "Erro de certificado"
+    ElseIf Err.Number = -2147012852 Then
+        GetLogger.LogError "É necessário um certificado para concluir a autenticação do cliente"
+    ElseIf Err.Number = -2147012851 Then
+        GetLogger.LogError "A autoridade de certificação não é válida ou está incorreta"
+    Else
+        GetLogger.LogError "Error linha: " & Erl & "," & Err.Number & " (" & Err.Description & ") in procedure NfeStatusServico"
+        GetLogger.LogError "Err# " & Err.Number
+    End If
+End Function
+
 Function get_msg(mCertificadoSel, ByVal n_cOrgao As String, ByVal n_chNFe As String, ByVal m_CNPJ As String, ByVal m_xJust As String, ByVal nProt As String) As String
 Dim m_txt As New hStringBuilder
     m_txt.Clear
@@ -1077,6 +1157,66 @@ Dim m_txt As New hStringBuilder
     xmlnf.LoadXml xml_ass
 
     get_msg = xml_ass
+End Function
+
+Function get_msg_subst(mCertificadoSel, ByVal n_cOrgao As String, ByVal n_chNFe As String, ByVal m_CNPJ As String, ByVal m_xJust As String, ByVal n_chNFeRef As String) As String
+Dim m_txt As New hStringBuilder
+    m_txt.Clear
+    m_txt.Append Trim("      <envEvento xmlns=""http://www.portalfiscal.inf.br/nfe"" versao=""1.00"">")
+    m_txt.Append Trim("        <idLote>" & Format(Date + Time, "YYYYMMDDHHMMSS") & "</idLote>")
+
+    Dim m_ID As String
+    m_ID = "ID" & "110112" & n_chNFe & "01"
+
+    m_txt.Append Trim("        <evento versao=""1.00"">")
+    m_txt.Append Trim("          <infEvento Id=""" & m_ID & """>")
+    m_txt.Append Trim("            <cOrgao>" & n_cOrgao & "</cOrgao>")
+    m_txt.Append Trim("            <tpAmb>" & m_Ambiente & "</tpAmb>")
+    m_txt.Append Trim("            <CNPJ>" & m_CNPJ & "</CNPJ>")
+    m_txt.Append Trim("            <chNFe>" & n_chNFe & "</chNFe>")
+    m_txt.Append Trim("            <dhEvento>" & cFormatDate_NF_1(Date + Time) & "</dhEvento>")
+    m_txt.Append Trim("            <tpEvento>110112</tpEvento>")
+    m_txt.Append Trim("            <nSeqEvento>1</nSeqEvento>")
+    m_txt.Append Trim("            <verEvento>1.00</verEvento>")
+    m_txt.Append Trim("            <detEvento versao=""1.00"">")
+    m_txt.Append Trim("              <descEvento>Cancelamento por substituicao</descEvento>")
+    m_txt.Append Trim("              <xJust>" & m_xJust & "</xJust>")
+    m_txt.Append Trim("              <chNFeRef>" & n_chNFeRef & "</chNFeRef>")
+    m_txt.Append Trim("            </detEvento>")
+    m_txt.Append Trim("          </infEvento>")
+
+    m_txt.Append Trim("       <Signature xmlns=""http://www.w3.org/2000/09/xmldsig#"">")
+    m_txt.Append Trim("           <SignedInfo xmlns=""http://www.w3.org/2000/09/xmldsig#"">")
+    m_txt.Append Trim("               <CanonicalizationMethod Algorithm=""http://www.w3.org/TR/2001/REC-xml-c14n-20010315""/>")
+    m_txt.Append Trim("               <SignatureMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#rsa-sha1""/>")
+    m_txt.Append Trim("               <Reference URI=""#" & m_ID & """>")
+    m_txt.Append Trim("                   <Transforms>")
+    m_txt.Append Trim("                       <Transform Algorithm=""http://www.w3.org/2000/09/xmldsig#enveloped-signature""/>")
+    m_txt.Append Trim("                       <Transform Algorithm=""http://www.w3.org/TR/2001/REC-xml-c14n-20010315""/>")
+    m_txt.Append Trim("                   </Transforms>")
+    m_txt.Append Trim("                   <DigestMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#sha1""/>")
+    m_txt.Append Trim("                   <DigestValue>yzGYhUx1/XYYzksWB+fPR3Qc50c=</DigestValue>")
+    m_txt.Append Trim("               </Reference>")
+    m_txt.Append Trim("           </SignedInfo>")
+    m_txt.Append Trim("           <SignatureValue></SignatureValue>")
+    m_txt.Append Trim("           <KeyInfo>")
+    m_txt.Append Trim("               <X509Data>")
+    m_txt.Append Trim("                   <X509Certificate></X509Certificate>")
+    m_txt.Append Trim("               </X509Data>")
+    m_txt.Append Trim("           </KeyInfo>")
+    m_txt.Append Trim("       </Signature>")
+    m_txt.Append Trim("        </evento>")
+    m_txt.Append "      </envEvento>"
+
+    Dim xmlnf As New MSXML2.DOMDocument50
+    Dim xml_ass As String
+    xmlnf.LoadXml m_txt.toString
+    Dim NFe_Signature As New hNFe_Signature
+
+    xml_ass = NFe_Signature.Assina(xmlnf.xml, mCertificadoSel)
+    xmlnf.LoadXml xml_ass
+
+    get_msg_subst = xml_ass
 End Function
 
 Function NfeInutilizacao(mCertificadoSel As String, ByVal n_cOrgao As String, _
@@ -1658,9 +1798,155 @@ Function NfeConsReciNFe(ByVal nRec As String, m_xml_send As String, m_xml_resp A
     Exit Function
 End Function
 
+Function NfeManifestacaoDestinatario(mCertificadoSel, ByVal n_cOrgao As String, ByVal n_chNFe As String, ByVal m_CNPJ As String, ByVal tpEvento As String, ByVal xJust As String, m_xml_send As String, m_xml_resp As String) As Boolean
+    Dim xmldoc As New WinHttpRequest
+    Dim txt As String
+    Dim xmlnf As New MSXML2.DOMDocument50
+    Dim xmldom_resp As New MSXML2.DOMDocument50
+    Dim txt_xml As String
 
+    txt_xml = ""
+    txt_xml = txt_xml & "<?xml version=""1.0"" encoding=""utf-8""?>"
+    txt_xml = txt_xml & "<soap12:Envelope xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:soap12=""http://www.w3.org/2003/05/soap-envelope"">"
+    txt_xml = txt_xml & "  <soap12:Body>"
+    txt_xml = txt_xml & "    <nfeDadosMsg xmlns=""http://www.portalfiscal.inf.br/nfe/wsdl/NFeRecepcaoEvento4"">"
+    txt_xml = txt_xml & get_msg_manifest(mCertificadoSel, n_cOrgao, n_chNFe, m_CNPJ, tpEvento, xJust)
+    txt_xml = txt_xml & "</nfeDadosMsg>"
+    txt_xml = txt_xml & "  </soap12:Body>"
+    txt_xml = txt_xml & "</soap12:Envelope>"
 
+    If xmlnf.LoadXml(txt_xml) Then
+        pURL_NFeRecepcaoEvento4_xsd = m_path & "envEvento_v1.00.xsd"
+        txt = ValidaSchema(xmlnf, "http://www.portalfiscal.inf.br/nfe", pURL_NFeRecepcaoEvento4_xsd, False)
+        If txt = "Validado" Then
+            Call xmldoc.Open("POST", pURL_NFeRecepcaoEvento4 & "?wsdl", False)
+            Call xmldoc.SetRequestHeader("content-type", "application/soap+xml")
+            xmldoc.SetClientCertificate (mcert)
+            xmldoc.Option(WinHttpRequestOption_SelectCertificate) = (mcert)
+            xmldoc.Send (xmlnf.xml & "")
+            m_xml_send = xmlnf.xml
 
+            If xmldom_resp.LoadXml(xmldoc.ResponseText) Then
+                m_xml_resp = xmldoc.ResponseText
 
+                Dim ooo As IXMLDOMNode
+                Dim ooo2 As IXMLDOMNode
+                If ExistSelect(xmldom_resp.documentElement.childNodes, ooo, "Body") Then
+                    If ExistSelect(ooo.childNodes, ooo, "nfeResultMsg") Then
+                        If ExistSelect(ooo.childNodes, ooo, "retEnvEvento") Then
+                            If ExistSelect(ooo.childNodes, ooo2, "cStat") Then
+                                retNfeStatusServico.cStat = ooo2.Text
+                            End If
+                            If ExistSelect(ooo.childNodes, ooo2, "tpAmb") Then
+                                retNfeStatusServico.tpAmb = ooo2.Text
+                            End If
+                            If ExistSelect(ooo.childNodes, ooo2, "xMotivo") Then
+                                retNfeStatusServico.xMotivo = ooo2.Text
+                            End If
+                        End If
+                    End If
+                End If
+            Else
+                GetLogger.LogError "parseError: " & xmldom_resp.parseError.srcText
+            End If
+            NfeManifestacaoDestinatario = retNfeStatusServico.cStat = 107
+        Else
+            m_LastError = txt
+            GetLogger.LogDebug txt
+        End If
+    Else
+        GetLogger.LogError "parseError: " & xmlnf.parseError.srcText
+        SetFileBytes App.Path & "\error_1.txt", txt_xml
+        SetFileBytes App.Path & "\error_2.txt", xmlnf.Text
+    End If
+    GetLogger.LogInfo retNfeStatusServico.xMotivo
+    Set xmldoc = Nothing
+    On Error GoTo 0
+    Exit Function
+    Resume Next
+NfeManifestDestinatario_Error:
+    GetLogger.LogError "Err# " & Err.Number & ": " & Err.Description
+    If Err.Number = -2147012711 Then
+        GetLogger.LogError "Erro de certificado"
+    ElseIf Err.Number = -2147012852 Then
+        GetLogger.LogError "É necessário um certificado para concluir a autenticação do cliente"
+    ElseIf Err.Number = -2147012851 Then
+        GetLogger.LogError "A autoridade de certificação não é válida ou está incorreta"
+    Else
+        GetLogger.LogError "Error linha: " & Erl & "," & Err.Number & " (" & Err.Description & ") in procedure NfeManifestDestinatario"
+        GetLogger.LogError "Err# " & Err.Number
+    End If
+End Function
+
+Private Function get_msg_manifest(mCertificadoSel, ByVal n_cOrgao As String, ByVal n_chNFe As String, ByVal m_CNPJ As String, ByVal tpEvento As String, ByVal xJust As String) As String
+Dim m_txt As New hStringBuilder
+Dim descEvento As String
+
+    Select Case tpEvento
+        Case "210200": descEvento = "Confirmacao da Operacao"
+        Case "210210": descEvento = "Ciencia da Emissao"
+        Case "210220": descEvento = "Desconhecimento da Operacao"
+        Case "210240": descEvento = "Operacao nao Realizada"
+        Case Else:     descEvento = ""
+    End Select
+
+    m_txt.Clear
+    m_txt.Append Trim("      <envEvento xmlns=""http://www.portalfiscal.inf.br/nfe"" versao=""1.00"">")
+    m_txt.Append Trim("        <idLote>" & Format(Date + Time, "YYYYMMDDHHMMSS") & "</idLote>")
+
+    Dim m_ID As String
+    m_ID = "ID" & tpEvento & n_chNFe & "01"
+
+    m_txt.Append Trim("        <evento versao=""1.00"">")
+    m_txt.Append Trim("          <infEvento Id=""" & m_ID & """>")
+    m_txt.Append Trim("            <cOrgao>" & n_cOrgao & "</cOrgao>")
+    m_txt.Append Trim("            <tpAmb>" & m_Ambiente & "</tpAmb>")
+    m_txt.Append Trim("            <CNPJ>" & m_CNPJ & "</CNPJ>")
+    m_txt.Append Trim("            <chNFe>" & n_chNFe & "</chNFe>")
+    m_txt.Append Trim("            <dhEvento>" & cFormatDate_NF_1(Date + Time) & "</dhEvento>")
+    m_txt.Append Trim("            <tpEvento>" & tpEvento & "</tpEvento>")
+    m_txt.Append Trim("            <nSeqEvento>1</nSeqEvento>")
+    m_txt.Append Trim("            <verEvento>1.00</verEvento>")
+    m_txt.Append Trim("            <detEvento versao=""1.00"">")
+    m_txt.Append Trim("              <descEvento>" & descEvento & "</descEvento>")
+    If Len(xJust) > 0 Then
+    m_txt.Append Trim("              <xJust>" & xJust & "</xJust>")
+    End If
+    m_txt.Append Trim("            </detEvento>")
+    m_txt.Append Trim("          </infEvento>")
+
+    m_txt.Append Trim("       <Signature xmlns=""http://www.w3.org/2000/09/xmldsig#"">")
+    m_txt.Append Trim("           <SignedInfo xmlns=""http://www.w3.org/2000/09/xmldsig#"">")
+    m_txt.Append Trim("               <CanonicalizationMethod Algorithm=""http://www.w3.org/TR/2001/REC-xml-c14n-20010315""/>")
+    m_txt.Append Trim("               <SignatureMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#rsa-sha1""/>")
+    m_txt.Append Trim("               <Reference URI=""#" & m_ID & """>")
+    m_txt.Append Trim("                   <Transforms>")
+    m_txt.Append Trim("                       <Transform Algorithm=""http://www.w3.org/2000/09/xmldsig#enveloped-signature""/>")
+    m_txt.Append Trim("                       <Transform Algorithm=""http://www.w3.org/TR/2001/REC-xml-c14n-20010315""/>")
+    m_txt.Append Trim("                   </Transforms>")
+    m_txt.Append Trim("                   <DigestMethod Algorithm=""http://www.w3.org/2000/09/xmldsig#sha1""/>")
+    m_txt.Append Trim("                   <DigestValue>yzGYhUx1/XYYzksWB+fPR3Qc50c=</DigestValue>")
+    m_txt.Append Trim("               </Reference>")
+    m_txt.Append Trim("           </SignedInfo>")
+    m_txt.Append Trim("           <SignatureValue></SignatureValue>")
+    m_txt.Append Trim("           <KeyInfo>")
+    m_txt.Append Trim("               <X509Data>")
+    m_txt.Append Trim("                   <X509Certificate></X509Certificate>")
+    m_txt.Append Trim("               </X509Data>")
+    m_txt.Append Trim("           </KeyInfo>")
+    m_txt.Append Trim("       </Signature>")
+    m_txt.Append Trim("        </evento>")
+    m_txt.Append "      </envEvento>"
+
+    Dim xmlnf As New MSXML2.DOMDocument50
+    Dim xml_ass As String
+    xmlnf.LoadXml m_txt.toString
+    Dim NFe_Signature As New hNFe_Signature
+
+    xml_ass = NFe_Signature.Assina(xmlnf.xml, mCertificadoSel)
+    xmlnf.LoadXml xml_ass
+
+    get_msg_manifest = xml_ass
+End Function
 
 

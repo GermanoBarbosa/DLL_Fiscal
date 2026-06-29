@@ -7,7 +7,8 @@ ActiveX OCX (DLL) para emissão e gerenciamento de NF-e/NFC-e 4.00 em VB6.
 - **Geração de XML** de NF-e/NFC-e (modelo 55/65) conforme leiaute 4.00
 - **Envio de lote** (síncrono) para SEFAZ
 - **Consulta de Status** do serviço SEFAZ
-- **Cancelamento** de NF-e
+- **Cancelamento** de NF-e e **Cancelamento por Substituição** (evento 110112)
+- **Manifestação do Destinatário** (ciência, confirmação, desconhecimento, não realizada)
 - **Carta de Correção** (CC-e)
 - **Inutilização** de numeração
 - **Roteamento automático** por UF (AM, BA, CE, GO, MG, MS, MT, PE, PR, RJ, SP, SVRS) com suporte aos ambientes de Produção e Homologação
@@ -271,7 +272,37 @@ If nfe.NfeCartaCorrecao(serialCert, nfe.m_UF_Cod, chaveNF, cnpjEmitente, textoCo
 End If
 ```
 
-### 8. Sistema de Logging
+### 7. Cancelamento por Substituição (evento 110112)
+
+Substitui uma NF-e por outra, cancelando a original e referenciando a chave da NF-e substituta.
+
+```vb
+Dim xml_send As String, xml_resp As String
+If nfe.NfeCancelaPorSubstituicao(serialCert, nfe.m_UF_Cod, chaveNF, cnpjEmitente, justificativa, chaveNFSubstituta, xml_send, xml_resp) Then
+    MsgBox "Cancelamento por substituicao enviado. cStat: " & nfe.retNfeStatusServico.cStat
+End If
+```
+
+### 8. Manifestação do Destinatário (eventos 210200/210210/210220/210240)
+
+```vb
+Dim xml_send As String, xml_resp As String
+' Ciência da Emissão
+If nfe.NfeManifestacaoDestinatario(serialCert, nfe.m_UF_Cod, chaveNF, cnpjEmitente, "210210", "", xml_send, xml_resp) Then
+    MsgBox "Ciencia enviada. cStat: " & nfe.retNfeStatusServico.cStat
+End If
+
+' Confirmação da Operação
+nfe.NfeManifestacaoDestinatario serialCert, nfe.m_UF_Cod, chaveNF, cnpjEmitente, "210200", "", xml_send, xml_resp
+
+' Desconhecimento da Operação
+nfe.NfeManifestacaoDestinatario serialCert, nfe.m_UF_Cod, chaveNF, cnpjEmitente, "210220", "", xml_send, xml_resp
+
+' Operação não Realizada (requer justificativa)
+nfe.NfeManifestacaoDestinatario serialCert, nfe.m_UF_Cod, chaveNF, cnpjEmitente, "210240", justificativa, xml_send, xml_resp
+```
+
+### 9. Sistema de Logging
 
 O projeto possui um sistema centralizado de logging baseado em listeners. Todos os `Debug.Print` e `MsgBox` nos módulos da DLL foram substituídos pelo logger.
 
@@ -382,8 +413,8 @@ dependencias\              → Instaladores CAPICOM, MSXML5, SOAP SDK
 ### Cancelamento e Eventos
 | Funcionalidade | Descrição | Prioridade |
 |---|---|---|
-| Cancelamento por substituição (evento 110112) | Substituir NF-e por outra com correções | Média |
-| Manifestação do destinatário | Confirmação, ciência, desconhecimento, não realizar | Média |
+| ~~Cancelamento por substituição (evento 110112)~~ | ~~Substituir NF-e por outra com correções~~ | ~~Média~~ |
+| ~~Manifestação do destinatário~~ | ~~Confirmação, ciência, desconhecimento, não realizar~~ | ~~Média~~ |
 | EPEC | Evento Prévio de Emissão em Contingência | Média |
 
 ### Melhorias na Geração de XML
