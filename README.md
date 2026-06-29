@@ -17,6 +17,7 @@ ActiveX OCX (DLL) para emissão e gerenciamento de NF-e/NFC-e 4.00 em VB6.
 - **Consulta Situação NF-e** (consSitNFe) completa pela chave de acesso
 - **Distribuição de DF-e** (nfeDistDFe) — consulta de documentos fiscais pela SEFAZ nacional
 - **Download de NF-e** (downloadNFe) — download do XML da NF-e pelo mesmo webservice nacional
+- **Consulta de Recibo de Lote** (consReciNFe) — consulta do resultado de envio assíncrono
 
 ## Dependências
 
@@ -59,6 +60,19 @@ End If
 ' Consulta por chave de NF-e
 If nfe.NfeDistDFe("11222333000181", "", "43120922591766000167550010000000081832293328", xml_send, xml_resp) Then
     MsgBox nfe.retNFe_DistDFe.cStat & " - " & nfe.retNFe_DistDFe.xMotivo
+End If
+```
+
+### 0. Consulta de Recibo de Lote (consReciNFe)
+
+```vb
+Dim xml_send As String, xml_resp As String
+
+' nRec = recibo retornado pelo envio assincrono (indSinc=0)
+If nfe.NfeConsReciNFe("350000000000001", xml_send, xml_resp) Then
+    ' cStat=104 = lote processado
+    ' retNFe_ConsReciNFe.protNFe contem chNFe, nProt, digVal, cStat, xMotivo
+    MsgBox nfe.retNFe_ConsReciNFe.cStat & " - " & nfe.retNFe_ConsReciNFe.xMotivo
 End If
 ```
 
@@ -258,6 +272,7 @@ _files\
   hNFe4_StatusServico.cls  → Retorno de status
   hNFe4_EnviaLote2.cls     → Retorno de envio
   hNFe4_CartaCorrecao.cls  → Retorno de CC-e
+  hNFe4_ConsReciNFe.cls    → Retorno de consulta de recibo
   hNFe4_ConsSitNFe.cls     → Retorno de consulta situação
   hNFe4_DistDFe.cls        → Retorno de distribuição de DF-e
   hNFe4_DownloadNFe.cls    → Retorno de download de NF-e
@@ -275,7 +290,7 @@ dependencias\              → Instaladores CAPICOM, MSXML5, SOAP SDK
 ### Serviços SEFAZ não implementados
 | Funcionalidade | Descrição | Prioridade |
 |---|---|---|
-| **consReciNFe** | Consulta de recibo do lote (necessário para envio assíncrono) | Alta |
+| ~~**consReciNFe**~~ | ~~Consulta de recibo do lote (necessário para envio assíncrono)~~ | ~~Alta~~ |
 | ~~**nfeDistDFe**~~ | ~~Distribuição de DF-e (consulta e download)~~ | ~~Alta~~ |
 | ~~**downloadNFe**~~ | ~~Download do XML da NF-e~~ | ~~Alta~~ |
 

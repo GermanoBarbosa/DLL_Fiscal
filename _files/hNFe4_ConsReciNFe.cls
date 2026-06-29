@@ -6,16 +6,17 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "hNFe4_EnviaLote2_protNFe"
+Attribute VB_Name = "hNFe4_ConsReciNFe"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 Option Explicit
 
-Public xMotivo As String
+Public tpAmb As Long
 Public cStat As Long
-Public chNFe As String
-Public nProt As String
-Public digVal As String
+Public xMotivo As String
+Public nRec As String
+Public cUF As String
+Public protNFe As New hNFe4_EnviaLote2_protNFe
 
