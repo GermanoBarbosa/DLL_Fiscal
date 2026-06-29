@@ -16,6 +16,8 @@ Class=hNFe4_Doc_dest_enderDest; _files\hNFe4_Doc_dest_enderDest.cls
 Class=hNFe4_Doc_det; _files\hNFe4_Doc_det.cls
 Class=hNFe4_Doc_det_imposto; _files\hNFe4_Doc_det_imposto.cls
 Class=hNFe4_Doc_det_prod; _files\hNFe4_Doc_det_prod.cls
+Class=hNFe4_Doc_detPag; _files\hNFe4_Doc_detPag.cls
+Class=hNFe4_Doc_detPag_card; _files\hNFe4_Doc_detPag_card.cls
 Class=hNFe4_Doc_emit; _files\hNFe4_Doc_emit.cls
 Class=hNFe4_Doc_emit_enderEmit; _files\hNFe4_Doc_emit_enderEmit.cls
 Class=hNFe4_Doc_ide; _files\hNFe4_Doc_ide.cls
@@ -34,7 +36,7 @@ Module=mFuncs; _files\mFuncs.bas
 Class=hNFe4_ConsSitNFe; _files\hNFe4_ConsSitNFe.cls
 Startup="(None)"
 HelpFile=""
-Title="Módulo Fiscal"
+Title="Mï¿½dulo Fiscal"
 ExeName32="AxFiscal-048.dll"
 Path32="build"
 Command32=""
@@ -65,6 +67,6 @@ MaxNumberOfThreads=1
 ThreadingModel=1
 DebugStartupOption=0
 
-[Prático]
+[Prï¿½tico]
 cboUIAccess=0
 last-version=26.6.48

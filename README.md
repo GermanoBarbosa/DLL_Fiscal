@@ -264,6 +264,8 @@ _files\
   hNFe4_Doc_det.cls        → Detalhe (produtos)
   hNFe4_Doc_det_prod.cls   → Produto
   hNFe4_Doc_det_imposto.cls → Impostos
+  hNFe4_Doc_detPag.cls      → Forma de pagamento
+  hNFe4_Doc_detPag_card.cls → Cartão/PIX/Boletos
   hNFe4_Doc_total.cls      → Totais
   hNFe4_Doc_transp3.cls    → Transportadora
   hNFe4_Doc_veicTransp.cls → Veículo de transporte
@@ -306,7 +308,7 @@ dependencias\              → Instaladores CAPICOM, MSXML5, SOAP SDK
 | Funcionalidade | Descrição | Prioridade |
 |---|---|---|
 | **ProcNFe** | Geração do XML completo com protocolo (`nfeProc`) | Alta |
-| **Múltiplas formas de pagamento** | Suporte a mais de um `detPag` no grupo `pag` | Alta |
+| ~~**Múltiplas formas de pagamento**~~ | ~~Suporte a mais de um `detPag` no grupo `pag`~~ | ~~Alta~~ |
 | Detalhamento de cartão (`card`) | Bandeira, autorização, CNPJ credenciadora | Média |
 | Cobrança / Fatura (`cobr`, `dup`) | Atualmente comentado no código | Média |
 | Declaração de Importação (`DI` / `ADI`) | Campos para produtos importados | Média |

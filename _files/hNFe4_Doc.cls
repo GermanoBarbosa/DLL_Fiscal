@@ -34,12 +34,24 @@ Public m_veicTransp As New hNFe4_Doc_veicTransp
 Dim m_Itens() As hNFe4_Doc_det, m_cItens As Long
 Dim m_Reboques() As hNFe4_Doc_veicTransp, m_cReboques As Long
 Dim m_Volumes() As hNFe4_Doc_vol, m_cVolumes As Long
+Dim m_Pagamentos() As hNFe4_Doc_detPag, m_cPagamentos As Long
 
 
 Sub Clear_det()
     m_cItens = -1
     Erase m_Itens
     m_total.Clear
+End Sub
+
+Sub Clear_pag()
+    m_cPagamentos = -1
+    Erase m_Pagamentos
+End Sub
+
+Sub Add_pag(m_Item As hNFe4_Doc_detPag)
+    m_cPagamentos = m_cPagamentos + 1
+    ReDim Preserve m_Pagamentos(m_cPagamentos)
+    Set m_Pagamentos(m_cPagamentos) = m_Item
 End Sub
 
 Sub Add_det(m_Item As hNFe4_Doc_det, Optional m_flag As Long)
@@ -953,11 +965,58 @@ Function GetNota(m_Chave_2 As String, m_NF_NUM_NOTA As Long) As String
         'MsgBox "ajustar"
     End If
     txt_xml.Append Trim("            <pag>")
-    txt_xml.Append Trim("          <detPag>")
-    txt_xml.Append Trim("                <tPag>01</tPag>")
-    txt_xml.Append Trim("                <vPag>" & cFormatMoeda_NF_1(m_total.m_vNF) & "</vPag>")
-    txt_xml.Append Trim("              </detPag>")
-    txt_xml.Append Trim("              <vTroco>0.00</vTroco>")
+    If m_cPagamentos = -1 Then
+        m_cPagamentos = 0
+        ReDim Preserve m_Pagamentos(0)
+        Set m_Pagamentos(0) = New hNFe4_Doc_detPag
+        m_Pagamentos(0).tPag = "01"
+        m_Pagamentos(0).vPag = m_total.m_vNF
+    End If
+    Dim cc_pag As Long
+    For cc_pag = 0 To m_cPagamentos
+        With m_Pagamentos(cc_pag)
+            txt_xml.Append Trim("            <detPag>")
+            If Len(.indPag) > 0 Then
+                txt_xml.Append Trim("                <indPag>" & .indPag & "</indPag>")
+            End If
+            txt_xml.Append Trim("                <tPag>" & .tPag & "</tPag>")
+            If Len(.xPag) > 0 Then
+                txt_xml.Append Trim("                <xPag>" & .xPag & "</xPag>")
+            End If
+            txt_xml.Append Trim("                <vPag>" & cFormatMoeda_NF_1(.vPag) & "</vPag>")
+            If Len(.dPag) > 0 Then
+                txt_xml.Append Trim("                <dPag>" & .dPag & "</dPag>")
+            End If
+            If Len(.CNPJPag) > 0 Then
+                txt_xml.Append Trim("                <CNPJPag>" & .CNPJPag & "</CNPJPag>")
+            End If
+            If Len(.UFPag) > 0 Then
+                txt_xml.Append Trim("                <UFPag>" & .UFPag & "</UFPag>")
+            End If
+            If Len(.card.tpIntegra) > 0 Then
+                txt_xml.Append Trim("                <card>")
+                txt_xml.Append Trim("                    <tpIntegra>" & .card.tpIntegra & "</tpIntegra>")
+                If Len(.card.CNPJ) > 0 Then
+                    txt_xml.Append Trim("                    <CNPJ>" & .card.CNPJ & "</CNPJ>")
+                End If
+                If Len(.card.tBand) > 0 Then
+                    txt_xml.Append Trim("                    <tBand>" & .card.tBand & "</tBand>")
+                End If
+                If Len(.card.cAut) > 0 Then
+                    txt_xml.Append Trim("                    <cAut>" & .card.cAut & "</cAut>")
+                End If
+                If Len(.card.CNPJReceb) > 0 Then
+                    txt_xml.Append Trim("                    <CNPJReceb>" & .card.CNPJReceb & "</CNPJReceb>")
+                End If
+                If Len(.card.idTermPag) > 0 Then
+                    txt_xml.Append Trim("                    <idTermPag>" & .card.idTermPag & "</idTermPag>")
+                End If
+                txt_xml.Append Trim("                </card>")
+            End If
+            txt_xml.Append Trim("            </detPag>")
+        End With
+    Next
+    txt_xml.Append Trim("                <vTroco>0.00</vTroco>")
     txt_xml.Append Trim("            </pag>")
     
     If Len(m_infAdic.infCpl) > 0 Or Len(m_infAdic.m_infAdFisco) > 0 Or m_infAdic.obsCont_count > 0 Or m_infAdic.obsFisco_count > 0 Or m_infAdic.procRef_count > 0 Then
@@ -1173,6 +1232,7 @@ Private Sub Class_Initialize()
     m_cItens = -1
     m_cReboques = -1
     m_cVolumes = -1
+    m_cPagamentos = -1
     m_modFrete = "9"
 End Sub
 
