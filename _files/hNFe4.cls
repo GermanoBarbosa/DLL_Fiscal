@@ -279,7 +279,7 @@ Function Inicia(Optional ByVal n_ambiente As String) As Boolean
         End Select
 
     Else
-        ' ====================== HOMOLOGA??O ======================
+        ' ====================== HOMOLOGA��O ======================
         Select Case n_ambiente
             Case "SVAN", "SVC-AN"
                 ' SVAN/SVC-AN em homologa??o  SEFAZ nacional (hom1)
@@ -742,7 +742,7 @@ Private Function ValidaSchema(ByVal docXML As DOMDocument50, ByVal strUrn As Str
             lngTam2 = InStr(lngTam + 1, xd.parseError.reason, "'")
             lngTam2 = lngTam2 - lngTam - 1
             strCampoErrado = Mid(xd.parseError.reason, lngTam + 1, lngTam2)
-            ValidaSchema = ValidaSchema & "- Descri??o: O Campo " & Chr(34) & strCampoErrado & Chr(34) & " ? Inv?lido." & vbCrLf & "Por Favor, Verifique os Dados de sua Nota Fiscal." & vbCrLf
+            ValidaSchema = ValidaSchema & "- Descri��o: O Campo " & Chr(34) & strCampoErrado & Chr(34) & " � Inv�lido." & vbCrLf & "Por Favor, Verifique os Dados de sua Nota Fiscal." & vbCrLf
 
             ValidaSchema = ValidaSchema & "- Linha    : " & xd.parseError.Line & vbCrLf
             ValidaSchema = ValidaSchema & "- Posi??o  : " & xd.parseError.linepos
