@@ -20,6 +20,8 @@ ActiveX OCX (DLL) para emissão e gerenciamento de NF-e/NFC-e 4.00 em VB6.
 - **Distribuição de DF-e** (nfeDistDFe) — consulta de documentos fiscais pela SEFAZ nacional
 - **Download de NF-e** (downloadNFe) — download do XML da NF-e pelo mesmo webservice nacional
 - **Grupo Combustível (comb)** — cProdANP, descANP, CIDE, encerrante para postos
+- **Grupo Rastreamento (rastro)** — nLote, qLote, dFab, dVal, cAgreg para rastreamento de produtos
+- **ISSQN** — vBC, vAliq, vISSQN, cMunFG, cListServ, vDeducao, indISS, indIncentivo e demais campos para serviços
 - **EPEC** (Evento Prévio de Emissão em Contingência, código 110140) — registro de contingência antes da autorização
 - **Consulta de Recibo de Lote** (consReciNFe) — consulta do resultado de envio assíncrono
 
@@ -443,6 +445,7 @@ _files\
   hNFe4_Doc_det_prod_comb.cls  → Grupo combustível (comb)
   hNFe4_Doc_det_prod_comb_CIDE.cls → CIDE do combustível
   hNFe4_Doc_det_prod_comb_Enc.cls → Encerrante do combustível
+  hNFe4_Doc_det_prod_rastro.cls → Rastreamento de produtos
   hNFe4_Doc_det_imposto.cls → Impostos
   hNFe4_Doc_detPag.cls      → Forma de pagamento
   hNFe4_Doc_detPag_card.cls → Cartão/PIX/Boletos
@@ -497,8 +500,8 @@ dependencias\              → Instaladores CAPICOM, MSXML5, SOAP SDK
 | ~~Cobrança / Fatura (`cobr`, `dup`)~~ | ~~Atualmente comentado no código~~ | ~~Média~~ |
 | ~~Declaração de Importação (`DI` / `ADI`)~~ | ~~Campos para produtos importados~~ | ~~Média~~ |
 | ~~Grupo Combustível (`comb`)~~ | ~~Específico para postos de gasolina~~ | ~~Baixa~~ |
-| Grupo Rastreamento (`rastro`) | Rastreamento de produtos | Baixa |
-| ISSQN | Imposto sobre serviço | Baixa |
+| ~~Grupo Rastreamento (`rastro`)~~ | ~~Rastreamento de produtos~~ | ~~Baixa~~ |
+| ~~ISSQN~~ | ~~Imposto sobre serviço~~ | ~~Baixa~~ |
 | Exportação (`exporta`) | Venda para exterior | Baixa |
 
 ### Infraestrutura & Melhorias Gerais

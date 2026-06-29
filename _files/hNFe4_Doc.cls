@@ -535,6 +535,33 @@ Function GetNota(m_Chave_2 As String, m_NF_NUM_NOTA As Long) As String
             End If
         End With
 
+        With m_Itens(cc).prod
+            If .RastroCount > 0 Then
+                Dim cc_rastro As Long
+                For cc_rastro = 0 To .RastroCount - 1
+                    With .Rastro(cc_rastro)
+                    txt_xml.Append Trim("                   <rastro>")
+                    If Len(.nLote) > 0 Then
+                        txt_xml.Append Trim("                       <nLote>" & .nLote & "</nLote>")
+                    End If
+                    If .qLote > 0 Then
+                        txt_xml.Append Trim("                       <qLote>" & .qLote & "</qLote>")
+                    End If
+                    If Len(.dFab) > 0 Then
+                        txt_xml.Append Trim("                       <dFab>" & .dFab & "</dFab>")
+                    End If
+                    If Len(.dVal) > 0 Then
+                        txt_xml.Append Trim("                       <dVal>" & .dVal & "</dVal>")
+                    End If
+                    If Len(.cAgreg) > 0 Then
+                        txt_xml.Append Trim("                       <cAgreg>" & .cAgreg & "</cAgreg>")
+                    End If
+                    txt_xml.Append Trim("                   </rastro>")
+                End With
+            Next
+        End If
+        End With
+
         txt_xml.Append Trim("               </prod>")
 
         With m_Itens(cc).imposto
@@ -889,6 +916,28 @@ Function GetNota(m_Chave_2 As String, m_NF_NUM_NOTA As Long) As String
                 txt_xml.Append Trim("                   </IBSCBS>")
             End If
             
+            ' === ISSQN ===
+            If .m_ISSQN_vBC > 0 Or .m_ISSQN_vISSQN > 0 Then
+                txt_xml.Append Trim("                   <ISSQN>")
+                If .m_ISSQN_vBC > 0 Then txt_xml.Append Trim("                       <vBC>" & cFormatMoeda_NF_1(.m_ISSQN_vBC) & "</vBC>")
+                If .m_ISSQN_vAliq > 0 Then txt_xml.Append Trim("                       <vAliq>" & .m_ISSQN_vAliq & "</vAliq>")
+                If .m_ISSQN_vISSQN > 0 Then txt_xml.Append Trim("                       <vISSQN>" & cFormatMoeda_NF_1(.m_ISSQN_vISSQN) & "</vISSQN>")
+                If Len(.m_ISSQN_cMunFG) > 0 Then txt_xml.Append Trim("                       <cMunFG>" & .m_ISSQN_cMunFG & "</cMunFG>")
+                If Len(.m_ISSQN_cListServ) > 0 Then txt_xml.Append Trim("                       <cListServ>" & .m_ISSQN_cListServ & "</cListServ>")
+                If .m_ISSQN_vDeducao > 0 Then txt_xml.Append Trim("                       <vDeducao>" & cFormatMoeda_NF_1(.m_ISSQN_vDeducao) & "</vDeducao>")
+                If .m_ISSQN_vOutro > 0 Then txt_xml.Append Trim("                       <vOutro>" & cFormatMoeda_NF_1(.m_ISSQN_vOutro) & "</vOutro>")
+                If .m_ISSQN_vDescIncond > 0 Then txt_xml.Append Trim("                       <vDescIncond>" & cFormatMoeda_NF_1(.m_ISSQN_vDescIncond) & "</vDescIncond>")
+                If .m_ISSQN_vDescCond > 0 Then txt_xml.Append Trim("                       <vDescCond>" & cFormatMoeda_NF_1(.m_ISSQN_vDescCond) & "</vDescCond>")
+                If .m_ISSQN_vISSRet > 0 Then txt_xml.Append Trim("                       <vISSRet>" & cFormatMoeda_NF_1(.m_ISSQN_vISSRet) & "</vISSRet>")
+                If .m_ISSQN_indISS > 0 Then txt_xml.Append Trim("                       <indISS>" & .m_ISSQN_indISS & "</indISS>")
+                If Len(.m_ISSQN_cServico) > 0 Then txt_xml.Append Trim("                       <cServico>" & .m_ISSQN_cServico & "</cServico>")
+                If Len(.m_ISSQN_cMun) > 0 Then txt_xml.Append Trim("                       <cMun>" & .m_ISSQN_cMun & "</cMun>")
+                If Len(.m_ISSQN_cPais) > 0 Then txt_xml.Append Trim("                       <cPais>" & .m_ISSQN_cPais & "</cPais>")
+                If Len(.m_ISSQN_nProcesso) > 0 Then txt_xml.Append Trim("                       <nProcesso>" & .m_ISSQN_nProcesso & "</nProcesso>")
+                If .m_ISSQN_indIncentivo > 0 Then txt_xml.Append Trim("                       <indIncentivo>" & .m_ISSQN_indIncentivo & "</indIncentivo>")
+                txt_xml.Append Trim("                   </ISSQN>")
+            End If
+
             txt_xml.Append Trim("               </imposto>")
 
         End With

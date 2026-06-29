@@ -33,6 +33,8 @@ Public m_CEST       As String
 
 Dim m_DI() As hNFe4_Doc_det_prod_DI
 Public m_cDI As Long
+Dim m_rastro() As hNFe4_Doc_det_prod_rastro
+Public m_cRastro As Long
 Private m_comb_int As New hNFe4_Doc_det_prod_comb
 
 Public Property Get DiCount() As Long
@@ -43,6 +45,13 @@ Public Property Get Di(Index As Long) As hNFe4_Doc_det_prod_DI
     Set Di = m_DI(Index)
 End Property
 
+Public Property Get RastroCount() As Long
+    RastroCount = m_cRastro + 1
+End Property
+
+Public Property Get Rastro(Index As Long) As hNFe4_Doc_det_prod_rastro
+    Set Rastro = m_rastro(Index)
+End Property
 
 Public Property Get comb() As hNFe4_Doc_det_prod_comb
     Set comb = m_comb_int
@@ -59,8 +68,20 @@ Sub Add_di(m_Item As hNFe4_Doc_det_prod_DI)
     Set m_DI(m_cDI) = m_Item
 End Sub
 
+Sub Clear_rastro()
+    m_cRastro = -1
+    Erase m_rastro
+End Sub
+
+Sub Add_rastro(m_Item As hNFe4_Doc_det_prod_rastro)
+    m_cRastro = m_cRastro + 1
+    ReDim Preserve m_rastro(m_cRastro)
+    Set m_rastro(m_cRastro) = m_Item
+End Sub
+
 Private Sub Class_Initialize()
     m_cDI = -1
+    m_cRastro = -1
 End Sub
 
 

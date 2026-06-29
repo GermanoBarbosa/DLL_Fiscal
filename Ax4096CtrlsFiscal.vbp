@@ -46,10 +46,11 @@ Class=cLogger; _files\cLogger.cls
 Module=mLogger; _files\mLogger.bas
 Class=objGlobal; _files\objGlobal.cls
 Class=hNFe4_Doc_det_prod_comb_Enc; _files\hNFe4_Doc_det_prod_comb_Enc.cls
+Class=hNFe4_Doc_det_prod_rastro; _files\hNFe4_Doc_det_prod_rastro.cls
 Startup="(None)"
 HelpFile=""
 Title="Mï¿½dulo Fiscal"
-ExeName32="AxFiscal-048.dll"
+ExeName32="AxFiscal-053.dll"
 Path32="build"
 Command32=""
 Name="AxPraFiscal"
@@ -58,7 +59,7 @@ Description="ActiveX 2025-08-05 - Fiscal - GeTech Servicos"
 CompatibleMode="0"
 MajorVer=26
 MinorVer=6
-RevisionVer=52
+RevisionVer=54
 AutoIncrementVer=1
 ServerSupportFiles=0
 CompilationType=0
@@ -82,3 +83,6 @@ DebugStartupOption=0
 [Prï¿½tico]
 cboUIAccess=0
 last-version=26.6.48
+
+[Prático]
+last-version=26.6.53

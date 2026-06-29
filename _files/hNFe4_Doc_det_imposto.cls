@@ -127,6 +127,24 @@ Public m_IBSCBS_pCBS As Double              ' aliquota CBS
 Public m_IBSCBS_vCBS As Double              ' valor CBS
 Public m_IBSCBS_vCBSST As Double            ' valor CBS ST (opcional)
 
+' === ISSQN ===
+Public m_ISSQN_vBC As Double
+Public m_ISSQN_vAliq As Double
+Public m_ISSQN_vISSQN As Double
+Public m_ISSQN_cMunFG As String
+Public m_ISSQN_cListServ As String
+Public m_ISSQN_vDeducao As Double
+Public m_ISSQN_vOutro As Double
+Public m_ISSQN_vDescIncond As Double
+Public m_ISSQN_vDescCond As Double
+Public m_ISSQN_vISSRet As Double
+Public m_ISSQN_indISS As Long
+Public m_ISSQN_cServico As String
+Public m_ISSQN_cMun As String
+Public m_ISSQN_cPais As String
+Public m_ISSQN_nProcesso As String
+Public m_ISSQN_indIncentivo As Long
+
 ' === IS - Imposto Seletivo (NT 2025.002, type TIS) ===
 Public m_IS_CST As String                   ' CST do IS (obrigatorio)
 Public m_IS_cClassTrib As String            ' Codigo de Classificacao Tributaria do IS
