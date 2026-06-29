@@ -19,6 +19,7 @@ ActiveX OCX (DLL) para emissão e gerenciamento de NF-e/NFC-e 4.00 em VB6.
 - **Consulta Situação NF-e** (consSitNFe) completa pela chave de acesso
 - **Distribuição de DF-e** (nfeDistDFe) — consulta de documentos fiscais pela SEFAZ nacional
 - **Download de NF-e** (downloadNFe) — download do XML da NF-e pelo mesmo webservice nacional
+- **Grupo Combustível (comb)** — cProdANP, descANP, CIDE, encerrante para postos
 - **Consulta de Recibo de Lote** (consReciNFe) — consulta do resultado de envio assíncrono
 
 ## Dependências
@@ -190,6 +191,23 @@ With nfe.NFe
     det.prod.m_qTrib = 1
     det.prod.m_vUnTrib = 100
     det.prod.m_indTot = 1
+
+    ' --- GRUPO COMBUSTÍVEL (opcional, apenas para postos) ---
+    With det.prod.comb
+        .cProdANP = "123456"            ' Código ANP do combustível
+        .descANP = "GASOLINA C COMUM"
+        .UFComb = "SP"
+        .CIDE.qBCprod = 100
+        .CIDE.vAliqProd = 50
+        .CIDE.vCIDE = 5
+        With .encerrante
+            .nBico = "01"
+            .nTanque = "T-01"
+            .nBomba = "B-01"
+            .nEncerrante = "123456789"
+        End With
+    End With
+
     .Add_det det
 
     ' --- FRETE ---
@@ -406,6 +424,9 @@ _files\
   hNFe4_Doc_dest_enderDest.cls  → Endereço do destinatário
   hNFe4_Doc_det.cls        → Detalhe (produtos)
   hNFe4_Doc_det_prod.cls   → Produto
+  hNFe4_Doc_det_prod_comb.cls  → Grupo combustível (comb)
+  hNFe4_Doc_det_prod_comb_CIDE.cls → CIDE do combustível
+  hNFe4_Doc_det_prod_comb_Enc.cls → Encerrante do combustível
   hNFe4_Doc_det_imposto.cls → Impostos
   hNFe4_Doc_detPag.cls      → Forma de pagamento
   hNFe4_Doc_detPag_card.cls → Cartão/PIX/Boletos
@@ -459,7 +480,7 @@ dependencias\              → Instaladores CAPICOM, MSXML5, SOAP SDK
 | ~~Detalhamento de cartão (`card`)~~ | ~~Bandeira, autorização, CNPJ credenciadora~~ | ~~Média~~ |
 | ~~Cobrança / Fatura (`cobr`, `dup`)~~ | ~~Atualmente comentado no código~~ | ~~Média~~ |
 | ~~Declaração de Importação (`DI` / `ADI`)~~ | ~~Campos para produtos importados~~ | ~~Média~~ |
-| Grupo Combustível (`comb`) | Específico para postos de gasolina | Baixa |
+| ~~Grupo Combustível (`comb`)~~ | ~~Específico para postos de gasolina~~ | ~~Baixa~~ |
 | Grupo Rastreamento (`rastro`) | Rastreamento de produtos | Baixa |
 | ISSQN | Imposto sobre serviço | Baixa |
 | Exportação (`exporta`) | Venda para exterior | Baixa |

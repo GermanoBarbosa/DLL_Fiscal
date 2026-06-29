@@ -467,6 +467,74 @@ Function GetNota(m_Chave_2 As String, m_NF_NUM_NOTA As Long) As String
             End If
         End With
 
+        With m_Itens(cc).prod.comb
+            If Len(.cProdANP) > 0 Then
+                txt_xml.Append Trim("                   <comb>")
+                txt_xml.Append Trim("                       <cProdANP>" & .cProdANP & "</cProdANP>")
+                If Len(.descANP) > 0 Then
+                    txt_xml.Append Trim("                       <descANP>" & .descANP & "</descANP>")
+                End If
+                If .pGLP > 0 Then
+                    txt_xml.Append Trim("                       <pGLP>" & .pGLP & "</pGLP>")
+                End If
+                If .pMist > 0 Then
+                    txt_xml.Append Trim("                       <pMist>" & .pMist & "</pMist>")
+                End If
+                If Len(.CODIF) > 0 Then
+                    txt_xml.Append Trim("                       <CODIF>" & .CODIF & "</CODIF>")
+                End If
+                If .qTemp > 0 Then
+                    txt_xml.Append Trim("                       <qTemp>" & .qTemp & "</qTemp>")
+                End If
+                If Len(.UFComb) > 0 Then
+                    txt_xml.Append Trim("                       <UFComb>" & .UFComb & "</UFComb>")
+                End If
+                With .CIDE
+                    If .qBCprod > 0 Or .vAliqProd > 0 Or .vCIDE > 0 Then
+                        txt_xml.Append Trim("                       <CIDE>")
+                        If .qBCprod > 0 Then
+                            txt_xml.Append Trim("                           <qBCprod>" & .qBCprod & "</qBCprod>")
+                        End If
+                        If .vAliqProd > 0 Then
+                            txt_xml.Append Trim("                           <vAliqProd>" & cFormatMoeda_NF_1(.vAliqProd) & "</vAliqProd>")
+                        End If
+                        If .vCIDE > 0 Then
+                            txt_xml.Append Trim("                           <vCIDE>" & cFormatMoeda_NF_1(.vCIDE) & "</vCIDE>")
+                        End If
+                        txt_xml.Append Trim("                       </CIDE>")
+                    End If
+                End With
+                With .encerrante
+                    If Len(.nBico) > 0 Or Len(.nTanque) > 0 Or Len(.nBomba) > 0 Or Len(.nMotor) > 0 Or Len(.nEncerrante) > 0 Then
+                        txt_xml.Append Trim("                       <encerrante>")
+                        If Len(.nBico) > 0 Then
+                            txt_xml.Append Trim("                           <nBico>" & .nBico & "</nBico>")
+                        End If
+                        If Len(.nTanque) > 0 Then
+                            txt_xml.Append Trim("                           <nTanque>" & .nTanque & "</nTanque>")
+                        End If
+                        If Len(.nBomba) > 0 Then
+                            txt_xml.Append Trim("                           <nBomba>" & .nBomba & "</nBomba>")
+                        End If
+                        If Len(.nMotor) > 0 Then
+                            txt_xml.Append Trim("                           <nMotor>" & .nMotor & "</nMotor>")
+                        End If
+                        If Len(.nEncerrante) > 0 Then
+                            txt_xml.Append Trim("                           <nEncerrante>" & .nEncerrante & "</nEncerrante>")
+                        End If
+                        If Len(.dhInicio) > 0 Then
+                            txt_xml.Append Trim("                           <dhInicio>" & .dhInicio & "</dhInicio>")
+                        End If
+                        If Len(.dhFim) > 0 Then
+                            txt_xml.Append Trim("                           <dhFim>" & .dhFim & "</dhFim>")
+                        End If
+                        txt_xml.Append Trim("                       </encerrante>")
+                    End If
+                End With
+                txt_xml.Append Trim("                   </comb>")
+            End If
+        End With
+
         txt_xml.Append Trim("               </prod>")
 
         With m_Itens(cc).imposto
