@@ -31,4 +31,30 @@ Public m_vFrete     As Double
 Public m_indTot     As Long
 Public m_CEST       As String
 
- 
+Dim m_DI() As hNFe4_Doc_det_prod_DI
+Public m_cDI As Long
+
+Public Property Get DiCount() As Long
+    DiCount = m_cDI + 1
+End Property
+
+Public Property Get Di(Index As Long) As hNFe4_Doc_det_prod_DI
+    Set Di = m_DI(Index)
+End Property
+
+Sub Clear_di()
+    m_cDI = -1
+    Erase m_DI
+End Sub
+
+Sub Add_di(m_Item As hNFe4_Doc_det_prod_DI)
+    m_cDI = m_cDI + 1
+    ReDim Preserve m_DI(m_cDI)
+    Set m_DI(m_cDI) = m_Item
+End Sub
+
+Private Sub Class_Initialize()
+    m_cDI = -1
+End Sub
+
+

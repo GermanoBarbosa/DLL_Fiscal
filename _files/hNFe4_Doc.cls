@@ -402,6 +402,69 @@ Function GetNota(m_Chave_2 As String, m_NF_NUM_NOTA As Long) As String
                 txt_xml.Append Trim("                   <vFrete>" & cFormatMoeda_NF_1(.m_vFrete) & "</vFrete>")
             End If
             txt_xml.Append Trim("                   <indTot>" & .m_indTot & "</indTot>")
+            If .DiCount > 0 Then
+                Dim cc_di As Long, cc_adi As Long
+                For cc_di = 0 To .DiCount - 1
+                    With .Di(cc_di)
+                        txt_xml.Append Trim("                   <DI>")
+                        txt_xml.Append Trim("                       <nDI>" & .nDI & "</nDI>")
+                        If Len(.dDI) > 0 Then
+                            txt_xml.Append Trim("                       <dDI>" & .dDI & "</dDI>")
+                        End If
+                        If Len(.xLocDesemb) > 0 Then
+                            txt_xml.Append Trim("                       <xLocDesemb>" & .xLocDesemb & "</xLocDesemb>")
+                        End If
+                        If Len(.UFDesemb) > 0 Then
+                            txt_xml.Append Trim("                       <UFDesemb>" & .UFDesemb & "</UFDesemb>")
+                        End If
+                        If Len(.dDesemb) > 0 Then
+                            txt_xml.Append Trim("                       <dDesemb>" & .dDesemb & "</dDesemb>")
+                        End If
+                        If .tpViaTransp > 0 Then
+                            txt_xml.Append Trim("                       <tpViaTransp>" & .tpViaTransp & "</tpViaTransp>")
+                        End If
+                        If .vAFRMM > 0 Then
+                            txt_xml.Append Trim("                       <vAFRMM>" & cFormatMoeda_NF_1(.vAFRMM) & "</vAFRMM>")
+                        End If
+                        If .tpIntermedio > 0 Then
+                            txt_xml.Append Trim("                       <tpIntermedio>" & .tpIntermedio & "</tpIntermedio>")
+                        End If
+                        If Len(.CNPJ) > 0 Then
+                            txt_xml.Append Trim("                       <CNPJ>" & .CNPJ & "</CNPJ>")
+                        End If
+                        If Len(.UFTerceiro) > 0 Then
+                            txt_xml.Append Trim("                       <UFTerceiro>" & .UFTerceiro & "</UFTerceiro>")
+                        End If
+                        If Len(.cExportador) > 0 Then
+                            txt_xml.Append Trim("                       <cExportador>" & .cExportador & "</cExportador>")
+                        End If
+                        If .AdiCount > 0 Then
+                            For cc_adi = 0 To .AdiCount - 1
+                                With .Adi(cc_adi)
+                                    txt_xml.Append Trim("                       <ADI>")
+                                    If Len(.nAdicao) > 0 Then
+                                        txt_xml.Append Trim("                           <nAdicao>" & .nAdicao & "</nAdicao>")
+                                    End If
+                                    If .nSeqAdic > 0 Then
+                                        txt_xml.Append Trim("                           <nSeqAdic>" & .nSeqAdic & "</nSeqAdic>")
+                                    End If
+                                    If Len(.xFabricante) > 0 Then
+                                        txt_xml.Append Trim("                           <xFabricante>" & .xFabricante & "</xFabricante>")
+                                    End If
+                                    If .vDescDI > 0 Then
+                                        txt_xml.Append Trim("                           <vDescDI>" & cFormatMoeda_NF_1(.vDescDI) & "</vDescDI>")
+                                    End If
+                                    If Len(.nDraw) > 0 Then
+                                        txt_xml.Append Trim("                           <nDraw>" & .nDraw & "</nDraw>")
+                                    End If
+                                    txt_xml.Append Trim("                       </ADI>")
+                                End With
+                            Next
+                        End If
+                        txt_xml.Append Trim("                   </DI>")
+                    End With
+                Next
+            End If
         End With
 
         txt_xml.Append Trim("               </prod>")

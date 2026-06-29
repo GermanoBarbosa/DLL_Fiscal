@@ -458,7 +458,7 @@ dependencias\              → Instaladores CAPICOM, MSXML5, SOAP SDK
 | ~~**Múltiplas formas de pagamento**~~ | ~~Suporte a mais de um `detPag` no grupo `pag`~~ | ~~Alta~~ |
 | ~~Detalhamento de cartão (`card`)~~ | ~~Bandeira, autorização, CNPJ credenciadora~~ | ~~Média~~ |
 | ~~Cobrança / Fatura (`cobr`, `dup`)~~ | ~~Atualmente comentado no código~~ | ~~Média~~ |
-| Declaração de Importação (`DI` / `ADI`) | Campos para produtos importados | Média |
+| ~~Declaração de Importação (`DI` / `ADI`)~~ | ~~Campos para produtos importados~~ | ~~Média~~ |
 | Grupo Combustível (`comb`) | Específico para postos de gasolina | Baixa |
 | Grupo Rastreamento (`rastro`) | Rastreamento de produtos | Baixa |
 | ISSQN | Imposto sobre serviço | Baixa |
