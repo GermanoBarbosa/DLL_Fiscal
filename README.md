@@ -232,6 +232,14 @@ xml_aut = ""
 If nfe.EnviaLote2(xmlGerado, xml_aut, serialCertificado) Then
     MsgBox "cStat: " & nfe.retNFe_EnviaLote2.protNFe.cStat
     MsgBox "xMotivo: " & nfe.retNFe_EnviaLote2.protNFe.xMotivo
+
+    ' Gerar XML completo com protocolo (nfeProc)
+    Dim xmlProcNFe As String
+    xmlProcNFe = nfe.GerarProcNFe(xmlGerado, xml_aut)
+    If Len(xmlProcNFe) > 0 Then
+        ' Salvar o nfeProc em disco
+        SetFileBytes m_path & "\NFe\Proc\" & nfe.NFe.m_Chave_NF & "-proc.xml", xmlProcNFe
+    End If
 Else
     MsgBox "Falha: " & nfe.m_LastError
 End If
@@ -420,7 +428,7 @@ dependencias\              → Instaladores CAPICOM, MSXML5, SOAP SDK
 ### Melhorias na Geração de XML
 | Funcionalidade | Descrição | Prioridade |
 |---|---|---|
-| **ProcNFe** | Geração do XML completo com protocolo (`nfeProc`) | Alta |
+| ~~**ProcNFe**~~ | ~~Geração do XML completo com protocolo (`nfeProc`)~~ | ~~Alta~~ |
 | ~~**Múltiplas formas de pagamento**~~ | ~~Suporte a mais de um `detPag` no grupo `pag`~~ | ~~Alta~~ |
 | ~~Detalhamento de cartão (`card`)~~ | ~~Bandeira, autorização, CNPJ credenciadora~~ | ~~Média~~ |
 | ~~Cobrança / Fatura (`cobr`, `dup`)~~ | ~~Atualmente comentado no código~~ | ~~Média~~ |

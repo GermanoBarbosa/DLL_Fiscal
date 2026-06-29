@@ -1949,4 +1949,41 @@ Dim descEvento As String
     get_msg_manifest = xml_ass
 End Function
 
+Function GerarProcNFe(ByVal xmlNFe As String, ByVal xmlProtNFe As String) As String
+    Dim docNFe As New MSXML2.DOMDocument50
+    Dim docProt As New MSXML2.DOMDocument50
+    Dim docProc As New MSXML2.DOMDocument50
+    Dim nodeProc As IXMLDOMElement
+    Dim nodeNFe As IXMLDOMNode
+    Dim nodeProt As IXMLDOMNode
+    Dim cc As Long
 
+    If Not docNFe.LoadXml(xmlNFe) Then
+        GerarProcNFe = ""
+        Exit Function
+    End If
+    If Not docProt.LoadXml(xmlProtNFe) Then
+        GerarProcNFe = ""
+        Exit Function
+    End If
+
+    For cc = docNFe.documentElement.childNodes.Length - 1 To 0 Step -1
+        If docNFe.documentElement.childNodes(cc).baseName = "Signature" Then
+            docNFe.documentElement.removeChild docNFe.documentElement.childNodes(cc)
+            Exit For
+        End If
+    Next
+
+    Set nodeProc = docProc.createElement("nfeProc")
+    nodeProc.setAttribute "xmlns", "http://www.portalfiscal.inf.br/nfe"
+    nodeProc.setAttribute "versao", "4.00"
+    docProc.appendChild nodeProc
+
+    Set nodeNFe = docProc.importNode(docNFe.documentElement, True)
+    nodeProc.appendChild nodeNFe
+
+    Set nodeProt = docProc.importNode(docProt.documentElement, True)
+    nodeProc.appendChild nodeProt
+
+    GerarProcNFe = docProc.xml
+End Function
