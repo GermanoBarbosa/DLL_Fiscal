@@ -14,7 +14,7 @@ A|AxPraFiscal\Class Modules\hNFe4_Doc (hNFe4_Doc.cls) [mudou]
 A|AxPraFiscal\Class Modules\hNFe4_Doc_dest (hNFe4_Doc_dest.cls)
 A|AxPraFiscal\Class Modules\hNFe4_Doc_dest_enderDest (hNFe4_Doc_dest_enderDest.cls)
 A|AxPraFiscal\Class Modules\hNFe4_Doc_det (hNFe4_Doc_det.cls)
-A|AxPraFiscal\Class Modules\hNFe4_Doc_det_imposto (hNFe4_Doc_det_imposto.cls) [mudou]
+A|AxPraFiscal\Class Modules\hNFe4_Doc_det_imposto (hNFe4_Doc_det_imposto.cls)
 A|AxPraFiscal\Class Modules\hNFe4_Doc_det_prod (hNFe4_Doc_det_prod.cls)
 A|AxPraFiscal\Class Modules\hNFe4_Doc_detPag (hNFe4_Doc_detPag.cls)
 A|AxPraFiscal\Class Modules\hNFe4_Doc_detPag_card (hNFe4_Doc_detPag_card.cls)
@@ -24,7 +24,7 @@ A|AxPraFiscal\Class Modules\hNFe4_Doc_det_prod_comb_CID (hNFe4_Doc_det_prod_comb
 A|AxPraFiscal\Class Modules\hNFe4_Doc_det_prod_comb (hNFe4_Doc_det_prod_comb.cls)
 A|AxPraFiscal\Class Modules\hNFe4_Doc_emit (hNFe4_Doc_emit.cls)
 A|AxPraFiscal\Class Modules\hNFe4_Doc_emit_enderEmit (hNFe4_Doc_emit_enderEmit.cls)
-A|AxPraFiscal\Class Modules\hNFe4_Doc_ide (hNFe4_Doc_ide.cls)
+A|AxPraFiscal\Class Modules\hNFe4_Doc_ide (hNFe4_Doc_ide.cls) [mudou]
 A|AxPraFiscal\Class Modules\hNFe4_Doc_infAdic (hNFe4_Doc_infAdic.cls)
 A|AxPraFiscal\Class Modules\hNFe4_Doc_total (hNFe4_Doc_total.cls)
 A|AxPraFiscal\Class Modules\hNFe4_Doc_transp (hNFe4_Doc_transp3.cls)
@@ -46,4 +46,4 @@ A|AxPraFiscal\Class Modules\cLogger (cLogger.cls)
 A|AxPraFiscal\Modules\mLogger (mLogger.bas)
 A|AxPraFiscal\Class Modules\objGlobal (objGlobal.cls)
 A|AxPraFiscal\Class Modules\hNFe4_Doc_det_prod_comb_Enc (hNFe4_Doc_det_prod_comb_Enc.cls)
-A|AxPraFiscal\Class Modules\Class1 (hNFe4_Doc_det_prod_rastro.cls)
+A|AxPraFiscal\Class Modules\hNFe4_Doc_det_prod_rastro (hNFe4_Doc_det_prod_rastro.cls)

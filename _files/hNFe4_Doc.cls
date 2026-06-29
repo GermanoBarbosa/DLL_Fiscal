@@ -262,7 +262,9 @@ Function GetNota(m_Chave_2 As String, m_NF_NUM_NOTA As Long) As String
     txt_xml.Append Trim("           <ide>")
     txt_xml.Append Trim("               <cUF>" & m_ide.m_cUF & "</cUF>")
     txt_xml.Append Trim("               <cNF>" & m_ide.m_cNF & "</cNF>")
-    txt_xml.Append Trim("               <natOp>VDA MERC ADQ TERCEIR</natOp>")
+    If Len(m_ide.m_natOp) > 0 Then
+        txt_xml.Append Trim("               <natOp>" & m_ide.m_natOp & "</natOp>")
+    End If
     'txt_xml.Append Trim("               <indPag>1</indPag>")
     txt_xml.Append Trim("               <mod>" & m_ide.m_mod & "</mod>")
     txt_xml.Append Trim("               <serie>" & m_ide.m_serie & "</serie>")

@@ -477,41 +477,79 @@ dependencias\              → Instaladores CAPICOM, MSXML5, SOAP SDK
 
 ## Roadmap — Funcionalidades Pendentes
 
-### Serviços SEFAZ não implementados
-| Funcionalidade | Descrição | Prioridade |
-|---|---|---|
-| ~~**consReciNFe**~~ | ~~Consulta de recibo do lote (necessário para envio assíncrono)~~ | ~~Alta~~ |
-| ~~**nfeDistDFe**~~ | ~~Distribuição de DF-e (consulta e download)~~ | ~~Alta~~ |
-| ~~**downloadNFe**~~ | ~~Download do XML da NF-e~~ | ~~Alta~~ |
+> Status geral de conformidade NF-e 4.00: **~65%**. Todos os 8 webservices SEFAZ obrigatórios estão implementados.
 
-### Cancelamento e Eventos
-| Funcionalidade | Descrição | Prioridade |
-|---|---|---|
-| ~~Cancelamento por substituição (evento 110112)~~ | ~~Substituir NF-e por outra com correções~~ | ~~Média~~ |
-| ~~Manifestação do destinatário~~ | ~~Confirmação, ciência, desconhecimento, não realizar~~ | ~~Média~~ |
-| ~~EPEC~~ | ~~Evento Prévio de Emissão em Contingência~~ | ~~Média~~ |
+### Alta Prioridade — Campos Obrigatórios Atualmente Hardcoded
 
-### Melhorias na Geração de XML
-| Funcionalidade | Descrição | Prioridade |
+| Funcionalidade | Descrição | Esforço |
 |---|---|---|
-| ~~**ProcNFe**~~ | ~~Geração do XML completo com protocolo (`nfeProc`)~~ | ~~Alta~~ |
-| ~~**Múltiplas formas de pagamento**~~ | ~~Suporte a mais de um `detPag` no grupo `pag`~~ | ~~Alta~~ |
-| ~~Detalhamento de cartão (`card`)~~ | ~~Bandeira, autorização, CNPJ credenciadora~~ | ~~Média~~ |
-| ~~Cobrança / Fatura (`cobr`, `dup`)~~ | ~~Atualmente comentado no código~~ | ~~Média~~ |
-| ~~Declaração de Importação (`DI` / `ADI`)~~ | ~~Campos para produtos importados~~ | ~~Média~~ |
-| ~~Grupo Combustível (`comb`)~~ | ~~Específico para postos de gasolina~~ | ~~Baixa~~ |
-| ~~Grupo Rastreamento (`rastro`)~~ | ~~Rastreamento de produtos~~ | ~~Baixa~~ |
-| ~~ISSQN~~ | ~~Imposto sobre serviço~~ | ~~Baixa~~ |
-| Exportação (`exporta`) | Venda para exterior | Baixa |
+| ~~`natOp` configurável~~ | ~~Atualmente hardcoded `"VDA MERC ADQ TERCEIR"` — expor como `Public m_natOp As String` no `<ide>`~~ | ~~Pequeno~~ |
+| `tpNF` configurável | Hardcoded `1` (saída) — expor campo para permitir notas de entrada (`0`) | Pequeno |
+| `finNFe` configurável | Hardcoded `1` (normal) — expor campo para complementar/ajuste/devolução | Pequeno |
+| `indFinal` configurável | Hardcoded `1` — expor como campo público | Pequeno |
+| `indPres` configurável | Hardcoded (`0` mod55 / `1` mod65) — expor para e-commerce, teleatendimento, etc. | Pequeno |
+| `procEmi` configurável | Hardcoded `0` — expor como campo público | Pequeno |
+| `indPag` no `<ide>` | Declarado mas comentado — não é gerado no XML | Pequeno |
+| `cEAN` / `cEANTrib` | Campos `m_cEAN`/`m_cEANTrib` existem mas são ignorados — sempre geram `"SEM GTIN"` | Pequeno |
 
-### Infraestrutura & Melhorias Gerais
+### Alta Prioridade — Grupos XML Ausentes
+
+| Funcionalidade | Descrição | Esforço |
+|---|---|---|
+| **Grupo `<NFref>`** (NF-e referenciadas) | `refNFe`, `refNF`, `refNFP`, `refCTe`, `refECF` — obrigatório para diversos cenários (devolução, complementar) | Médio |
+| **Grupo `<II>` por item** | `vBC`, `vDespAdu`, `vII`, `vIOF` — `vII` existe no total mas não é gerado por produto | Médio |
+| **Grupo `<infRespTec>`** | Responsável técnico — obrigatório desde NT 2018.005 | Médio |
+| **`<PISST>` / `<COFINSST>`** | PIS e COFINS Substituição Tributária por item | Médio |
+
+### Média Prioridade — Grupos XML Ausentes
+
+| Funcionalidade | Descrição | Esforço |
+|---|---|---|
+| **Grupo `<autXML>`** | Autorizados para download do XML (NT 2018.005) | Pequeno |
+| **Grupo `<infIntermed>`** | Intermediador/marketplace (NT 2018.005) | Pequeno |
+| **Grupo `<retirada>`** | Local de retirada (CNPJ/CPF, xNome, endereço completo) | Médio |
+| **Grupo `<entrega>`** | Local de entrega (mesma estrutura do retirada) | Médio |
+| **Grupo `<compra>`** | Informações de compra (xNEmp, xPed, xCont) — útil para notas de entrada | Pequeno |
+| **`<ISSQNtot>`** | Totais de ISSQN no grupo `<total>` (vServ, vBC, vISS, vPIS, vCOFINS, etc.) | Médio |
+| **`<retTrib>`** | Retenção de tributos no `<total>` (vRetPIS, vRetCOFINS, vRetCSLL, vIRRF, vRetPrev) | Médio |
+| **`nFCI` no produto** | Ficha de Conteúdo de Importação | Pequeno |
+| **`cBenef` no produto** | Código de benefício fiscal da UF | Pequeno |
+| **`xPed` / `nItemPed` no produto** | Pedido de compra do cliente | Pequeno |
+| **`NVE` no produto** | Nomenclatura de Valor Aduaneiro e Estatística (até 8) | Pequeno |
+| **`infAdProd` no produto** | Informações adicionais do produto | Pequeno |
+| **`dhCont` / `xJust` contingência** | Campos obrigatórios para tpEmis 2–9 — não gerados atualmente | Médio |
+| **Alteração automática `tpEmis`** | Ao usar SVAN/SVC-RS/SVC-AN, o campo `tpEmis` não muda no XML | Pequeno |
+| **SVC-SP (tpEmis=8)** | Nova modalidade de contingência de SP — sem roteamento | Pequeno |
+
+### Baixa Prioridade
+
+| Funcionalidade | Descrição | Esforço |
+|---|---|---|
+| **Grupo `<exporta>`** | Informações de exportação (UFSaidaPais, xLocExporta, xLocDespacho) | Médio |
+| **Grupo `<detExport>`** | Detalhamento de exportação por item (nDraw, exportInd) | Médio |
+| **Grupo `<veicProd>`** | Detalhamento de veículos novos (chassi, tpOp, etc.) | Grande |
+| **Grupo `<med>`** | Detalhamento de medicamentos (nLote, qLote, dFab, dVal, vPMC) | Médio |
+| **Grupo `<arma>`** | Detalhamento de armas (tpArma, nSerie, nCano, nCano, nCano) | Médio |
+| **Grupo `<gCred>`** | Crédito de ICNS (CNPJ, vCredICMS) | Pequeno |
+| **`<vagao>` / `<balsa>`** | Identificação do vagão/balsa no transporte ferroviário/hidroviário | Pequeno |
+| **`<lacres>`** | Lacres nas volumes (nLacre) | Pequeno |
+| **`ISUF` no destinatário** | Inscrição na Suframa | Pequeno |
+| **`indEscala` / `CNPJFab`** | Produção em escala relevante / CNPJ do fabricante | Pequeno |
+| **`extIPI` / `nRECOPI`** | Código de enquadramento IPI / RECOPI | Pequeno |
+| **`vTroco` configurável** | Atualmente hardcoded como `"0.00"` no grupo `pag` | Pequeno |
+| **`IEST` no emitente** | IE do substituto tributário | Pequeno |
+
+### Infraestrutura
+
 | Funcionalidade | Descrição | Prioridade |
 |---|---|---|
-| ~~**Envio ass�ncrono**~~ | ~~Suporte a indSinc=0 para lotes com m�ltiplas NF-e~~ | ~~Alta~~ |
-| ~~**Validação de regras de negócio**~~ | ~~Além da validação XSD, validar tamanhos, obrigatoriedade e domínios~~ | ~~Média~~ |
-| ~~**QR Code NFC-e**~~ | ~~Mapeamento completo das URLs de consulta por UF + CSC dinâmico~~ | ~~Média~~ |
-| ~~Envio de lote com múltiplas NF-e~~ | ~~Suporte a mais de 1 NF-e por lote~~ | ~~Média~~ |
-| ~~**Logger configurável**~~ | ~~Substituir `Debug.Print` e `MsgBox` por sistema de log com `ILogListener`~~ | ~~Média~~ |
+| **XSD `envEvento_v1.00.xsd`** | Validar eventos (cancelamento, CC-e, manifestação, EPEC) — arquivo ausente no Schema-4.00 | Média |
+| **XSD `distDFeInt_v1.01.xsd`** | Validar NfeDistDFe — arquivo ausente | Média |
+| **XSD `downloadNFe_v1.01.xsd`** | Validar NfeDownloadNF — arquivo ausente | Média |
+| **XSD `consReciNFe_v4.00.xsd`** | Validar NfeConsReciNFe — arquivo ausente | Média |
+| **QR Code NFC-e por UF** | URLs de consulta NFC-e específicas de cada UF para homologação | Baixa |
+| **FileLogger listener** | Listener de log para gravação em arquivo (mencionado como "futuro" no README) | Baixa |
+| **Validação de regras de negócio** | Ampliar cobertura do `cNFeValidator` para novos campos/grupos implementados | Média |
 
 ## Licença
 

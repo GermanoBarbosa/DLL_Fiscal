@@ -23,6 +23,7 @@ Public m_dhEmi As Date
 
 Public m_cMunFG  As String
 
+Public m_natOp As String
 Public m_dhSaiEnt
 'Public m_tpNF>1</tpNF>
 Public m_idDest As Long '>2</idDest>
