@@ -14,6 +14,7 @@ ActiveX OCX (DLL) para emissão e gerenciamento de NF-e/NFC-e 4.00 em VB6.
 - **Contingências** SVAN, SVC-RS, SVC-AN
 - **Assinatura digital XML** com certificado A1/A3 via CAPICOM
 - **Validação** automática por XSD antes do envio
+- **Consulta Situação NF-e** (consSitNFe) completa pela chave de acesso
 
 ## Dependências
 
@@ -40,6 +41,17 @@ Execute `instala.bat` como administrador para instalar as dependências.
 1. Abra `com_teste.vbg` (VB Group) no VB6
 2. Compile a DLL `Ax4096CtrlsFiscal.vbp` (ActiveX DLL → `build\AxFiscal-048.dll`)
 3. O projeto de teste `teste\Project1.vbp` já referência a OCX
+
+### 0. Consultar Situação da NF-e (consSitNFe)
+
+```vb
+Dim xml_send As String, xml_resp As String
+If nfe.NfeConsultaProtocolo("43120922591766000167550010000000081832293328", xml_send, xml_resp) Then
+    MsgBox nfe.retNFe_ConsSitNFe.cStat & " - " & nfe.retNFe_ConsSitNFe.xMotivo
+Else
+    MsgBox "Falha: " & nfe.m_LastError
+End If
+```
 
 ## Utilização Básica
 
@@ -213,6 +225,7 @@ _files\
   hNFe4_StatusServico.cls  → Retorno de status
   hNFe4_EnviaLote2.cls     → Retorno de envio
   hNFe4_CartaCorrecao.cls  → Retorno de CC-e
+  hNFe4_ConsSitNFe.cls     → Retorno de consulta situação
   hNFe4_Inutilizacao.cls   → Retorno de inutilização
   hNFe_Signature.cls       → Assinatura digital XML
   hSHA1.cls                → Cálculo SHA-1
@@ -221,6 +234,44 @@ _files\
   mFuncs.bas               → Funções utilitárias
 dependencias\              → Instaladores CAPICOM, MSXML5, SOAP SDK
 ```
+
+## Roadmap — Funcionalidades Pendentes
+
+### Serviços SEFAZ não implementados
+| Funcionalidade | Descrição | Prioridade |
+|---|---|---|
+| **consReciNFe** | Consulta de recibo do lote (necessário para envio assíncrono) | Alta |
+| **nfeDistDFe** | Distribuição de DF-e (consulta e download de NF-e autorizadas) | Alta |
+| **downloadNFe** | Download do XML da NF-e | Alta |
+
+### Cancelamento e Eventos
+| Funcionalidade | Descrição | Prioridade |
+|---|---|---|
+| Cancelamento por substituição (evento 110112) | Substituir NF-e por outra com correções | Média |
+| Manifestação do destinatário | Confirmação, ciência, desconhecimento, não realizar | Média |
+| EPEC | Evento Prévio de Emissão em Contingência | Média |
+
+### Melhorias na Geração de XML
+| Funcionalidade | Descrição | Prioridade |
+|---|---|---|
+| **ProcNFe** | Geração do XML completo com protocolo (`nfeProc`) | Alta |
+| **Múltiplas formas de pagamento** | Suporte a mais de um `detPag` no grupo `pag` | Alta |
+| Detalhamento de cartão (`card`) | Bandeira, autorização, CNPJ credenciadora | Média |
+| Cobrança / Fatura (`cobr`, `dup`) | Atualmente comentado no código | Média |
+| Declaração de Importação (`DI` / `ADI`) | Campos para produtos importados | Média |
+| Grupo Combustível (`comb`) | Específico para postos de gasolina | Baixa |
+| Grupo Rastreamento (`rastro`) | Rastreamento de produtos | Baixa |
+| ISSQN | Imposto sobre serviço | Baixa |
+| Exportação (`exporta`) | Venda para exterior | Baixa |
+
+### Infraestrutura & Melhorias Gerais
+| Funcionalidade | Descrição | Prioridade |
+|---|---|---|
+| **Envio assíncrono** | Suporte a `indSinc=0` para lotes com múltiplas NF-e | Alta |
+| **Validação de regras de negócio** | Além da validação XSD, validar tamanhos, obrigatoriedade e domínios | Média |
+| **QR Code NFC-e** | Mapeamento completo das URLs de consulta por UF + CSC dinâmico | Média |
+| Envio de lote com múltiplas NF-e | Suporte a mais de 1 NF-e por lote | Média |
+| Logger configurável | Substituir `Debug.Print` e `MsgBox` por sistema de log | Média |
 
 ## Licença
 

@@ -18,6 +18,7 @@ Public retNfeStatusServico  As New hNFe4_StatusServico
 Public retNFe_EnviaLote2    As New hNFe4_EnviaLote2
 Public retNfeInutilizacao   As New hNFe4_Inutilizacao
 Public retNfeCartaCorrecao  As New hNFe4_CartaCorrecao
+Public retNFe_ConsSitNFe    As New hNFe4_ConsSitNFe
 
 
 Dim WithEvents e_xmldom As WinHttp.WinHttpRequest
@@ -31,6 +32,8 @@ Dim pURL_NFeRecepcaoEvento4_xsd As String
 Dim pURL_NFeInutilizacao As String
 Dim pURL_NFeInutilizacao_xsd As String
 Dim pURL_NFeRecepcaoEvento4 As String
+Dim pURL_NFeConsultaProtocolo As String
+Dim pURL_NFeConsultaProtocolo_xsd As String
 
 
 Private mcert As String
@@ -144,6 +147,7 @@ Function Inicia(Optional ByVal n_ambiente As String) As Boolean
                 pURL_NFeAutorizacao_nfce = "https://nfce.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx"
                 pURL_NFeInutilizacao = "https://www.sefazvirtual.fazenda.gov.br/NFeInutilizacao4/NFeInutilizacao4.asmx"
                 pURL_NFeRecepcaoEvento4 = "https://www.sefazvirtual.fazenda.gov.br/NFeRecepcaoEvento4/NFeRecepcaoEvento4.asmx"
+                pURL_NFeConsultaProtocolo = "https://www.sefazvirtual.fazenda.gov.br/NFeConsultaProtocolo4/NFeConsultaProtocolo4.asmx"
 
             Case "SVC-RS"
                 pURL_NfeStatusServico = "https://nfe.svrs.rs.gov.br/ws/NfeStatusServico/NfeStatusServico4.asmx"
@@ -151,6 +155,7 @@ Function Inicia(Optional ByVal n_ambiente As String) As Boolean
                 pURL_NFeAutorizacao_nfce = "https://nfce.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx"
                 pURL_NFeInutilizacao = "https://nfe.svrs.rs.gov.br/ws/NfeInutilizacao/NFeInutilizacao4.asmx"
                 pURL_NFeRecepcaoEvento4 = "https://nfe.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento4.asmx"
+                pURL_NFeConsultaProtocolo = "https://nfe.svrs.rs.gov.br/ws/NfeConsultaProtocolo/NFeConsultaProtocolo4.asmx"
 
             Case Else
                 ' Roteamento por UF (estados com gateway próprio)
@@ -161,6 +166,7 @@ Function Inicia(Optional ByVal n_ambiente As String) As Boolean
                         pURL_NFeAutorizacao_nfce = "https://nfce.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx"
                         pURL_NFeInutilizacao = "https://nfe.sefaz.am.gov.br/services2/services/NfeInutilizacao4"
                         pURL_NFeRecepcaoEvento4 = "https://nfe.sefaz.am.gov.br/services2/services/NfeRecepcaoEvento4"
+                        pURL_NFeConsultaProtocolo = "https://nfe.sefaz.am.gov.br/services2/services/NfeConsultaProtocolo4"
 
                     Case "29"   ' BA  Bahia
                         pURL_NfeStatusServico = "https://nfe.sefaz.ba.gov.br/webservices/NFeStatusServico4/NFeStatusServico4.asmx"
@@ -168,6 +174,7 @@ Function Inicia(Optional ByVal n_ambiente As String) As Boolean
                         pURL_NFeAutorizacao_nfce = "https://nfce.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx"
                         pURL_NFeInutilizacao = "https://nfe.sefaz.ba.gov.br/webservices/NFeInutilizacao4/NFeInutilizacao4.asmx"
                         pURL_NFeRecepcaoEvento4 = "https://nfe.sefaz.ba.gov.br/webservices/NFeRecepcaoEvento4/NFeRecepcaoEvento4.asmx"
+                        pURL_NFeConsultaProtocolo = "https://nfe.sefaz.ba.gov.br/webservices/NFeConsultaProtocolo4/NFeConsultaProtocolo4.asmx"
 
                     Case "23"   ' CE  Ceará
                         pURL_NfeStatusServico = "https://nfe.sefaz.ce.gov.br/nfe/services/NfeStatusServico4"
@@ -175,6 +182,7 @@ Function Inicia(Optional ByVal n_ambiente As String) As Boolean
                         pURL_NFeAutorizacao_nfce = "https://nfce.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx"
                         pURL_NFeInutilizacao = "https://nfe.sefaz.ce.gov.br/nfe/services/NFeInutilizacao4"
                         pURL_NFeRecepcaoEvento4 = "https://nfe.sefaz.ce.gov.br/nfe/services/NFeRecepcaoEvento4"
+                        pURL_NFeConsultaProtocolo = "https://nfe.sefaz.ce.gov.br/nfe/services/NFeConsultaProtocolo4"
 
                     Case "52"   ' GO  Goiás
                         pURL_NfeStatusServico = "https://nfe.sefaz.go.gov.br/nfe/services/NfeStatusServico4"
@@ -182,6 +190,7 @@ Function Inicia(Optional ByVal n_ambiente As String) As Boolean
                         pURL_NFeAutorizacao_nfce = "https://nfce.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx"
                         pURL_NFeInutilizacao = "https://nfe.sefaz.go.gov.br/nfe/services/NFeInutilizacao4"
                         pURL_NFeRecepcaoEvento4 = "https://nfe.sefaz.go.gov.br/nfe/services/NFeRecepcaoEvento4"
+                        pURL_NFeConsultaProtocolo = "https://nfe.sefaz.go.gov.br/nfe/services/NFeConsultaProtocolo4"
 
                     Case "31"   ' MG  Minas Gerais
                         pURL_NfeStatusServico = "https://nfe.fazenda.mg.gov.br/nfe/services/NfeStatusServico4"
@@ -189,6 +198,7 @@ Function Inicia(Optional ByVal n_ambiente As String) As Boolean
                         pURL_NFeAutorizacao_nfce = "https://nfce.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx"
                         pURL_NFeInutilizacao = "https://nfe.fazenda.mg.gov.br/nfe/services/NFeInutilizacao4"
                         pURL_NFeRecepcaoEvento4 = "https://nfe.fazenda.mg.gov.br/nfe/services/NFeRecepcaoEvento4"
+                        pURL_NFeConsultaProtocolo = "https://nfe.fazenda.mg.gov.br/nfe/services/NfeConsultaProtocolo4"
 
                     Case "50"   ' MS  Mato Grosso do Sul
                         pURL_NfeStatusServico = "https://nfe.sefaz.ms.gov.br/ws/NfeStatusServico4"
@@ -196,6 +206,7 @@ Function Inicia(Optional ByVal n_ambiente As String) As Boolean
                         pURL_NFeAutorizacao_nfce = "https://nfce.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx"
                         pURL_NFeInutilizacao = "https://nfe.sefaz.ms.gov.br/ws/NFeInutilizacao4"
                         pURL_NFeRecepcaoEvento4 = "https://nfe.sefaz.ms.gov.br/ws/NFeRecepcaoEvento4"
+                        pURL_NFeConsultaProtocolo = "https://nfe.sefaz.ms.gov.br/ws/NfeConsultaProtocolo4"
 
                     Case "51"   ' MT  Mato Grosso
                         pURL_NfeStatusServico = "https://nfe.sefaz.mt.gov.br/nfe/services/NfeStatusServico4"
@@ -203,6 +214,7 @@ Function Inicia(Optional ByVal n_ambiente As String) As Boolean
                         pURL_NFeAutorizacao_nfce = "https://nfce.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx"
                         pURL_NFeInutilizacao = "https://nfe.sefaz.mt.gov.br/nfe/services/NFeInutilizacao4"
                         pURL_NFeRecepcaoEvento4 = "https://nfe.sefaz.mt.gov.br/nfe/services/NFeRecepcaoEvento4"
+                        pURL_NFeConsultaProtocolo = "https://nfe.sefaz.mt.gov.br/nfe/services/NfeConsultaProtocolo4"
 
                     Case "26"   ' PE  Pernambuco
                         pURL_NfeStatusServico = "https://nfe.sefaz.pe.gov.br/nfe/services/NfeStatusServico4"
@@ -210,6 +222,7 @@ Function Inicia(Optional ByVal n_ambiente As String) As Boolean
                         pURL_NFeAutorizacao_nfce = "https://nfce.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx"
                         pURL_NFeInutilizacao = "https://nfe.sefaz.pe.gov.br/nfe/services/NFeInutilizacao4"
                         pURL_NFeRecepcaoEvento4 = "https://nfe.sefaz.pe.gov.br/nfe/services/NFeRecepcaoEvento4"
+                        pURL_NFeConsultaProtocolo = "https://nfe.sefaz.pe.gov.br/nfe/services/NfeConsultaProtocolo4"
 
                     Case "41"   ' PR  Paraná
                         pURL_NfeStatusServico = "https://nfe.sefaz.pr.gov.br/nfe/services/NfeStatusServico4"
@@ -217,6 +230,7 @@ Function Inicia(Optional ByVal n_ambiente As String) As Boolean
                         pURL_NFeAutorizacao_nfce = "https://nfce.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx"
                         pURL_NFeInutilizacao = "https://nfe.sefaz.pr.gov.br/nfe/services/NFeInutilizacao4"
                         pURL_NFeRecepcaoEvento4 = "https://nfe.sefaz.pr.gov.br/nfe/services/NFeRecepcaoEvento4"
+                        pURL_NFeConsultaProtocolo = "https://nfe.sefaz.pr.gov.br/nfe/services/NfeConsultaProtocolo4"
 
                     Case "33"   ' RJ  Rio de Janeiro
                         pURL_NfeStatusServico = "https://nfe.sefaz.rj.gov.br/services/NfeStatusServico4"
@@ -224,6 +238,7 @@ Function Inicia(Optional ByVal n_ambiente As String) As Boolean
                         pURL_NFeAutorizacao_nfce = "https://nfce.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx"
                         pURL_NFeInutilizacao = "https://nfe.sefaz.rj.gov.br/services/NFeInutilizacao4"
                         pURL_NFeRecepcaoEvento4 = "https://nfe.sefaz.rj.gov.br/services/NFeRecepcaoEvento4"
+                        pURL_NFeConsultaProtocolo = "https://nfe.sefaz.rj.gov.br/services/NfeConsultaProtocolo4"
 
                     Case "35"   ' SP  São Paulo
                         pURL_NfeStatusServico = "https://nfe.fazenda.sp.gov.br/ws/nfestatusservico4.asmx"
@@ -231,6 +246,7 @@ Function Inicia(Optional ByVal n_ambiente As String) As Boolean
                         pURL_NFeAutorizacao_nfce = "https://nfce.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx"
                         pURL_NFeInutilizacao = "https://nfe.fazenda.sp.gov.br/ws/nfeinutilizacao4.asmx"
                         pURL_NFeRecepcaoEvento4 = "https://nfe.fazenda.sp.gov.br/ws/nferecepcaoevento4.asmx"
+                        pURL_NFeConsultaProtocolo = "https://nfe.fazenda.sp.gov.br/ws/nfeconsultaprotocolo4.asmx"
 
                     Case Else   ' Default  SVRS (AC, AL, AP, DF, ES, MA, PA, PB, PI, RN, RO, RR, RS, SC, SE, TO)
                         pURL_NfeStatusServico = "https://nfe.svrs.rs.gov.br/ws/NfeStatusServico/NfeStatusServico4.asmx"
@@ -238,6 +254,7 @@ Function Inicia(Optional ByVal n_ambiente As String) As Boolean
                         pURL_NFeAutorizacao_nfce = "https://nfce.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx"
                         pURL_NFeInutilizacao = "https://nfe.svrs.rs.gov.br/ws/NfeInutilizacao/NFeInutilizacao4.asmx"
                         pURL_NFeRecepcaoEvento4 = "https://nfe.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento4.asmx"
+                        pURL_NFeConsultaProtocolo = "https://nfe.svrs.rs.gov.br/ws/NfeConsultaProtocolo/NFeConsultaProtocolo4.asmx"
 
                 End Select
         End Select
@@ -252,6 +269,7 @@ Function Inicia(Optional ByVal n_ambiente As String) As Boolean
                 pURL_NFeAutorizacao_nfce = "https://nfce-homologacao.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx"
                 pURL_NFeInutilizacao = "https://hom1.nfe.fazenda.gov.br/NFeInutilizacao4/NFeInutilizacao4.asmx"
                 pURL_NFeRecepcaoEvento4 = "https://hom1.nfe.fazenda.gov.br/NFeRecepcaoEvento4/NFeRecepcaoEvento4.asmx"
+                pURL_NFeConsultaProtocolo = "https://hom1.nfe.fazenda.gov.br/NFeConsultaProtocolo4/NFeConsultaProtocolo4.asmx"
 
             Case "SVC-RS"
                 pURL_NfeStatusServico = "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeStatusServico/NfeStatusServico4.asmx"
@@ -259,6 +277,7 @@ Function Inicia(Optional ByVal n_ambiente As String) As Boolean
                 pURL_NFeAutorizacao_nfce = "https://nfce-homologacao.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx"
                 pURL_NFeInutilizacao = "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeInutilizacao/NFeInutilizacao4.asmx"
                 pURL_NFeRecepcaoEvento4 = "https://nfe-homologacao.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento4.asmx"
+                pURL_NFeConsultaProtocolo = "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeConsultaProtocolo/NFeConsultaProtocolo4.asmx"
 
             Case Else
                 ' Roteamento por UF em homologação
@@ -269,6 +288,7 @@ Function Inicia(Optional ByVal n_ambiente As String) As Boolean
                         pURL_NFeAutorizacao_nfce = "https://nfce-homologacao.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx"
                         pURL_NFeInutilizacao = "https://homnfe.sefaz.am.gov.br/services2/services/NfeInutilizacao4"
                         pURL_NFeRecepcaoEvento4 = "https://homnfe.sefaz.am.gov.br/services2/services/NfeRecepcaoEvento4"
+                        pURL_NFeConsultaProtocolo = "https://homnfe.sefaz.am.gov.br/services2/services/NfeConsultaProtocolo4"
 
                     Case "29"   ' BA
                         pURL_NfeStatusServico = "https://hnfe.sefaz.ba.gov.br/webservices/NFeStatusServico4/NFeStatusServico4.asmx"
@@ -276,6 +296,7 @@ Function Inicia(Optional ByVal n_ambiente As String) As Boolean
                         pURL_NFeAutorizacao_nfce = "https://nfce-homologacao.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx"
                         pURL_NFeInutilizacao = "https://hnfe.sefaz.ba.gov.br/webservices/NFeInutilizacao4/NFeInutilizacao4.asmx"
                         pURL_NFeRecepcaoEvento4 = "https://hnfe.sefaz.ba.gov.br/webservices/NFeRecepcaoEvento4/NFeRecepcaoEvento4.asmx"
+                        pURL_NFeConsultaProtocolo = "https://hnfe.sefaz.ba.gov.br/webservices/NFeConsultaProtocolo4/NFeConsultaProtocolo4.asmx"
 
                     Case "23"   ' CE
                         pURL_NfeStatusServico = "https://nfeh.sefaz.ce.gov.br/nfe/services/NfeStatusServico4"
@@ -283,6 +304,7 @@ Function Inicia(Optional ByVal n_ambiente As String) As Boolean
                         pURL_NFeAutorizacao_nfce = "https://nfce-homologacao.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx"
                         pURL_NFeInutilizacao = "https://nfeh.sefaz.ce.gov.br/nfe/services/NFeInutilizacao4"
                         pURL_NFeRecepcaoEvento4 = "https://nfeh.sefaz.ce.gov.br/nfe/services/NFeRecepcaoEvento4"
+                        pURL_NFeConsultaProtocolo = "https://nfeh.sefaz.ce.gov.br/nfe/services/NfeConsultaProtocolo4"
 
                     Case "52"   ' GO
                         pURL_NfeStatusServico = "https://homolog.sefaz.go.gov.br/nfe/services/NfeStatusServico4"
@@ -290,6 +312,7 @@ Function Inicia(Optional ByVal n_ambiente As String) As Boolean
                         pURL_NFeAutorizacao_nfce = "https://nfce-homologacao.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx"
                         pURL_NFeInutilizacao = "https://homolog.sefaz.go.gov.br/nfe/services/NFeInutilizacao4"
                         pURL_NFeRecepcaoEvento4 = "https://homolog.sefaz.go.gov.br/nfe/services/NFeRecepcaoEvento4"
+                        pURL_NFeConsultaProtocolo = "https://homolog.sefaz.go.gov.br/nfe/services/NFeConsultaProtocolo4"
 
                     Case "31"   ' MG
                         pURL_NfeStatusServico = "https://hnfe.fazenda.mg.gov.br/nfe/services/NfeStatusServico4"
@@ -297,6 +320,7 @@ Function Inicia(Optional ByVal n_ambiente As String) As Boolean
                         pURL_NFeAutorizacao_nfce = "https://nfce-homologacao.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx"
                         pURL_NFeInutilizacao = "https://hnfe.fazenda.mg.gov.br/nfe/services/NFeInutilizacao4"
                         pURL_NFeRecepcaoEvento4 = "https://hnfe.fazenda.mg.gov.br/nfe/services/NFeRecepcaoEvento4"
+                        pURL_NFeConsultaProtocolo = "https://hnfe.fazenda.mg.gov.br/nfe/services/NfeConsultaProtocolo4"
 
                     Case "50"   ' MS
                         pURL_NfeStatusServico = "https://homnfe.sefaz.ms.gov.br/ws/NfeStatusServico4"
@@ -304,6 +328,7 @@ Function Inicia(Optional ByVal n_ambiente As String) As Boolean
                         pURL_NFeAutorizacao_nfce = "https://nfce-homologacao.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx"
                         pURL_NFeInutilizacao = "https://homnfe.sefaz.ms.gov.br/ws/NFeInutilizacao4"
                         pURL_NFeRecepcaoEvento4 = "https://homnfe.sefaz.ms.gov.br/ws/NFeRecepcaoEvento4"
+                        pURL_NFeConsultaProtocolo = "https://homnfe.sefaz.ms.gov.br/ws/NfeConsultaProtocolo4"
 
                     Case "51"   ' MT
                         pURL_NfeStatusServico = "https://homnfe.sefaz.mt.gov.br/nfe/services/NfeStatusServico4"
@@ -311,6 +336,7 @@ Function Inicia(Optional ByVal n_ambiente As String) As Boolean
                         pURL_NFeAutorizacao_nfce = "https://nfce-homologacao.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx"
                         pURL_NFeInutilizacao = "https://homnfe.sefaz.mt.gov.br/nfe/services/NFeInutilizacao4"
                         pURL_NFeRecepcaoEvento4 = "https://homnfe.sefaz.mt.gov.br/nfe/services/NFeRecepcaoEvento4"
+                        pURL_NFeConsultaProtocolo = "https://homnfe.sefaz.mt.gov.br/nfe/services/NfeConsultaProtocolo4"
 
                     Case "26"   ' PE
                         pURL_NfeStatusServico = "https://nfehomolog.sefaz.pe.gov.br/nfe/services/NfeStatusServico4"
@@ -318,6 +344,7 @@ Function Inicia(Optional ByVal n_ambiente As String) As Boolean
                         pURL_NFeAutorizacao_nfce = "https://nfce-homologacao.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx"
                         pURL_NFeInutilizacao = "https://nfehomolog.sefaz.pe.gov.br/nfe/services/NFeInutilizacao4"
                         pURL_NFeRecepcaoEvento4 = "https://nfehomolog.sefaz.pe.gov.br/nfe/services/NFeRecepcaoEvento4"
+                        pURL_NFeConsultaProtocolo = "https://nfehomolog.sefaz.pe.gov.br/nfe/services/NfeConsultaProtocolo4"
 
                     Case "41"   ' PR
                         pURL_NfeStatusServico = "https://homnfe.sefaz.pr.gov.br/nfe/services/NfeStatusServico4"
@@ -325,6 +352,7 @@ Function Inicia(Optional ByVal n_ambiente As String) As Boolean
                         pURL_NFeAutorizacao_nfce = "https://nfce-homologacao.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx"
                         pURL_NFeInutilizacao = "https://homnfe.sefaz.pr.gov.br/nfe/services/NFeInutilizacao4"
                         pURL_NFeRecepcaoEvento4 = "https://homnfe.sefaz.pr.gov.br/nfe/services/NFeRecepcaoEvento4"
+                        pURL_NFeConsultaProtocolo = "https://homnfe.sefaz.pr.gov.br/nfe/services/NfeConsultaProtocolo4"
 
                     Case "33"   ' RJ
                         pURL_NfeStatusServico = "https://homologacao.nfe.sefaz.rj.gov.br/services/NfeStatusServico4"
@@ -332,6 +360,7 @@ Function Inicia(Optional ByVal n_ambiente As String) As Boolean
                         pURL_NFeAutorizacao_nfce = "https://nfce-homologacao.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx"
                         pURL_NFeInutilizacao = "https://homologacao.nfe.sefaz.rj.gov.br/services/NFeInutilizacao4"
                         pURL_NFeRecepcaoEvento4 = "https://homologacao.nfe.sefaz.rj.gov.br/services/NFeRecepcaoEvento4"
+                        pURL_NFeConsultaProtocolo = "https://homologacao.nfe.sefaz.rj.gov.br/services/NfeConsultaProtocolo4"
 
                     Case "35"   ' SP
                         pURL_NfeStatusServico = "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfestatusservico4.asmx"
@@ -339,6 +368,7 @@ Function Inicia(Optional ByVal n_ambiente As String) As Boolean
                         pURL_NFeAutorizacao_nfce = "https://nfce-homologacao.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx"
                         pURL_NFeInutilizacao = "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeinutilizacao4.asmx"
                         pURL_NFeRecepcaoEvento4 = "https://homologacao.nfe.fazenda.sp.gov.br/ws/nferecepcaoevento4.asmx"
+                        pURL_NFeConsultaProtocolo = "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeconsultaprotocolo4.asmx"
 
                     Case Else   ' Default  SVRS homologação
                         pURL_NfeStatusServico = "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeStatusServico/NfeStatusServico4.asmx"
@@ -346,6 +376,7 @@ Function Inicia(Optional ByVal n_ambiente As String) As Boolean
                         pURL_NFeAutorizacao_nfce = "https://nfce-homologacao.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx"
                         pURL_NFeInutilizacao = "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeInutilizacao/NFeInutilizacao4.asmx"
                         pURL_NFeRecepcaoEvento4 = "https://nfe-homologacao.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento4.asmx"
+                        pURL_NFeConsultaProtocolo = "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeConsultaProtocolo/NFeConsultaProtocolo4.asmx"
 
                 End Select
         End Select
@@ -364,6 +395,7 @@ Dim m_Caminho As String
     
     pURL_NFeRecepcaoEvento4_xsd = m_Caminho & "consReciNFe_v4.00.xsd"
     pURL_NFeInutilizacao_xsd = m_Caminho & "inutNFe_v4.00.xsd"
+    pURL_NFeConsultaProtocolo_xsd = m_Caminho & "consSitNFe_v4.00.xsd"
     
     If Not FileExists(pURL_NFeAutorizacao_xsd) Then
         MsgBox "Schema 4.00 NÃO encontrado em: " & m_Caminho
@@ -1217,7 +1249,73 @@ Private Function gera_cc_e_msg(mCertificadoSel, ByVal n_cOrgao As String, _
     gera_cc_e_msg = xml_ass
 End Function
 
+Function NfeConsultaProtocolo(ByVal chNFe As String, m_xml_send As String, m_xml_resp As String) As Boolean
+    Dim xmldoc As New WinHttpRequest
+    Dim txt As String
+    Dim xmlnf As New MSXML2.DOMDocument50
+    Dim xmldom_resp As New MSXML2.DOMDocument50
+    Dim txt_xml As String
 
+    txt_xml = ""
+    txt_xml = txt_xml & "<?xml version=""1.0"" encoding=""utf-8""?>"
+    txt_xml = txt_xml & "<soap12:Envelope xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:soap12=""http://www.w3.org/2003/05/soap-envelope"">"
+    txt_xml = txt_xml & "  <soap12:Body>"
+    txt_xml = txt_xml & "    <nfeDadosMsg xmlns=""http://www.portalfiscal.inf.br/nfe/wsdl/NFeConsultaProtocolo4"">"
+    txt_xml = txt_xml & "      <consSitNFe versao=""4.00"" xmlns=""http://www.portalfiscal.inf.br/nfe"">"
+    txt_xml = txt_xml & "        <tpAmb>" & m_Ambiente & "</tpAmb>"
+    txt_xml = txt_xml & "        <xServ>CONSULTAR</xServ>"
+    txt_xml = txt_xml & "        <chNFe>" & chNFe & "</chNFe>"
+    txt_xml = txt_xml & "      </consSitNFe>"
+    txt_xml = txt_xml & "    </nfeDadosMsg>"
+    txt_xml = txt_xml & "  </soap12:Body>"
+    txt_xml = txt_xml & "</soap12:Envelope>"
 
+    If xmlnf.LoadXml(txt_xml) Then
+        txt = ValidaSchema(xmlnf, "http://www.portalfiscal.inf.br/nfe", pURL_NFeConsultaProtocolo_xsd, False)
+        If txt = "Validado" Then
+            Call xmldoc.Open("POST", pURL_NFeConsultaProtocolo & "?wsdl", False)
+            Call xmldoc.SetRequestHeader("content-type", "application/soap+xml")
+            xmldoc.SetClientCertificate (mcert)
+            xmldoc.Option(WinHttpRequestOption_SelectCertificate) = (mcert)
+            xmldoc.Send (xmlnf.xml & "")
+            m_xml_send = xmlnf.xml
+
+            If xmldom_resp.LoadXml(xmldoc.ResponseText) Then
+                m_xml_resp = xmldoc.ResponseText
+
+                Dim ooo As IXMLDOMNode
+                Dim ooo2 As IXMLDOMNode
+                If ExistSelect(xmldom_resp.documentElement.childNodes, ooo, "Body") Then
+                    If ExistSelect(ooo.childNodes, ooo, "nfeResultMsg") Then
+                        If ExistSelect(ooo.childNodes, ooo, "retConsSitNFe") Then
+                            If ExistSelect(ooo.childNodes, ooo2, "cStat") Then
+                                retNFe_ConsSitNFe.cStat = ooo2.Text
+                            End If
+                            If ExistSelect(ooo.childNodes, ooo2, "tpAmb") Then
+                                retNFe_ConsSitNFe.tpAmb = ooo2.Text
+                            End If
+                            If ExistSelect(ooo.childNodes, ooo2, "xMotivo") Then
+                                retNFe_ConsSitNFe.xMotivo = ooo2.Text
+                            End If
+                        End If
+                    End If
+                End If
+            Else
+                MsgBox xmldom_resp.parseError.srcText, , "parseError - 2"
+            End If
+            NfeConsultaProtocolo = retNFe_ConsSitNFe.cStat = 100 Or retNFe_ConsSitNFe.cStat = 101
+        Else
+            m_LastError = txt
+            Debug.Print txt
+        End If
+    Else
+        MsgBox xmlnf.parseError.srcText, , "parseError"
+        SetFileBytes App.Path & "\error_1.txt", txt_xml
+        SetFileBytes App.Path & "\error_2.txt", xmlnf.Text
+    End If
+    Set xmldoc = Nothing
+    On Error GoTo 0
+    Exit Function
+End Function
 
 

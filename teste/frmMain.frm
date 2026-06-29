@@ -1135,11 +1135,31 @@ Private Sub cmdConsultar_Click()
     If Not ConfigOK() Then Exit Sub
     
     Dim chave As String
-    chave = InputBox("Chave da NF-e (44 digitos):", "Consulta")
+    chave = InputBox("Chave da NF-e (44 digitos):", "Consulta Situacao")
     If Len(chave) <> 44 Then Exit Sub
     
     Log "Consultando NF-e " & chave & "..."
-    Log "Funcionalidade nao implementada na OCX. Use Status Servico."
+    
+    ccEx.m_Ambiente = Val(Left(cboAmbiente, 1))
+    ccEx.m_UF = cboUF
+    ccEx.m_UF_Cod = GetUFCode(cboUF)
+    ccEx.Initialize txtSchema, App.Path & "\"
+    
+    Dim n_amb As String
+    n_amb = ""
+    
+    ccEx.SetCert mCertSerial
+    If ccEx.Inicia(n_amb) Then
+        Dim xml_send As String, xml_resp As String
+        If ccEx.NfeConsultaProtocolo(chave, xml_send, xml_resp) Then
+            Log "cStat: " & ccEx.retNFe_ConsSitNFe.cStat & " - " & ccEx.retNFe_ConsSitNFe.xMotivo
+        Else
+            Log "Falha: " & ccEx.m_LastError
+        End If
+        txtResult = txtResult & vbCrLf & vbCrLf & "=== XML RESPOSTA ===" & vbCrLf & xml_resp
+    Else
+        Log "Erro ao inicializar: " & ccEx.m_LastError
+    End If
 End Sub
 
 Private Sub cmdLimparResult_Click()
