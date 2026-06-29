@@ -201,6 +201,24 @@ With nfe.NFe
     Dim xml As String
     xml = .GetNota(chave, numNota)
 End With
+
+' --- FORMAS DE PAGAMENTO ---
+Dim pag As New hNFe4_Doc_detPag
+pag.tPag = "03"             ' 03=Cartao Credito
+pag.vPag = 100
+pag.indPag = "0"            ' 0=Vista
+pag.card.tpIntegra = "2"    ' 2=Nao integrado
+pag.card.CNPJ = "11222333000181"
+pag.card.tBand = "01"       ' 01=Visa
+pag.card.cAut = "123456"
+nfe.NFe.Add_pag pag
+
+' Adicione quantos detPag precisar
+Dim pag2 As New hNFe4_Doc_detPag
+pag2.tPag = "15"            ' 15=Boleto
+pag2.vPag = 50
+pag2.card.tpIntegra = "2"
+nfe.NFe.Add_pag pag2
 ```
 
 ### 4. Enviar Lote
@@ -309,7 +327,7 @@ dependencias\              → Instaladores CAPICOM, MSXML5, SOAP SDK
 |---|---|---|
 | **ProcNFe** | Geração do XML completo com protocolo (`nfeProc`) | Alta |
 | ~~**Múltiplas formas de pagamento**~~ | ~~Suporte a mais de um `detPag` no grupo `pag`~~ | ~~Alta~~ |
-| Detalhamento de cartão (`card`) | Bandeira, autorização, CNPJ credenciadora | Média |
+| ~~Detalhamento de cartão (`card`)~~ | ~~Bandeira, autorização, CNPJ credenciadora~~ | ~~Média~~ |
 | Cobrança / Fatura (`cobr`, `dup`) | Atualmente comentado no código | Média |
 | Declaração de Importação (`DI` / `ADI`) | Campos para produtos importados | Média |
 | Grupo Combustível (`comb`) | Específico para postos de gasolina | Baixa |
