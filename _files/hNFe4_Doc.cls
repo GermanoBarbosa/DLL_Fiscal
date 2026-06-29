@@ -265,7 +265,9 @@ Function GetNota(m_Chave_2 As String, m_NF_NUM_NOTA As Long) As String
     If Len(m_ide.m_natOp) > 0 Then
         txt_xml.Append Trim("               <natOp>" & m_ide.m_natOp & "</natOp>")
     End If
-    'txt_xml.Append Trim("               <indPag>1</indPag>")
+    If Len(m_ide.m_indPag) > 0 Then
+        txt_xml.Append Trim("               <indPag>" & m_ide.m_indPag & "</indPag>")
+    End If
     txt_xml.Append Trim("               <mod>" & m_ide.m_mod & "</mod>")
     txt_xml.Append Trim("               <serie>" & m_ide.m_serie & "</serie>")
     txt_xml.Append Trim("               <nNF>" & m_ide.m_nNF & "</nNF>")
@@ -274,7 +276,9 @@ Function GetNota(m_Chave_2 As String, m_NF_NUM_NOTA As Long) As String
     If m_ide.m_mod = "55" Then
         txt_xml.Append Trim("               <dhSaiEnt>" & cFormatDate_NF_1(m_ide.m_dhSaiEnt) & "</dhSaiEnt>")
     End If
-    txt_xml.Append Trim("               <tpNF>1</tpNF>")
+    If Len(m_ide.m_tpNF) > 0 Then
+        txt_xml.Append Trim("               <tpNF>" & m_ide.m_tpNF & "</tpNF>")
+    End If
     txt_xml.Append Trim("               <idDest>" & m_ide.m_idDest & "</idDest>")
     txt_xml.Append Trim("               <cMunFG>" & m_ide.m_cMunFG & "</cMunFG>")
 
@@ -286,15 +290,18 @@ Function GetNota(m_Chave_2 As String, m_NF_NUM_NOTA As Long) As String
     txt_xml.Append Trim("               <tpEmis>" & m_ide.m_tpEmis & "</tpEmis>")
     txt_xml.Append Trim("               <cDV>" & m_ChaveDV & "</cDV>")
     txt_xml.Append Trim("               <tpAmb>" & m_Ambiente & "</tpAmb>")
-    txt_xml.Append Trim("               <finNFe>1</finNFe>")
-    txt_xml.Append Trim("               <indFinal>1</indFinal>")
-
-    If m_ide.m_mod = "55" Then
-        txt_xml.Append Trim("               <indPres>0</indPres>")
-    ElseIf m_ide.m_mod = "65" Then
-        txt_xml.Append Trim("               <indPres>1</indPres>")
+    If Len(m_ide.m_finNFe) > 0 Then
+        txt_xml.Append Trim("               <finNFe>" & m_ide.m_finNFe & "</finNFe>")
     End If
-    txt_xml.Append Trim("               <procEmi>0</procEmi>")
+    If Len(m_ide.m_indFinal) > 0 Then
+        txt_xml.Append Trim("               <indFinal>" & m_ide.m_indFinal & "</indFinal>")
+    End If
+    If Len(m_ide.m_indPres) > 0 Then
+        txt_xml.Append Trim("               <indPres>" & m_ide.m_indPres & "</indPres>")
+    End If
+    If Len(m_ide.m_procEmi) > 0 Then
+        txt_xml.Append Trim("               <procEmi>" & m_ide.m_procEmi & "</procEmi>")
+    End If
     txt_xml.Append Trim("               <verProc>" & App.Major & "." & App.Minor & "." & App.Revision & "</verProc>")
     txt_xml.Append Trim("           </ide>")
     txt_xml.Append Trim("           <emit>")
@@ -384,7 +391,7 @@ Function GetNota(m_Chave_2 As String, m_NF_NUM_NOTA As Long) As String
 
         With m_Itens(cc).prod
             txt_xml.Append Trim("                   <cProd>" & .m_cProd & "</cProd>")
-            txt_xml.Append Trim("                   <cEAN>SEM GTIN</cEAN>")
+            txt_xml.Append Trim("                   <cEAN>" & iif(Len(.m_cEAN) > 0, .m_cEAN, "SEM GTIN") & "</cEAN>")
             txt_xml.Append Trim("                   <xProd>" & (.m_xProd) & "</xProd>")
             txt_xml.Append Trim("                   <NCM>" & .m_NCM & "</NCM>")
             If Len(.m_CEST) > 0 Then
@@ -395,7 +402,7 @@ Function GetNota(m_Chave_2 As String, m_NF_NUM_NOTA As Long) As String
             txt_xml.Append Trim("                   <qCom>" & .m_qCom & "</qCom>")
             txt_xml.Append Trim("                   <vUnCom>" & cFormatMoeda_NF_1(.m_vUnCom) & "</vUnCom>")
             txt_xml.Append Trim("                   <vProd>" & cFormatMoeda_NF_1(.m_vProd) & "</vProd>")
-            txt_xml.Append Trim("                   <cEANTrib>SEM GTIN</cEANTrib>")
+            txt_xml.Append Trim("                   <cEANTrib>" & iif(Len(.m_cEANTrib) > 0, .m_cEANTrib, "SEM GTIN") & "</cEANTrib>")
             txt_xml.Append Trim("                   <uTrib>" & .m_uTrib & "</uTrib>")
             txt_xml.Append Trim("                   <qTrib>" & .m_qTrib & "</qTrib>")
             txt_xml.Append Trim("                   <vUnTrib>" & cFormatMoeda_NF_1(.m_vUnTrib) & "</vUnTrib>")

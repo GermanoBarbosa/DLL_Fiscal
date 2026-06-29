@@ -24,17 +24,17 @@ Public m_dhEmi As Date
 Public m_cMunFG  As String
 
 Public m_natOp As String
+Public m_tpNF As String
+Public m_indPag As String
 Public m_dhSaiEnt
-'Public m_tpNF>1</tpNF>
 Public m_idDest As Long '>2</idDest>
 'Public m_cMunFG>4208203</cMunFG>
 'Public m_tpImp>1</tpImp>
 Public m_tpEmis As String
 'Public m_cDV>3</cDV>
 'Public m_tpAmb>2</tpAmb>
-'Public m_finNFe>1</finNFe>
-'Public m_indFinal>1</indFinal>
-'Public m_indPres>9</indPres>
-'Public m_procEmi>0</procEmi>
-'Public m_verProc>2.53</verProc>
+Public m_finNFe As String
+Public m_indFinal As String
+Public m_indPres As String
+Public m_procEmi As String
 

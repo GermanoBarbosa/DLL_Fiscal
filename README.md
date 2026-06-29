@@ -484,13 +484,13 @@ dependencias\              → Instaladores CAPICOM, MSXML5, SOAP SDK
 | Funcionalidade | Descrição | Esforço |
 |---|---|---|
 | ~~`natOp` configurável~~ | ~~Atualmente hardcoded `"VDA MERC ADQ TERCEIR"` — expor como `Public m_natOp As String` no `<ide>`~~ | ~~Pequeno~~ |
-| `tpNF` configurável | Hardcoded `1` (saída) — expor campo para permitir notas de entrada (`0`) | Pequeno |
-| `finNFe` configurável | Hardcoded `1` (normal) — expor campo para complementar/ajuste/devolução | Pequeno |
-| `indFinal` configurável | Hardcoded `1` — expor como campo público | Pequeno |
-| `indPres` configurável | Hardcoded (`0` mod55 / `1` mod65) — expor para e-commerce, teleatendimento, etc. | Pequeno |
-| `procEmi` configurável | Hardcoded `0` — expor como campo público | Pequeno |
-| `indPag` no `<ide>` | Declarado mas comentado — não é gerado no XML | Pequeno |
-| `cEAN` / `cEANTrib` | Campos `m_cEAN`/`m_cEANTrib` existem mas são ignorados — sempre geram `"SEM GTIN"` | Pequeno |
+| ~~`tpNF` configurável~~ | ~~Hardcoded `1` (saída) — expor campo para permitir notas de entrada (`0`)~~ | ~~Pequeno~~ |
+| ~~`finNFe` configurável~~ | ~~Hardcoded `1` (normal) — expor campo para complementar/ajuste/devolução~~ | ~~Pequeno~~ |
+| ~~`indFinal` configurável~~ | ~~Hardcoded `1` — expor como campo público~~ | ~~Pequeno~~ |
+| ~~`indPres` configurável~~ | ~~Hardcoded (`0` mod55 / `1` mod65) — expor para e-commerce, teleatendimento, etc.~~ | ~~Pequeno~~ |
+| ~~`procEmi` configurável~~ | ~~Hardcoded `0` — expor como campo público~~ | ~~Pequeno~~ |
+| ~~`indPag` no `<ide>`~~ | ~~Declarado mas comentado — não é gerado no XML~~ | ~~Pequeno~~ |
+| ~~`cEAN` / `cEANTrib`~~ | ~~Campos `m_cEAN`/`m_cEANTrib` existem mas são ignorados — sempre geram `"SEM GTIN"`~~ | ~~Pequeno~~ |
 
 ### Alta Prioridade — Grupos XML Ausentes
 
