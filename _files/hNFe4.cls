@@ -641,7 +641,7 @@ Function EnviaLote2(ByVal xml As String, xml_aut As String, ByVal mCertificadoSe
           
 80        txt_xml.Append "<idLote>1</idLote>"
 90        txt_xml.Append "<indSinc>" & indSinc & "</indSinc>"
-100       txt_xml.Append Mid(xml, 1, Len(xml) - 2)
+100       txt_xml.Append xml
 110       txt_xml.Append "</enviNFe>"
           
 120       txt_xml.Append "</nfeDadosMsg>"

@@ -5,7 +5,7 @@ ActiveX OCX (DLL) para emissão e gerenciamento de NF-e/NFC-e 4.00 em VB6.
 ## Funcionalidades
 
 - **Geração de XML** de NF-e/NFC-e (modelo 55/65) conforme leiaute 4.00
-- **Envio de lote** síncrono (indSinc=1) e assíncrono (indSinc=0) para SEFAZ
+- **Envio de lote** síncrono (indSinc=1) e assíncrono (indSinc=0), com suporte a múltiplas NF-e por lote
 - **Consulta de Status** do serviço SEFAZ
 - **Cancelamento** de NF-e e **Cancelamento por Substituição** (evento 110112)
 - **Manifestação do Destinatário** (ciência, confirmação, desconhecimento, não realizada)
@@ -253,8 +253,11 @@ End If
 Dim xml_aut As String
 xml_aut = ""
 
-' Enviar com indSinc=0
-If nfe.EnviaLote2(xmlGerado, xml_aut, serialCertificado, 0) Then
+' Enviar com indSinc=0 e múltiplas NF-e concatenadas
+Dim loteXML As String
+loteXML = nfe1.NFe.GetNota(chave1, num1) & nfe2.NFe.GetNota(chave2, num2)
+
+If nfe.EnviaLote2(loteXML, xml_aut, serialCertificado, 0) Then
     If Len(nfe.retNFe_EnviaLote2.nRec) > 0 Then
         ' Aguardar processamento e consultar o recibo
         ' (recomendado: aguardar 5-15 segundos)
@@ -467,7 +470,7 @@ dependencias\              → Instaladores CAPICOM, MSXML5, SOAP SDK
 | ~~**Envio ass�ncrono**~~ | ~~Suporte a indSinc=0 para lotes com m�ltiplas NF-e~~ | ~~Alta~~ |
 | ~~**Validação de regras de negócio**~~ | ~~Além da validação XSD, validar tamanhos, obrigatoriedade e domínios~~ | ~~Média~~ |
 | ~~**QR Code NFC-e**~~ | ~~Mapeamento completo das URLs de consulta por UF + CSC dinâmico~~ | ~~Média~~ |
-| Envio de lote com múltiplas NF-e | Suporte a mais de 1 NF-e por lote | Média |
+| ~~Envio de lote com múltiplas NF-e~~ | ~~Suporte a mais de 1 NF-e por lote~~ | ~~Média~~ |
 | ~~**Logger configurável**~~ | ~~Substituir `Debug.Print` e `MsgBox` por sistema de log com `ILogListener`~~ | ~~Média~~ |
 
 ## Licença
