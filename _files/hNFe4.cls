@@ -39,6 +39,7 @@ Dim pURL_NFeConsultaProtocolo As String
 Dim pURL_NFeConsultaProtocolo_xsd As String
 Dim pURL_NFeDistribuicaoDFe As String
 Dim pURL_NFeRetAutorizacao4 As String
+Dim pURL_NFeQRCode As String
 
 
 Private mcert As String
@@ -47,6 +48,7 @@ Public NFe  As New hNFe4_Doc
 Public m_Ambiente As Long
 Public m_UF As String
 Public m_UF_Cod As String
+Public m_CSC As String
 
 Public m_LastError As String
 
@@ -421,6 +423,42 @@ Function Inicia(Optional ByVal n_ambiente As String) As Boolean
     Else
         pURL_NFeDistribuicaoDFe = "https://hom1.nfe.fazenda.gov.br/NFeDistribuicaoDFe/NFeDistribuicaoDFe.asmx"
     End If
+    
+     ' QR Code NFC-e - URL de consulta por UF
+    If m_Ambiente = 1 Then
+        Select Case m_UF
+            Case "AC", "AL", "AP", "DF", "ES", "MA", "PA", "PB", "PI", "RN", "RO", "RR", "SC", "SE", "TO"
+                pURL_NFeQRCode = "https://nfce.svrs.rs.gov.br/qrcode"
+            Case "AM"
+                pURL_NFeQRCode = "https://nfce.sefaz.am.gov.br/consulta"
+            Case "BA"
+                pURL_NFeQRCode = "https://nfce.sefaz.ba.gov.br/consulta"
+            Case "CE"
+                pURL_NFeQRCode = "https://nfce.sefaz.ce.gov.br/consulta"
+            Case "GO"
+                pURL_NFeQRCode = "https://nfce.sefaz.go.gov.br/nfce/qrcode"
+            Case "MG"
+                pURL_NFeQRCode = "https://nfce.fazenda.mg.gov.br/consulta"
+            Case "MS"
+                pURL_NFeQRCode = "https://nfce.sefaz.ms.gov.br/nfce/qrcode"
+            Case "MT"
+                pURL_NFeQRCode = "https://nfce.sefaz.mt.gov.br/nfce/qrcode"
+            Case "PE"
+                pURL_NFeQRCode = "https://nfce.sefaz.pe.gov.br/nfce/qrcode"
+            Case "PR"
+                pURL_NFeQRCode = "https://nfce.sefaz.pr.gov.br/nfce/qrcode"
+            Case "RJ"
+                pURL_NFeQRCode = "https://nfce.sefaz.rj.gov.br/consulta"
+            Case "RS"
+                pURL_NFeQRCode = "https://nfce.sefaz.rs.gov.br/consulta"
+            Case "SP"
+                pURL_NFeQRCode = "https://www.nfce.fazenda.sp.gov.br/NFCeConsultaQRCode"
+            Case Else
+                pURL_NFeQRCode = "https://nfce.svrs.rs.gov.br/qrcode"
+        End Select
+    Else
+        pURL_NFeQRCode = "https://nfce-homologacao.svrs.rs.gov.br/qrcode"
+    End If
 
 End Function
 
@@ -613,6 +651,13 @@ Function EnviaLote2(ByVal xml As String, xml_aut As String, ByVal mCertificadoSe
 280               ElseIf InStr(xml, "<mod>65</mod>") > 0 Then
 290                   Call xmldoc.Open("POST", pURL_NFeAutorizacao_nfce & "?wsdl", False)
 300               End If
+
+          ' QR Code automático para NFC-e (modelo 65)
+          If InStr(xml, "<mod>65</mod>") > 0 Then
+              NFe.m_CSC = m_CSC
+              If Len(NFe.m_Endereco_QRCode) = 0 Then NFe.m_Endereco_QRCode = pURL_NFeQRCode
+              NFe.InsertQRCode xml
+          End If
   
                   
 310               Debug.Print pURL_NFeAutorizacao_nfce
@@ -1600,6 +1645,9 @@ Function NfeConsReciNFe(ByVal nRec As String, m_xml_send As String, m_xml_resp A
     On Error GoTo 0
     Exit Function
 End Function
+
+
+
 
 
 

@@ -235,6 +235,14 @@ Else
 End If
 ```
 
+> **NFC-e (modelo 65):** o QR Code com `infNFeSupl` � inserido automaticamente no momento do envio. Basta configurar o CSC antes de chamar `EnviaLote2`:
+> ```vb
+> nfe.m_CSC = "SEU_CSC_AQUI"       ' C�digo de Seguran�a do Contribuinte
+> nfe.NFe.m_Ambiente = 1           ' 1=Produ��o, 2=Homologa��o
+> nfe.Inicia                       ' J� define a URL de consulta por UF
+> nfe.EnviaLote2 xmlGerado, ...    ' QR Code inserido automaticamente
+> ```
+
 ### 5. Cancelar NF-e
 
 ```vb
@@ -340,7 +348,7 @@ dependencias\              → Instaladores CAPICOM, MSXML5, SOAP SDK
 |---|---|---|
 | **Envio assíncrono** | Suporte a `indSinc=0` para lotes com múltiplas NF-e | Alta |
 | **Validação de regras de negócio** | Além da validação XSD, validar tamanhos, obrigatoriedade e domínios | Média |
-| **QR Code NFC-e** | Mapeamento completo das URLs de consulta por UF + CSC dinâmico | Média |
+| ~~**QR Code NFC-e**~~ | ~~Mapeamento completo das URLs de consulta por UF + CSC dinâmico~~ | ~~Média~~ |
 | Envio de lote com múltiplas NF-e | Suporte a mais de 1 NF-e por lote | Média |
 | Logger configurável | Substituir `Debug.Print` e `MsgBox` por sistema de log | Média |
 
