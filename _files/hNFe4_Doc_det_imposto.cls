@@ -90,6 +90,12 @@ Public m_IPI_vBC As Double
 Public m_IPI_pIPI As Double
 Public m_IPI_vIPI As Double
 
+' II - Imposto de Importacao (opcional)
+Public m_II_vBC As Double               ' BC do II
+Public m_II_vDespAdu As Double          ' despesas aduaneiras
+Public m_II_vII As Double               ' valor do II
+Public m_II_vIOF As Double              ' valor do IOF
+
 ' PIS generico
 Public m_PIS_CST  As String
 Public m_PIS_vBC As Double
@@ -106,6 +112,22 @@ Public m_COFINS_vCOFINS As Double
 Public m_COFINS_qBCProd As Double
 Public m_COFINS_vAliqProd As Double
 
+' PISST - PIS Substituicao Tributaria (opcional)
+Public m_PISST_vBC As Double             ' BC do PIS ST
+Public m_PISST_pPIS As Double            ' aliquota % PIS ST
+Public m_PISST_qBCProd As Double         ' qtd vendida PIS ST
+Public m_PISST_vAliqProd As Double       ' aliquota R$ PIS ST
+Public m_PISST_vPIS As Double            ' valor PIS ST
+Public m_PISST_indSoma As String         ' indSomaPISST (0=Nao, 1=Sim)
+
+' COFINSST - COFINS Substituicao Tributaria (opcional)
+Public m_COFINSST_vBC As Double          ' BC do COFINS ST
+Public m_COFINSST_pCOFINS As Double      ' aliquota % COFINS ST
+Public m_COFINSST_qBCProd As Double      ' qtd vendida COFINS ST
+Public m_COFINSST_vAliqProd As Double    ' aliquota R$ COFINS ST
+Public m_COFINSST_vCOFINS As Double      ' valor COFINS ST
+Public m_COFINSST_indSoma As String      ' indSomaCOFINSST (0=Nao, 1=Sim)
+
 ' === ICMS - campos genericos (todos CSTs) ===
 '  Aplicacao preenche estes campos; Add_det os usa no lugar dos
 '  campos legado m_ICMS_ICMS00_vBC / m_ICMS_ICMS00_vICMS quando <> 0.
@@ -119,11 +141,35 @@ Public m_IBSCBS_indDoacao As String         ' 0/1 - indica doacao
 ' Sub-grupo gIBSCBS (type TCIBS) - tributacao normal (alternativo a gIBSCBSMono)
 Public m_IBSCBS_vBC As Double               ' BC do IBS/CBS
 Public m_IBSCBS_pIBSUF As Double            ' aliquota IBS UF (estadual)
+' gDif em gIBSUF
+Public m_IBSCBS_gIBSUF_pDif As Double
+Public m_IBSCBS_gIBSUF_vDif As Double
+' gDevTrib em gIBSUF
+Public m_IBSCBS_gIBSUF_vDevTrib As Double
+' gRed em gIBSUF
+Public m_IBSCBS_gIBSUF_pRedAliq As Double
+Public m_IBSCBS_gIBSUF_pAliqEfet As Double
 Public m_IBSCBS_vIBSUF As Double            ' valor IBS UF
+' gDif em gIBSMun
 Public m_IBSCBS_pIBSMun As Double           ' aliquota IBS municipal
+Public m_IBSCBS_gIBSMun_pDif As Double
+Public m_IBSCBS_gIBSMun_vDif As Double
+' gDevTrib em gIBSMun
+Public m_IBSCBS_gIBSMun_vDevTrib As Double
+' gRed em gIBSMun
+Public m_IBSCBS_gIBSMun_pRedAliq As Double
+Public m_IBSCBS_gIBSMun_pAliqEfet As Double
 Public m_IBSCBS_vIBSMun As Double           ' valor IBS municipal
 Public m_IBSCBS_vIBS As Double              ' valor total IBS (= vIBSUF + vIBSMun)
 Public m_IBSCBS_pCBS As Double              ' aliquota CBS
+' gDif em gCBS
+Public m_IBSCBS_gCBS_pDif As Double
+Public m_IBSCBS_gCBS_vDif As Double
+' gDevTrib em gCBS
+Public m_IBSCBS_gCBS_vDevTrib As Double
+' gRed em gCBS
+Public m_IBSCBS_gCBS_pRedAliq As Double
+Public m_IBSCBS_gCBS_pAliqEfet As Double
 Public m_IBSCBS_vCBS As Double              ' valor CBS
 Public m_IBSCBS_vCBSST As Double            ' valor CBS ST (opcional)
 

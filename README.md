@@ -494,8 +494,8 @@ dependencias\              → Instaladores CAPICOM, MSXML5, SOAP SDK
 | Funcionalidade | Descrição | Prazo | Esforço |
 |---|---|---|---|
 | ~~**CNPJ Alfanumérico — NT 2026.004**~~ | ~~CNPJ `[A-Z0-9]{12}[0-9]{2}`; chave 44 posições alfanumérica; DV módulo 11 com ASCII; validações~~ | ~~01/07/2026~~ | ~~Médio~~ |
-| **IBS/CBS/IS — NT 2025.002 v1.40** | Verificar campos adicionais (vDif, vDevTrib, vCredTrib); regras UB13-40, UB84a-10 etc. | 03/08/2026 (CRT=3) | Médio |
-| **Finalidades finNFe=4 (débito) / 5 (crédito)** | Adequar fluxo para Ajustes SINIEF 49/2025 e 8/2026 | 03/08/2026 | Pequeno |
+| ~~**IBS/CBS/IS — NT 2025.002 v1.40**~~ | ~~Campos IBSCBS: gDif/gDevTrib/gRed em gIBSUF/gIBSMun/gCBS; gEstornoCred; acumuladores vDif/vDevTrib no total~~ | ~~03/08/2026 (CRT=3)~~ | ~~Médio~~ |
+| ~~**Finalidades finNFe=4 (débito) / 5 (crédito)**~~ | ~~Adequar fluxo para Ajustes SINIEF 49/2025 e 8/2026~~ | ~~03/08/2026~~ | ~~Pequeno~~ |
 
 ### 🟠 Alta Prioridade — Grupos XML Obrigatórios (NT 2018.005)
 

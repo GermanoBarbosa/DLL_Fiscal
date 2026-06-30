@@ -113,6 +113,21 @@ Private Sub Validate_IDE(ide As hNFe4_Doc_ide, Ambiente As Long)
     If ide.m_idDest < 1 Or ide.m_idDest > 3 Then
         AddError "ide.idDest", "idDest deve ser 1, 2 ou 3"
     End If
+
+    If Len(Trim(ide.m_finNFe)) = 0 Then
+        AddError "ide.finNFe", "finNFe obrigatorio (1=Normal, 2=Complementar, 3=Ajuste, 4=Debito, 5=Credito)"
+    ElseIf ide.m_finNFe < "1" Or ide.m_finNFe > "6" Then
+        AddError "ide.finNFe", "finNFe deve ser 1 a 6"
+    End If
+
+    If ide.m_tpEmis <> "1" Then
+        If Len(Trim(ide.m_dhCont)) = 0 Then
+            AddError "ide.dhCont", "dhCont obrigatorio quando tpEmis <> 1 (contingencia)"
+        End If
+        If Len(Trim(ide.m_xJust)) < 15 Then
+            AddError "ide.xJust", "xJust deve ter no minimo 15 caracteres quando tpEmis <> 1"
+        End If
+    End If
 End Sub
 
 Private Sub Validate_Emit(emit As hNFe4_Doc_emit, Modulo As String)

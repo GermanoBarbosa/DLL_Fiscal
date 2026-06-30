@@ -40,7 +40,37 @@ Public m_vIBSMun As Double
 Public m_vIBS As Double
 Public m_vCBS As Double
 Public m_vCBSST As Double
+' gDif / gDevTrib totals (NT 2025.002)
+Public m_vDifIBSUF As Double
+Public m_vDevTribIBSUF As Double
+Public m_vDifIBSMun As Double
+Public m_vDevTribIBSMun As Double
+Public m_vDifCBS As Double
+Public m_vDevTribCBS As Double
+' gEstornoCred totals (NT 2025.002)
+Public m_vIBSEstCred As Double
+Public m_vCBSEstCred As Double
 Public m_vIS As Double                          ' ISTot
+' === ISSQNtot ===
+Public m_ISSQNtot_vServ As Double
+Public m_ISSQNtot_vBC As Double
+Public m_ISSQNtot_vISS As Double
+Public m_ISSQNtot_vPIS As Double
+Public m_ISSQNtot_vCOFINS As Double
+Public m_ISSQNtot_dCompet As String
+Public m_ISSQNtot_vDeducao As Double
+Public m_ISSQNtot_vOutro As Double
+Public m_ISSQNtot_vDescIncond As Double
+Public m_ISSQNtot_vDescCond As Double
+Public m_ISSQNtot_vISSRet As Double
+Public m_ISSQNtot_cRegTrib As String
+' === retTrib (Retencao de Tributos Federais) ===
+Public m_retTrib_vRetPIS As Double
+Public m_retTrib_vRetCOFINS As Double
+Public m_retTrib_vRetCSLL As Double
+Public m_retTrib_vRetIRRF As Double
+Public m_retTrib_vRetINSS As Double
+Public m_retTrib_vRetISS As Double
 ' === FCP ===
 Public m_vFCP As Double
 Public m_vFCPST As Double
@@ -72,9 +102,35 @@ m_vIBSMun = 0
 m_vIBS = 0
 m_vCBS = 0
 m_vCBSST = 0
+m_vDifIBSUF = 0
+m_vDevTribIBSUF = 0
+m_vDifIBSMun = 0
+m_vDevTribIBSMun = 0
+m_vDifCBS = 0
+m_vDevTribCBS = 0
+m_vIBSEstCred = 0
+m_vCBSEstCred = 0
 m_vIS = 0
+m_ISSQNtot_vServ = 0
+m_ISSQNtot_vBC = 0
+m_ISSQNtot_vISS = 0
+m_ISSQNtot_vPIS = 0
+m_ISSQNtot_vCOFINS = 0
+m_ISSQNtot_dCompet = ""
+m_ISSQNtot_vDeducao = 0
+m_ISSQNtot_vOutro = 0
+m_ISSQNtot_vDescIncond = 0
+m_ISSQNtot_vDescCond = 0
+m_ISSQNtot_vISSRet = 0
+m_ISSQNtot_cRegTrib = ""
+m_retTrib_vRetPIS = 0
+m_retTrib_vRetCOFINS = 0
+m_retTrib_vRetCSLL = 0
+m_retTrib_vRetIRRF = 0
+m_retTrib_vRetINSS = 0
+m_retTrib_vRetISS = 0
 m_vFCP = 0
 m_vFCPST = 0
 m_vFCPSTRet = 0
 End Sub
-
+
