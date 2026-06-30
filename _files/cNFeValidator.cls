@@ -120,9 +120,9 @@ Private Sub Validate_Emit(emit As hNFe4_Doc_emit, Modulo As String)
         AddError "emit.CNPJ", "CNPJ do emitente obrigatorio"
     Else
         Dim cnpj As String
-        cnpj = OnlyNumbers(emit.m_CNPJ)
+        cnpj = OnlyAlphanumeric(emit.m_CNPJ)
         If Len(cnpj) <> 14 Then
-            AddError "emit.CNPJ", "CNPJ do emitente deve ter 14 digitos"
+            AddError "emit.CNPJ", "CNPJ do emitente deve ter 14 caracteres (alfanumerico, NT 2026.004)"
         End If
     End If
 
@@ -156,8 +156,8 @@ Private Sub Validate_Dest(dest As hNFe4_Doc_dest)
         AddError "dest.CNPJ/CPF", "CNPJ ou CPF do destinatario obrigatorio"
     Else
         If Len(Trim(dest.m_CNPJ)) > 0 Then
-            If Len(OnlyNumbers(dest.m_CNPJ)) <> 14 Then
-                AddError "dest.CNPJ", "CNPJ deve ter 14 digitos"
+            If Len(OnlyAlphanumeric(dest.m_CNPJ)) <> 14 Then
+                AddError "dest.CNPJ", "CNPJ deve ter 14 caracteres (alfanumerico, NT 2026.004)"
             End If
         End If
         If Len(Trim(dest.m_CPF)) > 0 Then

@@ -475,38 +475,45 @@ _files\
 dependencias\              → Instaladores CAPICOM, MSXML5, SOAP SDK
 ```
 
+## Legislação Vigente — Prazos Críticos (2026)
+
+| Norma | Vigência | Impacto |
+|-------|----------|---------|
+| **NT 2026.004 v1.01 — CNPJ Alfanumérico** | **Produção: 01/07/2026** | CNPJ/chave aceitam `[A-Z0-9]`; DV módulo 11 com ASCII |
+| **NT 2025.002 v1.40 — Reforma Tributária (IBS/CBS/IS)** | **Homologação CRT=3: 01/07/2026** | Campos IBS/CBS obrigatórios; novas finalidades débito/crédito |
+| **NT 2025.002 v1.40 — Produção CRT=3** | **Produção: 03/08/2026** | Validação obrigatória IBS/CBS para regime normal |
+| **NT 2025.002 v1.40 — Produção CRT=1,2,4** | **Produção: 04/01/2027** | Validação obrigatória IBS/CBS para Simples/MEI |
+| **NT 2018.005 v1.52 — Grupos obrigatórios** | Vigente | infRespTec, autXML, infIntermed, NFref |
+
 ## Roadmap — Funcionalidades Pendentes
 
-> Status geral de conformidade NF-e 4.00: **~65%**. Todos os 8 webservices SEFAZ obrigatórios estão implementados.
+> Status geral de conformidade NF-e 4.00: **~70%**. Todos os 8 webservices SEFAZ obrigatórios estão implementados. IBS/CBS/IS (NT 2025.002) parcialmente implementados. CNPJ Alfanumérico (NT 2026.004) implementado.
 
-### Alta Prioridade — Campos Obrigatórios Atualmente Hardcoded
+### 🔴 Crítico — Prazo Imediato
 
-| Funcionalidade | Descrição | Esforço |
-|---|---|---|
-| ~~`natOp` configurável~~ | ~~Atualmente hardcoded `"VDA MERC ADQ TERCEIR"` — expor como `Public m_natOp As String` no `<ide>`~~ | ~~Pequeno~~ |
-| ~~`tpNF` configurável~~ | ~~Hardcoded `1` (saída) — expor campo para permitir notas de entrada (`0`)~~ | ~~Pequeno~~ |
-| ~~`finNFe` configurável~~ | ~~Hardcoded `1` (normal) — expor campo para complementar/ajuste/devolução~~ | ~~Pequeno~~ |
-| ~~`indFinal` configurável~~ | ~~Hardcoded `1` — expor como campo público~~ | ~~Pequeno~~ |
-| ~~`indPres` configurável~~ | ~~Hardcoded (`0` mod55 / `1` mod65) — expor para e-commerce, teleatendimento, etc.~~ | ~~Pequeno~~ |
-| ~~`procEmi` configurável~~ | ~~Hardcoded `0` — expor como campo público~~ | ~~Pequeno~~ |
-| ~~`indPag` no `<ide>`~~ | ~~Declarado mas comentado — não é gerado no XML~~ | ~~Pequeno~~ |
-| ~~`cEAN` / `cEANTrib`~~ | ~~Campos `m_cEAN`/`m_cEANTrib` existem mas são ignorados — sempre geram `"SEM GTIN"`~~ | ~~Pequeno~~ |
+| Funcionalidade | Descrição | Prazo | Esforço |
+|---|---|---|---|
+| ~~**CNPJ Alfanumérico — NT 2026.004**~~ | ~~CNPJ `[A-Z0-9]{12}[0-9]{2}`; chave 44 posições alfanumérica; DV módulo 11 com ASCII; validações~~ | ~~01/07/2026~~ | ~~Médio~~ |
+| **IBS/CBS/IS — NT 2025.002 v1.40** | Verificar campos adicionais (vDif, vDevTrib, vCredTrib); regras UB13-40, UB84a-10 etc. | 03/08/2026 (CRT=3) | Médio |
+| **Finalidades finNFe=4 (débito) / 5 (crédito)** | Adequar fluxo para Ajustes SINIEF 49/2025 e 8/2026 | 03/08/2026 | Pequeno |
 
-### Alta Prioridade — Grupos XML Ausentes
+### 🟠 Alta Prioridade — Grupos XML Obrigatórios (NT 2018.005)
 
 | Funcionalidade | Descrição | Esforço |
 |---|---|---|
-| **Grupo `<NFref>`** (NF-e referenciadas) | `refNFe`, `refNF`, `refNFP`, `refCTe`, `refECF` — obrigatório para diversos cenários (devolução, complementar) | Médio |
-| **Grupo `<II>` por item** | `vBC`, `vDespAdu`, `vII`, `vIOF` — `vII` existe no total mas não é gerado por produto | Médio |
-| **Grupo `<infRespTec>`** | Responsável técnico — obrigatório desde NT 2018.005 | Médio |
-| **`<PISST>` / `<COFINSST>`** | PIS e COFINS Substituição Tributária por item | Médio |
-
-### Média Prioridade — Grupos XML Ausentes
-
-| Funcionalidade | Descrição | Esforço |
-|---|---|---|
+| **Grupo `<infRespTec>`** | Responsável técnico — CNPJ, xContato, email, fone, CSRT (obrigatório NT 2018.005) | Médio |
 | **Grupo `<autXML>`** | Autorizados para download do XML (NT 2018.005) | Pequeno |
 | **Grupo `<infIntermed>`** | Intermediador/marketplace (NT 2018.005) | Pequeno |
+| **Grupo `<NFref>`** (NF-e referenciadas) | `refNFe`, `refNF`, `refNFP`, `refCTe`, `refECF` — obrigatório para devolução/complementar | Médio |
+| **Grupo `<II>` por item** | `vBC`, `vDespAdu`, `vII`, `vIOF` — `vII` existe no total mas não é gerado por produto | Médio |
+| **`<PISST>` / `<COFINSST>`** | PIS e COFINS Substituição Tributária por item | Médio |
+| **`dhCont` / `xJust` contingência** | Campos obrigatórios para tpEmis 2–9 — não gerados atualmente | Médio |
+| **Alteração automática `tpEmis`** | Ao usar SVAN/SVC-RS/SVC-AN, o campo `tpEmis` não muda no XML | Pequeno |
+
+### 🟡 Média Prioridade
+
+| Funcionalidade | Descrição | Esforço |
+|---|---|---|
 | **Grupo `<retirada>`** | Local de retirada (CNPJ/CPF, xNome, endereço completo) | Médio |
 | **Grupo `<entrega>`** | Local de entrega (mesma estrutura do retirada) | Médio |
 | **Grupo `<compra>`** | Informações de compra (xNEmp, xPed, xCont) — útil para notas de entrada | Pequeno |
@@ -517,11 +524,11 @@ dependencias\              → Instaladores CAPICOM, MSXML5, SOAP SDK
 | **`xPed` / `nItemPed` no produto** | Pedido de compra do cliente | Pequeno |
 | **`NVE` no produto** | Nomenclatura de Valor Aduaneiro e Estatística (até 8) | Pequeno |
 | **`infAdProd` no produto** | Informações adicionais do produto | Pequeno |
-| **`dhCont` / `xJust` contingência** | Campos obrigatórios para tpEmis 2–9 — não gerados atualmente | Médio |
-| **Alteração automática `tpEmis`** | Ao usar SVAN/SVC-RS/SVC-AN, o campo `tpEmis` não muda no XML | Pequeno |
+| **`vTroco` configurável** | Atualmente hardcoded como `"0.00"` no grupo `pag` | Pequeno |
 | **SVC-SP (tpEmis=8)** | Nova modalidade de contingência de SP — sem roteamento | Pequeno |
+| **XSDs faltantes** | envEvento, distDFeInt, downloadNFe, consReciNFe | Média |
 
-### Baixa Prioridade
+### 🟢 Baixa Prioridade
 
 | Funcionalidade | Descrição | Esforço |
 |---|---|---|
@@ -529,27 +536,17 @@ dependencias\              → Instaladores CAPICOM, MSXML5, SOAP SDK
 | **Grupo `<detExport>`** | Detalhamento de exportação por item (nDraw, exportInd) | Médio |
 | **Grupo `<veicProd>`** | Detalhamento de veículos novos (chassi, tpOp, etc.) | Grande |
 | **Grupo `<med>`** | Detalhamento de medicamentos (nLote, qLote, dFab, dVal, vPMC) | Médio |
-| **Grupo `<arma>`** | Detalhamento de armas (tpArma, nSerie, nCano, nCano, nCano) | Médio |
-| **Grupo `<gCred>`** | Crédito de ICNS (CNPJ, vCredICMS) | Pequeno |
+| **Grupo `<arma>`** | Detalhamento de armas (tpArma, nSerie, nCano) | Médio |
+| **Grupo `<gCred>`** | Crédito de ICMS (CNPJ, vCredICMS) | Pequeno |
 | **`<vagao>` / `<balsa>`** | Identificação do vagão/balsa no transporte ferroviário/hidroviário | Pequeno |
 | **`<lacres>`** | Lacres nas volumes (nLacre) | Pequeno |
 | **`ISUF` no destinatário** | Inscrição na Suframa | Pequeno |
 | **`indEscala` / `CNPJFab`** | Produção em escala relevante / CNPJ do fabricante | Pequeno |
 | **`extIPI` / `nRECOPI`** | Código de enquadramento IPI / RECOPI | Pequeno |
-| **`vTroco` configurável** | Atualmente hardcoded como `"0.00"` no grupo `pag` | Pequeno |
 | **`IEST` no emitente** | IE do substituto tributário | Pequeno |
-
-### Infraestrutura
-
-| Funcionalidade | Descrição | Prioridade |
-|---|---|---|
-| **XSD `envEvento_v1.00.xsd`** | Validar eventos (cancelamento, CC-e, manifestação, EPEC) — arquivo ausente no Schema-4.00 | Média |
-| **XSD `distDFeInt_v1.01.xsd`** | Validar NfeDistDFe — arquivo ausente | Média |
-| **XSD `downloadNFe_v1.01.xsd`** | Validar NfeDownloadNF — arquivo ausente | Média |
-| **XSD `consReciNFe_v4.00.xsd`** | Validar NfeConsReciNFe — arquivo ausente | Média |
 | **QR Code NFC-e por UF** | URLs de consulta NFC-e específicas de cada UF para homologação | Baixa |
-| **FileLogger listener** | Listener de log para gravação em arquivo (mencionado como "futuro" no README) | Baixa |
-| **Validação de regras de negócio** | Ampliar cobertura do `cNFeValidator` para novos campos/grupos implementados | Média |
+| **FileLogger listener** | Listener de log para gravação em arquivo | Baixa |
+| **Ampliar `cNFeValidator`** | Cobertura para novos campos/grupos implementados | Média |
 
 ## Licença
 

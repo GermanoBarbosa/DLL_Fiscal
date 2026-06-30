@@ -186,44 +186,35 @@ Sub Add_volume(m_Vol As hNFe4_Doc_vol)
 End Sub
 
 Private Function Calculo_DV11(strNumero As String) As String
-'declara as vari??????veis
-    Dim intcontador, intnumero, intTotalNumero, intMultiplicador, intResto As Integer
+    Dim intcontador As Integer, intnumero As Integer
+    Dim intTotalNumero As Integer, intMultiplicador As Integer, intResto As Integer
+    Dim ch As String
 
-    ' se nao for um valor numerico sai da fun????????????o
-    If Not IsNumeric(strNumero) Then
-        Calculo_DV11 = ""
-        Exit Function
-    End If
-
-    'inicia o multiplicador
+    'NT 2026.004: chave aceita alfanumericos  converte letras p/ ASCII
     intMultiplicador = 9
 
-    'pega cada caracter do numero a partir da direita
     For intcontador = Len(strNumero) To 1 Step -1
-
-        'extrai o caracter e multiplica prlo multiplicador
-        intnumero = Val(Mid(strNumero, intcontador, 1)) * intMultiplicador
-
-        'soma o resultado para totaliza????????????o
-        intTotalNumero = intTotalNumero + intnumero
-
-        'se o multiplicador for maior que 2 decrementa-o caso contrario atribuir valor padrao original
+        ch = Mid(strNumero, intcontador, 1)
+        If ch Like "[0-9]" Then
+            intnumero = Val(ch)
+        ElseIf ch Like "[A-Za-z]" Then
+            intnumero = Asc(UCase(ch))
+        Else
+            intnumero = 0
+        End If
+        intTotalNumero = intTotalNumero + (intnumero * intMultiplicador)
         intMultiplicador = IIf(intMultiplicador > 2, intMultiplicador - 1, 9)
-
     Next
 
-    'calcula o resto da divisao do total por 11
     intResto = intTotalNumero Mod 11
 
-    'verifica as exce????????????es ( 0 -> DV=0    10 -> DV=X (para o BB) e retorna o DV
     Select Case intResto
     Case 0
         Calculo_DV11 = "0"
     Case 10
-        Calculo_DV11 = "0"   'AQUI ?????? X PARA BB
+        Calculo_DV11 = "0"
     Case Else
         Calculo_DV11 = Trim(Str(intResto))
-
     End Select
 
 End Function

@@ -77,3 +77,15 @@ Dim cc As Long, mOut As String
     Next
     OnlyNumbers = mOut
 End Function
+
+Function OnlyAlphanumeric(ByVal mText As String) As String
+Dim cc As Long, mOut As String, ch As String
+    mOut = ""
+    For cc = 1 To Len(mText)
+        ch = Mid(mText, cc, 1)
+        If ch Like "[0-9A-Za-z]" Then
+            mOut = mOut & UCase(ch)
+        End If
+    Next
+    OnlyAlphanumeric = mOut
+End Function
