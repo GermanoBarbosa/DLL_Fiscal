@@ -10,7 +10,7 @@ A|AxPraFiscal\Class Modules\hNFe4_CartaCorrecao (hNFe4_CartaCorrecao.cls)
 A|AxPraFiscal\Class Modules\hNFe4_ConsReciNFe (hNFe4_ConsReciNFe.cls)
 A|AxPraFiscal\Class Modules\hNFe4_DistDFe (hNFe4_DistDFe.cls)
 A|AxPraFiscal\Class Modules\hNFe4_DownloadNFe (hNFe4_DownloadNFe.cls)
-A|AxPraFiscal\Class Modules\hNFe4_Doc (hNFe4_Doc.cls) [mudou]
+A|AxPraFiscal\Class Modules\hNFe4_Doc (hNFe4_Doc.cls)
 A|AxPraFiscal\Class Modules\hNFe4_Doc_dest (hNFe4_Doc_dest.cls)
 A|AxPraFiscal\Class Modules\hNFe4_Doc_dest_enderDest (hNFe4_Doc_dest_enderDest.cls)
 A|AxPraFiscal\Class Modules\hNFe4_Doc_det (hNFe4_Doc_det.cls)
@@ -24,7 +24,7 @@ A|AxPraFiscal\Class Modules\hNFe4_Doc_det_prod_comb_CID (hNFe4_Doc_det_prod_comb
 A|AxPraFiscal\Class Modules\hNFe4_Doc_det_prod_comb (hNFe4_Doc_det_prod_comb.cls)
 A|AxPraFiscal\Class Modules\hNFe4_Doc_emit (hNFe4_Doc_emit.cls)
 A|AxPraFiscal\Class Modules\hNFe4_Doc_emit_enderEmit (hNFe4_Doc_emit_enderEmit.cls)
-A|AxPraFiscal\Class Modules\hNFe4_Doc_ide (hNFe4_Doc_ide.cls) [mudou]
+A|AxPraFiscal\Class Modules\hNFe4_Doc_ide (hNFe4_Doc_ide.cls)
 A|AxPraFiscal\Class Modules\hNFe4_Doc_infAdic (hNFe4_Doc_infAdic.cls)
 A|AxPraFiscal\Class Modules\hNFe4_Doc_total (hNFe4_Doc_total.cls)
 A|AxPraFiscal\Class Modules\hNFe4_Doc_transp (hNFe4_Doc_transp3.cls)
